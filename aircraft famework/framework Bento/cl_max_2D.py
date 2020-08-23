@@ -32,16 +32,10 @@ def cl_max_2d(mach,airport_elevation,airfoil_names,airfoil_chords):
                 2:{},
                 3:{}}
 
-
-
-
-
     for i in range(len(airfoils)):
         j = i+1
         airfoils[j]['name'] = airfoil_names[i]
         airfoils[j]['chord'] = airfoil_chords[i]
-
-
 
     ########################################################################################
     """Importing Modules"""
@@ -58,7 +52,6 @@ def cl_max_2d(mach,airport_elevation,airfoil_names,airfoil_chords):
     mach = 0.15
     hp = 1000
     ISADEV = 0
-
     ########################################################################################
 
     flagsuc = 0 # success flag, initially ok

@@ -325,24 +325,6 @@ else:
 
 
 
-
-
-# CD0_Wing =  0.03
-# K_IND = 1.
-# CLALFA_rad = 5.
-# CLMAX = 2.
-# estaestol = 0.2
-
-
-
-
-
-
-
-
-
-
-
 if PEng == 2: 
     AirplaneCLmaxClean = CLMAX # engines do not disturb wing airflow
 elif PEng == 1:

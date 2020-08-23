@@ -85,7 +85,7 @@ def airfoil_preprocessing(airfoil,panel_number):
     ########################################################################################
     """Xfoil Execution"""
     ########################################################################################
-    os.system("xfoil < xfoil_preproc.txt > NUL.dat")
+    os.system("xfoil.exe < xfoil_preproc.txt > NUL.dat")
 
     if os.path.exists(xfoil_run_file):
         os.remove(xfoil_run_file)

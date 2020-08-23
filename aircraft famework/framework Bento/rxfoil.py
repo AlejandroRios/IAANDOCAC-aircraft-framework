@@ -26,7 +26,7 @@ Cd@Cl min.
 """Importing Modules"""
 ########################################################################################
 import numpy as np
-import os
+import sys,os
 import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -94,7 +94,7 @@ def rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa):
     ########################################################################################
     """Xfoil Execution"""
     ########################################################################################
-    os.system("xfoil < rxfoil_input.txt > NUL.dat")
+    os.system("xfoil.exe < rxfoil_input.txt > NUL.dat")
 
     if os.path.exists(xfoil_run_file):
         os.remove(xfoil_run_file)
@@ -102,15 +102,16 @@ def rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa):
     ########################################################################################
     """Data extraction"""
     ########################################################################################
-
-    file_path = "/home/alejandro/Documents/Github/GIT_IAANDOCAC/IAANDOCAC-aircraft-framework/aircraft famework/framework Bento/"
+    filename = sys.argv[0]
+    file_path = os.path.abspath(filename+"/..")
+    # file_path = "\Documents\Github\GIT_IAANDOCAC\IAANDOCAC-aircraft-framework\aircraft famework"
     file_name  = file_path  + polar_file
         
     # Load the data from the text file
     db= np.loadtxt(polar_file, skiprows=12)
     # df = pd.read_csv(polar_file, delimiter = ' ',skiprows=13, header = None, names=list('abcdefghi'))
     df = pd.DataFrame(db)
-    df.columns = ['alpha','CL','CD','CDp','CM','Top_Xtr','Bot_Xtr','Top_Itr','Bot_Itr']
+    df.columns = ['alpha','CL','CD','CDp','CM','Top_Xtr','Bot_Xtr']
 
     # print(df.head())
 
@@ -143,14 +144,14 @@ def rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa):
 
 
 
-airfoil    = 'PQ1'
-reynolds = '3.5e6'
-mach = '0.15'
-aoa_ini = '0'
-aoa_fin = '22'
-delta_aoa = '1'
+# airfoil    = 'PQ1'
+# reynolds = '3.5e6'
+# mach = '0.15'
+# aoa_ini = '0'
+# aoa_fin = '22'
+# delta_aoa = '1'
 
-t = rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa)
+# t = rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa)
 
 
-print(t)
+# print(t)
