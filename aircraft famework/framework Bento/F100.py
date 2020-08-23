@@ -323,26 +323,6 @@ else:
 
 
 
-
-
-
-
-# CD0_Wing =  0.03
-# K_IND = 1.
-# CLALFA_rad = 5.
-# CLMAX = 2.
-# estaestol = 0.2
-
-
-
-
-
-
-
-
-
-
-
 if PEng == 2: 
     AirplaneCLmaxClean = CLMAX # engines do not disturb wing airflow
 elif PEng == 1:
@@ -378,7 +358,6 @@ AirplaneCLmaxTakeo  = AirplaneCLmaxClean + (DCLMAX_i*fe_i + DCLMAX_e*fe_e)/bflap
 DCLMAX_i = delta_CLmax_flap(1,tc_i,1-longtras,dflecflapland,wSweep14,fSwS)
 DCLMAX_e = delta_CLmax_flap(2,tc_e,1-longtras,dflecflapland,wSweep14,fSwS)
 AirplaneCLmaxLandi  = AirplaneCLmaxClean + (DCLMAX_i*fe_i + DCLMAX_e*fe_e)/bflap
-
 
 
 PHT = PHTout
