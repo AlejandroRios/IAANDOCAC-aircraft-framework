@@ -2,7 +2,8 @@
 Function  : cd0_Torenbeek.py
 Title     : Section Clmax
 Written by: Alejandro Rios
-Date      : 05/11/19
+Date      : November/2020
+Last edit : August/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
@@ -19,7 +20,7 @@ Inputs:
     - Wing area                 [m2]
     - Wing span                 [m]
     - Taper ratio
-    - Wing thickness mean
+    - Wing mean thickness 
     - Fuselage diamenter        [m]
     - Altitude                  [ft]
 Outputs:

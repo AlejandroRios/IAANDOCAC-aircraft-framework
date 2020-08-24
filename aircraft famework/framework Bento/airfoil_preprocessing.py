@@ -3,6 +3,7 @@ Function  : airfoil_preprocessing.py
 Title     : Airfoil pre-processing
 Written by: Alejandro Rios
 Date      : September/2019
+Last edit : August/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 

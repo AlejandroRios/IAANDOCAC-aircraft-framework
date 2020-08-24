@@ -3,6 +3,7 @@ Function  : area_triangle_3d.py
 Title     : Triangle area 3D
 Written by: Alejandro Rios
 Date      : November/2019
+Last edit : August/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 

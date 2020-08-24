@@ -3,6 +3,7 @@ Function  : CDW_SHEVELL.py
 Title     : Wave drag 
 Written by: Alejandro Rios
 Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
