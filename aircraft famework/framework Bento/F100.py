@@ -323,6 +323,11 @@ else:
 
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> develop-jose
 if PEng == 2: 
     AirplaneCLmaxClean = CLMAX # engines do not disturb wing airflow
 elif PEng == 1:

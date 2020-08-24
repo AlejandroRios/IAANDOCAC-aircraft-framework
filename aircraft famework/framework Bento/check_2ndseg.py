@@ -1,24 +1,39 @@
 """" 
-Title     : WEW2Bento
+Function  : check_2ndseg.py
+Title     : Second segment check 
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module check the second segment gradient of climb constraint based on CS 25.121
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - Airport elevation
+    - Wing area
+    - Wing span
+    - Wing MAC
+    - Wing mean thickness 
+    - Number of engines
+    - Flap span
+    - Fuselage diameter
+    - Takeoff CL max
+    - Takeoff mass fraction of MTOW
+    - Vertical tail area
+    - Vertical tail sweep angle
+    - Engine diameter
+    - Engine bypass
+    - Flap angle deflection for takeoff
+    - k factor from Class I polar for takeoff
+    - Total wetted area
+    - 
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
+    - Gradient of climb for 2nd segment climb 
 
 """
 ########################################################################################
@@ -30,7 +45,8 @@ from cd0_Torenbeek import cd0_Torenbeek
 from Drag_flap import Drag_flap
 from CDWINDMILLTOREN import CDWINDMILLTOREN
 ########################################################################################
-
+"""Function definition"""
+########################################################################################
 
 def check_2ndseg(AirportElevation,wS,bw,wMAC,tcmed,
     neng,bflap,FusDiam,clmaxt,

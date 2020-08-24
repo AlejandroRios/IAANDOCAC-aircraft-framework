@@ -18,7 +18,7 @@ FO_Sal
 """Importing Modules"""
 ########################################################################################
 import numpy as np
-import os
+import sys, os
 from atmosphere import atmosphere
 ########################################################################################
 """Constants declaration"""
@@ -55,7 +55,10 @@ def input_fpwb(M,AirportElevation,
     ise   = 1. # ise - Control parameter for the nonisentropic correction. # ISE=1. - the nonisentropic correction is used # ISE=0. - no correction
     order = 2. # order - order of the artificial dissipation in the supersonic zones
     #   rchord=chord at wing-fuselage intersection#
-    file_path = "/home/alejandro/Documents/Github/IAANDOCAC/MDO/Bentos Framework/"
+    filename = sys.argv[0]
+
+    file_path = os.path.abspath(filename+"/..")
+    # file_path = 'c:\\Users\\aarc8\\Documents\\Github\\GIT_IAANDOCAC\\IAANDOCAC-aircraft-framework\\aircraft famework\\framework Bento\\'
     extensions = ('.ps', '.out','.pl4','.blp','.sav','.inp')
     filelist = [ f for f in os.listdir(file_path) if f.endswith(extensions) ]
     for f in filelist:

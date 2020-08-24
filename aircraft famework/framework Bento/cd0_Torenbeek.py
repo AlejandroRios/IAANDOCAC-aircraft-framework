@@ -1,50 +1,44 @@
 """" 
+Function  : cd0_Torenbeek.py
 Title     : Section Clmax
 Written by: Alejandro Rios
-Date      : 05/11/19
+Date      : November/2020
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates CD0 in accordance with the method proposed by Torenbeek:
+        Torenbee, E., "Advanced Aircraft Design," 1st Edition, 2013, pg 123-125.
+    
+Future implementations:
+    - 
 
 Inputs:
-Mach
-AirportElevation
-PROOT
-Craiz
-PKINK
-Cquebra
-PTIP
-Cponta
-
+    - Mach number
+    - MTOW                      [lb]
+    - Wing area                 [m2]
+    - Wing span                 [m]
+    - Taper ratio
+    - Wing mean thickness 
+    - Fuselage diamenter        [m]
+    - Altitude                  [ft]
 Outputs:
-clmax_airfoil
-flagsuc
+    - CD0
 """
+########################################################################################
+"""Importing Modules"""
 ########################################################################################
 import numpy as np
 import os
 from atmosphere import atmosphere
 from cf_flat_plate import cf_flat_plate
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
-
-
 def cd0_Torenbeek(nmach,swm2,bw,wMAC,tc,df,h,swetm2):
-    # Calculo do CD0 de acordo com metodo proposto por Torenbeek:
-    # Torenbee, E., "Advanced Aircraft Design," 1st Edition, 2013, pg 123-125.
-    # Entradas:
-    # nmach:  numero de Mach
-    # mtowlb: peso maximo de decolagem em libras
-    # swm2:   area da asa em metros ao quadrado
-    # bw:     envergadura da asa em metros
-    # afil:   afilamento da asa
-    # tc:     espessura relativa media da asa
-    # df:     diametro da fuselagem em metros
-    # h:      altitude em pes
-    #--------------------------------------------------------------------------
     ISADEV = 0
-    atm        = atmosphere(h,ISADEV)
+    atm   = atmosphere(h,ISADEV)
     ni    = atm.visc/atm.ro
     V     = nmach*atm.va
     #

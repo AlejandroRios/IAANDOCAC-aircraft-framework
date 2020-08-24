@@ -25,7 +25,7 @@ import subprocess
 def execute_fpwb(time2check,checks2kill,arq_input):
     # 
         #This function is responsible to kill crashed Xfoil programs
-    execute  = "wine fpwb.exe"
+    execute  = "fpwb.exe"
 
     
     comando = execute + ' ' + arq_input
@@ -40,9 +40,9 @@ def execute_fpwb(time2check,checks2kill,arq_input):
     else:
         
         #Verify prior fpwb tasks
-        b = subprocess.check_output(['ps'])
-        b = b.decode("utf-8")
-        index_before = b.find('fpwb')
+        # b = subprocess.check_output(['ps'])
+        # b = b.decode("utf-8")
+        # index_before = b.find('fpwb')
         comando1=execute + ' ' + arq_input + ' ' +  '&'
         #Running fpwb independently
         p = subprocess.Popen(comando1, stdout=subprocess.PIPE, shell=True)
@@ -51,7 +51,7 @@ def execute_fpwb(time2check,checks2kill,arq_input):
         p_status = p.wait() 
 
         #Verify new tasks list
-        b = subprocess.check_output(['ps'])
-        b = b.decode("utf-8") 
-        index_later = b.find('fpwb')
+        # b = subprocess.check_output(['ps'])
+        # b = b.decode("utf-8") 
+        # index_later = b.find('fpwb')
 

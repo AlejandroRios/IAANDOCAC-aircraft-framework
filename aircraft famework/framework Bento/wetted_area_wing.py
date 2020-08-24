@@ -68,7 +68,7 @@ def wetted_area_wing(ediam,wingloc,FusDiam,Ccentro,Craiz,Cquebra,
     """Importing Data"""
     ########################################################################################
     # Load airfoil coordinates
-    df = pd.read_table(""+ airfoil_names[0] +'.dat' ,header=None,skiprows=[0],sep=',')
+    df = pd.read_csv(""+ airfoil_names[0] +'.dat' ,sep='\s+', delimiter=None, header=None,skiprows=[0])
     df.columns = ['x','y']
     df_head = df.head()
     n_coordinates = len(df)
@@ -130,7 +130,7 @@ def wetted_area_wing(ediam,wingloc,FusDiam,Ccentro,Craiz,Cquebra,
 
     ########################################################################################
     # Load airfoil coordinates
-    df = pd.read_table(""+ airfoil_names[1] +'.dat' ,header=None,skiprows=[0],sep=',')
+    df = pd.read_csv(""+ airfoil_names[1] +'.dat' ,sep='\s+', delimiter=None, header=None,skiprows=[0])
     df.columns = ['x','y']
     df_head = df.head()
     n_coordinates = len(df)
@@ -191,7 +191,7 @@ def wetted_area_wing(ediam,wingloc,FusDiam,Ccentro,Craiz,Cquebra,
 
     ########################################################################################
     # Load airfoil coordinates
-    df = pd.read_table(""+ airfoil_names[2] +'.dat' ,header=None,skiprows=[0],sep=',')
+    df = pd.read_csv(""+ airfoil_names[2] +'.dat' ,sep='\s+', delimiter=None, header=None,skiprows=[0])
     df.columns = ['x','y']
     df_head = df.head()
     n_coordinates = len(df)
