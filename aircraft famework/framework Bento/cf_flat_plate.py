@@ -1,24 +1,22 @@
 """" 
-Title     : Section Clmax
+Function  : cf_flat_plate.py
 Written by: Alejandro Rios
-Date      : 05/11/19
+Date      : November/2019
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the friction coefficient of the wing represented as a 
+    flat plate
+Future implementations:
+    - 
 
 Inputs:
-Mach
-AirportElevation
-PROOT
-Craiz
-PKINK
-Cquebra
-PTIP
-Cponta
-
+    - Reynolds number
+    - Mach number 
+    - Altitude 
 Outputs:
-clmax_airfoil
-flagsuc
+    - CD0
 """
 ########################################################################################
 import numpy as np
@@ -26,7 +24,7 @@ import os
 from atmosphere import atmosphere
 from temperature import temperature
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
 def cf_flat_plate(Re,Mach,Altitude):
     xt        = 0.05

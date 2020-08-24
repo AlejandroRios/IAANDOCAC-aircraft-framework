@@ -1,14 +1,26 @@
 """" 
-Function  : @ingroup Methods-Geometry-Two_Dimensonal-Cross_Section-Airfoil
-Title     : Airfoil Sobieski coefficients
+Function  : airfoil_preprocessing.py
+Title     : Airfoil pre-processing
 Written by: Alejandro Rios
-Date      : Sep/2019
+Date      : September/2019
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
+
+Description:
+    - This module takes as input the airfoil cordinates .dat file an redefine number of panels
+
+Future implementations:
+    - Redefine airfoil to create blunt trailing edge in order to prevent numerical errors
+
+Inputs:
+    - Aifoil name [str]
+    - Panel number [int]
+Outputs:
+    - Airfoil.dat
 """
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+########################################################################################
+"""Importing Modules"""
+########################################################################################
 import numpy as np 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -16,61 +28,18 @@ from scipy import interpolate
 from scipy.optimize import differential_evolution
 import scipy as sp
 import os
-# ----------------------------------------------------------------------
-#  Compute Airfoil Parametres
-# ----------------------------------------------------------------------
-## @ingroup Methods-Costs-Industrial_Costs
-# def airfoil_sobieski_coefficients(airfoil_name):
-"""Compute Sobieski coefficients
-
-Assumptions:
-No assumptions
-
-Source:
-"", Sobieski
-
-Inputs:
-airfoil dime (.dat)     [-]     Airfoil .dat coordinates
-
-
-Outputs:
-Sobieski coefficientes:
-r0          [-] 
-t_c         [-]     thick to chord ratio
-X_tcmax     [m]     X position of tcmax  
-theta       [-]
-epsilon     [-]
-Ycmax       [-]
-YCtcmax     [-]
-X_Ycmax     [-]
-xp          [-]
-yu          [-]
-yl          [-]
-
-Properties Used:
-N/A
-"""
-
-
 ########################################################################################
-"""Importing Data"""
+"""Function definition"""
 ########################################################################################
 def airfoil_preprocessing(airfoil,panel_number):
-    # panel_number  = '101'
     delimiter = '1'
     xfoil_run_file  = 'xfoil_preproc.txt'
-
     panel_number = str(panel_number)
     ########################################################################################
-    """Xfoil run file writting"""
+    """Xfoil file writting"""
     ########################################################################################
-    # Create the airfoil
     fid = open(xfoil_run_file,"w")
     fid.write("DELI" + delimiter + "\n")
-
-    # fid.write("PLOP \n")
-    # fid.write("G \n\n")
-
     fid.write("load \n")
     fid.write("" + airfoil + ".dat" "\n\n")
     fid.write("PPAR\n")
@@ -79,14 +48,14 @@ def airfoil_preprocessing(airfoil,panel_number):
     fid.write("SAVE \n")
     fid.write("" + airfoil + ".dat" "\n")
     fid.write("Y \n")
-
     fid.close()
-
     ########################################################################################
     """Xfoil Execution"""
     ########################################################################################
+    # Xfoil run
     os.system("xfoil.exe < xfoil_preproc.txt > NUL.dat")
 
+    # Files cleaning
     if os.path.exists(xfoil_run_file):
         os.remove(xfoil_run_file)
 
@@ -95,6 +64,7 @@ def airfoil_preprocessing(airfoil,panel_number):
 
     if os.path.exists('NUL.dat'):
         os.remove('NUL.dat')
+    return
 
 
 

@@ -1,24 +1,28 @@
 """" 
+Function  : area_triangle_3d.py
 Title     : Triangle area 3D
 Written by: Alejandro Rios
-Date      : 12/11/19
+Date      : November/2019
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculate the area triangle for applications in 3D surfaces area calculation
+
+Future implementations:
+    - 
 
 Inputs:
-x, y, z
-
+    - Triangle coordinates x, y, z
 Outputs:
-traingle area
+    - area 
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
 
 def area_triangle_3d(x,y,z):
