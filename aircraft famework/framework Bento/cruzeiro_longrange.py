@@ -1,25 +1,44 @@
 """" 
+Function  : cruise_longrange.py
 Title     : Cruise long range
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the fuel mass burned during cruise
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
+    - Cruise altitude
+    - Cruise mass
+    - Wing aspect ratio
+    - Wing area
+    - Wing MAC
+    - Cruise range
+    - MMO
+    - Wing taper ratio
+    - Engine position ???
+    - Wing sweep angle at c/4
+    - Fuselage diameter
+    - Specific fuel consumption at cruise altitude
+    - Altitude for which TSFC is referenced [ft]
+    - Mach number for which TSFC is referenced
+    - Engine bypass ratio
+    - t/c root
+    - t/c break
+    - t/c tip
+    - Total airplane wetted area
+
 
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
-
+    - mass burned during cruise ???
+    - Mach number
+    - Time during cruise phase
 """
 ########################################################################################
 """Importing Modules"""
@@ -31,18 +50,18 @@ from CDW_SHEVELL import CDW_SHEVELL
 from atmosphere import atmosphere
 from TSFC import TSFC
 ########################################################################################
+"""Function definition"""
+########################################################################################
 def cruzeiro_longrange(Hft,masscruzi,
     arw,sw,wMAC,rangem,MMO,
     afilam, nedebasa,phi14,df,ctref,Href,Mref,BPR,tcroot,tcbreak,tctip,
     Swet_tot):
-    # This routine calculates the fuel mass burned during cruise
+
     tcmed = (0.50*(tcroot+tcbreak) + 0.50*(tcbreak+tctip))/2 # average section max. thickness of the wing
-    #
     atm   = atmosphere(Hft,0)
     rhoi  = atm.ro
     vsomi = atm.va
     mld   = -10000
-    
  
     for NMach in np.arange(0.65,MMO+0.01,0.01):
         ecruise = oswaldf(NMach, arw, phi14, afilam, tcmed, nedebasa)
@@ -57,7 +76,7 @@ def cruzeiro_longrange(Hft,masscruzi,
         k       = 1/(np.pi*arw*ecruise)
         cd      = CD0 + k*(cl_long**2) + CDw
         mldcalc = NMach*cl_long/cd
-        #
+        
         if mldcalc > mld:
             mld       = mldcalc
             Mach_calc = NMach
@@ -70,7 +89,6 @@ def cruzeiro_longrange(Hft,masscruzi,
             
         # for
     #fprintf(' \n Machmax: #4.2f L/D max : #5.2f \n', Machmax, mld/Machmax)
-
     # function
 
     return(mcombc,Mach_calc,time_cru)

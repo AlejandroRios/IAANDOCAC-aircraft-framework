@@ -1,30 +1,33 @@
-"""" 
-Title     : WEW2Bento
+"""
+Function  : DCD_LDG.py
+Title     : Delta CD during landing
 Written by: Alejandro Rios
-Date      : 04/12/19
+Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the delta CD associated to flaps deflected during landing
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - MTOW
+    - Wing Area
+    - Flap deflection
+    - Maximum flap deflection
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
+    - Delta CD flap deflection landing
 
 """
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
+########################################################################################
+"""Function definition"""
 ########################################################################################
 
 def DCD_LDG(MTOW_kg,wS,DFLAP,DFLAP_MAX):

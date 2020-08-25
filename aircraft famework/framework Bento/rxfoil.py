@@ -1,25 +1,33 @@
-"""" 
-Title     : Xfoil Python function
+"""
+Function  : rxfoil.py
+Title     : Run xfoil panel method
 Written by: Alejandro Rios
-Date      : 22/08/19
+Date      : October/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module runs xfoil to obtain aerodynamic characteristics
+
+Future implementations:
+    - 
 
 Inputs:
-airfoil name
-Reynolds number
-AoA initial
-AoA final
-Delta AoA
+    - airfoil name
+    - Reynolds number
+    - Mach number
+    - AoA initial
+    - AoA final
+    - Delta AoA
 
 Outputs:
-Cl max.
-Cd@Cl max.
-Cl@Cd min.
-Cd min.
-Cl min.
-Cd@Cl min.
+    - Cl max.
+    - Cd@Cl max.
+    - Cl@Cd min.
+    - Cd min.
+    - Cl min.
+    - Cd@Cl min.
 """
 
 ########################################################################################
@@ -31,7 +39,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.pyplot as plt
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
 
 def rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa):

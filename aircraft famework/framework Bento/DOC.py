@@ -1,23 +1,31 @@
-"""" 
+"""
+Function  : DOC.py
 Title     : DOC function
 Written by: Alejandro Rios
-Date      : 30/10/19
+Date      : October/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module takes as input the airfoil coordinates .dat file an redefine number of panels
+
+Future implementations:
+    - Redefine airfoil to create blunt trailing edge in order to prevent numerical errors
 
 Inputs:
-Time block
-Cons_block
-weitght_empty_kg
-Rangenm
-T0
-NEng
-weitght_engine_kg
-MTOW
+    - Time between overhaul
+    - Time block
+    - Cons_block
+    - empty weight
+    - Range
+    - T0 - static thrust
+    - Number of engines
+    - engine weight
+    - MTOW
 
 Outputs:
-DOC
+    - DOC
 """
 ########################################################################################
 """Importing Modules"""
@@ -28,14 +36,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from crew_salary import crew_salary
 ########################################################################################
+"""Function definition"""
+########################################################################################
 class structtype():
     pass
 
 salary = structtype()
 var = structtype()
-########################################################################################
-"""Constants declaration"""
-########################################################################################
+
 def DOC(TBO,Time_Block, Cons_Block, weight_empty_kg,Rangenm,
     T0,NEng,weight_engine_kg,MTOW):
 

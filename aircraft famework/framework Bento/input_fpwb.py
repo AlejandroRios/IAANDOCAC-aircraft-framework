@@ -1,17 +1,53 @@
-"""" 
-Title     : Input fpwb 
+""" 
+Function  : input_fpwb.py
+Title     : Input fpwb creator 
 Written by: Alejandro Rios
-Date      : 18/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module creates the fpwn file input that models the aircraft geometry
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
-
+    - Mach para CLmax
+    - Airport elevation
+    - Fuselage length
+    - Length front nose fuselage ???
+    - lenght pax cabine
+    - xle
+    - wS
+    - enf
+    - wingb
+    - diedro
+    - wMAC
+    - c0
+    - cr
+    - cq
+    - ct
+    - etabreak
+    - FusDiam
+    - xuroot
+    - xlroot
+    - ylroot
+    - yuroot
+    - xukink
+    - xlkink
+    - ylkink
+    - yukink
+    - xutip
+    - xltip
+    - yutip
+    - yltip
+    - ir
+    - iq
+    - it
 Outputs:
-Cap_Sal
-FO_Sal
+    - fpwb input file inp
 """
 
 ########################################################################################
@@ -21,7 +57,7 @@ import numpy as np
 import sys, os
 from atmosphere import atmosphere
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
 def frange(x, y, jump=1.0):
     i = 0.0

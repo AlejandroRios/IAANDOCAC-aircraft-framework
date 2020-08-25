@@ -1,31 +1,35 @@
-"""" 
+"""
+Function  : WEW2Bento.py
 Title     : WEW2Bento
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the weight fraction
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - AR - Wing aspect ratio
+    - W2_kg - Weight 
+    - MMO - Maximum Mach number
+    - TW - Thrust to weight ratio
+    - WS - Wing loading
+    - FL - Fuselage lenght
+    - CW - Fuselage diamenter
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
-
+    - Weight fraction
 """
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
-
+########################################################################################
+"""Function definition"""
 ########################################################################################
 def WEW2Bento(AR,W2_kg,MMO,TW,WS,FL,CW):
     # Valores calculados

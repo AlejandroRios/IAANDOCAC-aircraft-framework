@@ -1,19 +1,25 @@
-"""" 
+"""
+Function  : wetted_area_fuselage.py
 Title     : Wetted area fuselage
 Written by: Alejandro Rios
-Date      : 08/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the wetted area of the fuselage
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
-
+    - Fuselage height
+    - Fuselage width
+    - Length front nose fuselage ???
 Outputs:
-Cap_Sal
-FO_Sal
+    - Total fuselage area
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
@@ -21,9 +27,8 @@ import numpy as np
 import os
 from area_triangle_3d import area_triangle_3d
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
-
 def wetted_area_forward_fuselage(fus_h,fus_w,lco):
 
     import numpy

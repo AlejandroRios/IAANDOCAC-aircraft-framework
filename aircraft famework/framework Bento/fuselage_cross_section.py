@@ -1,24 +1,38 @@
-"""" 
+"""
+Function  : fuselage_cross_section.py
 Title     : Fuselage cross section 
 Written by: Alejandro Rios
-Date      : 05/12/19
+Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module perfoms a sizing for the fuselage
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
+    - Container type
+    - Number of aisles
+    - Seating abreast number
+    - Cabine height
+    - Seat width
+    - Ailse width
+    - Fuselage height-to-width ratio
+    - Display graphs ???
 
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
+    - fuselage width
+    - fuselage height
+    - eixox ???
+    - eixoy ???
+    - Fuselage thickness
+    - Fuselage floor
+    - a mini ???
+    - Number of seats
+    - h1 ???
 
 """
 ########################################################################################
@@ -26,6 +40,8 @@ atm(8)= air viscosity
 ########################################################################################
 import numpy as np
 import math
+########################################################################################
+"""Function definition"""
 ########################################################################################
 
 def fuselage_cross_section(container_type,NCorr,NSeat_i,CabHeightm,
@@ -46,17 +62,7 @@ def fuselage_cross_section(container_type,NCorr,NSeat_i,CabHeightm,
     #--------------------------------------------------------------------------
     # Conversion factors
     inch2m=0.0254 # Inch to meter
-    #--------------------------------------------------------------------------
-    # FUSELAGE_DZ_floor = absolute vertical (z) coordinate of the floor (a positive
-    #                     input, must receive a minus sign)
-    # NCorr = Number of aisles
-    # NSeat =  Seating abreast (can be modified inside this routine)
-    # AisleWidth = width of Aisle(s)
-    # CabHeightm = Cabin height (cabin floor to ceiling)  
-    # SEATwid = width of chair
-    # widthreiratio = cabin height-to-width ratio
-    # igraph: key to display graphs 
-    #--------------------------------------------------------------------------
+
     # Design parameters
     armrest_top        = 22   #[inch]
     armrest_bot        = 7    # [inch]
@@ -73,8 +79,6 @@ def fuselage_cross_section(container_type,NCorr,NSeat_i,CabHeightm,
     iterations         = 12
     #--------------------------------------------------------------------------
     #
-
-
 
     if double_container is 'no':
         if container_type is 'None':
@@ -203,10 +207,6 @@ def fuselage_cross_section(container_type,NCorr,NSeat_i,CabHeightm,
                 LOWERDECK_w_ldtop = 3.28
                 LOWERDECK_h_ld = 1.68
 
-
-
-
-
     if NCorr ==  1:
             NSeat = max(NSeat,2) # menor numero de fileiras eh 3
             NSeat = min(NSeat,6) # maior numero de fileiras eh 9
@@ -217,8 +217,6 @@ def fuselage_cross_section(container_type,NCorr,NSeat_i,CabHeightm,
     FUSELAGE_n_SA_YC = NSeat
     FUSELAGE_h_aisle = CabHeightm # (inch)
     FUSELAGE_n_aisles = NCorr
-
-
 
     if NCorr == 1:
             FUSELAGE_esq = math.ceil((FUSELAGE_n_SA_YC)/2) # seat abreasts at left

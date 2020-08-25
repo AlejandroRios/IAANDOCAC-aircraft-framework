@@ -1,3 +1,24 @@
+"""
+Function  : F100.py
+Title     : F100 run example
+Written by: Alejandro Rios
+Date      : June/2019
+Last edit : August/2020
+Language  : Python
+Aeronautical Institute of Technology - Airbus Brazil
+
+Description:
+    - This function performs an example of the aircraft framework considering the F100 aircraft.
+
+Future implementations:
+    - 
+
+Inputs:
+    - 
+Outputs:
+    -
+"""
+
 import numpy as np 
 import matplotlib as plt
 import os
@@ -10,7 +31,7 @@ from cd0_Torenbeek import cd0_Torenbeek
 from delta_CLmax_flap import delta_CLmax_flap
 from wing_structural_layout_fuel_storage import winglaywei2018a
 from WEW2Bento import WEW2Bento
-from cruizeiro_longrange import cruzeiro_longrange
+from cruzeiro_longrange import cruzeiro_longrange
 from loiter import loiter
 from check_2ndseg import check_2ndseg
 from atmosphere import atmosphere

@@ -1,31 +1,35 @@
-"""" 
-Title     : Cruise long range
+"""
+Function  : TSFC.py
+Title     : Thrust specific fuel consumption
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the thrust specific fuel consumption
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - Specific fuel consumption at cruise
+    - Reference altitude
+    - Mach number for which TSFC is referenced
+    - Bypass ratio
+    - Flight condition altitude
+    - Mach number at loiter
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
-
+    - Thrust
 """
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
 from atmosphere import atmosphere
+########################################################################################
+"""Function definition"""
 ########################################################################################
 
 def TSFC(c_ref,href_ft,Mref,BPR,h_ft,M):

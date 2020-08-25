@@ -1,24 +1,28 @@
-"""" 
-Title     : Section Clmax
+"""
+Function  : delta_CLmax_flap.py
+Title     : Delta CL due to flap deflection
 Written by: Alejandro Rios
-Date      : 05/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the delta in CL due to flap deflection
+
+Future implementations:
+    - Pass a function to avoid the tables
 
 Inputs:
-Mach
-AirportElevation
-PROOT
-Craiz
-PKINK
-Cquebra
-PTIP
-Cponta
+    - Flap type - 1 two slots ~=1 single slot
+    - Maximum relative thickness (must be provided as fraction of chord)
+    - Fraction of chord covered by the flap (a fractionary number)
+    - Flap deflectin angle [degrees]
+    - Quarter-chord sweepback angle [degrees]
+    - Ratio betwwen flap covered area and actual reference area
 
 Outputs:
-clmax_airfoil
-flagsuc
+    - Delta CLmax due to flap deflection
 """
 ########################################################################################
 import numpy as np
@@ -31,14 +35,7 @@ from scipy import interpolate
 ########################################################################################
 
 def delta_CLmax_flap(ftype,tc,flapchord,fdeflec,phi14,fSwS):
-    #--------------------------------------------------------------------------
-    # ftype = 1 two slots ~=1 single slot
-    # tc = maximum relative thickness (must be provided as fraction of chord)
-    # flapchord = fraction of chord covered by the flap (a fractionary number)
-    # fdeflec = flap deflectin angle [degrees]
-    # phi14 = Quarter-chord sweepback angle [degrees]
-    # fSwS = ratio betwwen flap covered area and actual reference area
-    #--------------------------------------------------------------------------
+
     rad       = np.pi/180
     phi14_rad = phi14*rad
     #--------------------------------------------------------------------------

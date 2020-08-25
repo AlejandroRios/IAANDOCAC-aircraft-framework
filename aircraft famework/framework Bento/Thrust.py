@@ -1,31 +1,33 @@
-"""" 
-Title     : Cruise long range
+"""
+Function  : Thrust.py
+Title     : Static thrust at given condition
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculate thrust for different static conditions
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - Static thrust
+    - Bypass ratio
+    - Altitude
+    - Mach number
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
-
+    - Thrust
 """
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
 from atmosphere import atmosphere
+########################################################################################
+"""Constants declaration"""
 ########################################################################################
 
 def Thrust(T0,BPR,h_ft,M):

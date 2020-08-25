@@ -1,19 +1,53 @@
-"""" 
+"""
+Function  : wetted_area_wing.py
 Title     : Wetted area wing
 Written by: Alejandro Rios
-Date      : 13/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the wetted area of the wing
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
-
+    - Engine diameter
+    - Wing position
+    - Fuselage diameter
+    - Center chord
+    - Root chord
+    - Kink chord
+    - Tip chord
+    - Wing semi-span
+    - Wing leading edge sweep
+    - Incidence of wing root
+    - Incidence of wing kink
+    - Incidence of wing tip
+    - xle
+    - yposeng - Y position of engine
+    - wingdi - Wing dihedral angle
+    - wtaper - Wing taper ratio
+    - fileToRead1 - Wing root airfoil
+    - fileToRead2 - Wing kink airfoil
+    - fileToRead3 - Wing tip airfoil
 Outputs:
-Cap_Sal
-FO_Sal
+    - areawingwet - Wetted area wing
+    - xutip, 
+    - yupp_tip, 
+    - xltip, 
+    - ylow_tip,
+    - xukink,
+    - yupp_kink,
+    - xlkink,
+    - ylow_kink, 
+    - xuroot,
+    - yupp_root,
+    - xlroot,
+    - ylow_root
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
@@ -24,12 +58,9 @@ from scipy import interpolate
 from area_triangle_3d import area_triangle_3d
 from airfoil_preprocessing import airfoil_preprocessing
 import matplotlib.pyplot as plt
-
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
-
-
 def wetted_area_wing(ediam,wingloc,FusDiam,Ccentro,Craiz,Cquebra,
     Cponta,semispan,sweepLE,iroot,ikink,itip,xle,yposeng,wingdi,wtaper,
     fileToRead1,fileToRead2,fileToRead3):

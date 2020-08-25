@@ -1,17 +1,25 @@
-"""" 
-Title     : Input fpwb 
+"""
+Function  : execute_fpwb.py
+Title     : Execute fpwb full potential method
 Written by: Alejandro Rios
-Date      : 18/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module takes as input the fpwb input file and execute fpwb to obtain the output file 
+        whith aerodynamic information
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
-
+    - time check
+    - checks to kill
+    - input file for fpwb
 Outputs:
-Cap_Sal
-FO_Sal
+    - fpwb output files
 """
 
 ########################################################################################
@@ -23,22 +31,12 @@ import subprocess
 ########################################################################################
 
 def execute_fpwb(time2check,checks2kill,arq_input):
-    # 
-        #This function is responsible to kill crashed Xfoil programs
+
     execute  = "fpwb.exe"
-
-    
     comando = execute + ' ' + arq_input
-    # subprocess.call("wine fpwb.exe fpwbclm1.inp", shell=True)
-
     if not time2check or not checks2kill or time2check == 0 or checks2kill == 0:
-    #     
-        #Just run FPWB
-        
         subprocess.call(comando, shell=True)
-    
     else:
-        
         #Verify prior fpwb tasks
         # b = subprocess.check_output(['ps'])
         # b = b.decode("utf-8")
@@ -54,4 +52,6 @@ def execute_fpwb(time2check,checks2kill,arq_input):
         # b = subprocess.check_output(['ps'])
         # b = b.decode("utf-8") 
         # index_later = b.find('fpwb')
+    
+    return
 

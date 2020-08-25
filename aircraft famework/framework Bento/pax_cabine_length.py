@@ -1,24 +1,35 @@
-"""" 
-Title     : Pax cabine length estimation
+"""
+Function  : pax_cabine_length.py
+Title     : Pax cabine length
 Written by: Alejandro Rios
-Date      : 08/11/19
+Date      : October/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the pax cabine length
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
+    - Number of pax
+    - Seating abreast number
+    - Seat pitch
+    - Aisle width
+    - Seat width
 
 Outputs:
-Cap_Sal
-FO_Sal
+    - Length fuselage
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
 import os
+########################################################################################
+"""Function definition"""
 ########################################################################################
 
 def pax_cabine_length(Npax,Nseat,SeatPitch,Aislewidth,SeatWidth):

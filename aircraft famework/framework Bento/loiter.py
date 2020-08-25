@@ -1,24 +1,35 @@
-"""" 
-Title     : Cruise long range
+"""
+Function  : loiter.py
+Title     : Loiter 
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : Dezember/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the amount of fuel burned during loiter
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - Wait altitude at loiter
+    - Mach at loiter
+    - Mass after descent flight
+    - Wait time at loiter
+    - Specific fuel comsumption at loiter
+    - Wing area
+    - Wing aspect ratio
+    - Wing sweep c/4
+    - Wing taper ratio
+    - Wing MAC
+    - Wing mean thickness
+    - Engine mount position
+    - Fuselage diameter
+    - Aircraft wetted surface
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
+    - Mass of fuel burned during loiter
 
 """
 ########################################################################################
@@ -31,7 +42,8 @@ from CDW_SHEVELL import CDW_SHEVELL
 from atmosphere import atmosphere
 from TSFC import TSFC
 ########################################################################################
-
+"""Function definition"""
+########################################################################################
 def loiter(altesp,Machesp,mesperai,tempespera,ctloiter,sw,
     arw,phi14,afilam,wMAC,tcmed,nedebasa,df,Swet_tot):
 # This routine calculates the amount of fuel burned during loiter

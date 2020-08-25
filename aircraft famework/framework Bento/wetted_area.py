@@ -1,19 +1,89 @@
-"""" 
-Title     : wetted_area function
+"""
+Function  : wetted_area.py
+Title     : Wetted area function
 Written by: Alejandro Rios
-Date      : 30/10/19
+Date      : October/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the wetted area of the entire airplane
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
-
+    - Ceiling - Ceiling altitude
+    - CruiseMach - Mach number crusie phase
+    - MMO - Maximum Mach number
+    - NPax - Number of passangers
+    - NSeat - Seating abreast number
+    - NCorr - Number of corridors (aisle)
+    - SEATwid - Seat width
+    - AisleWidth - Ailse width
+    - SeatPitch - Distance between seats
+    - Kink_semispan - Kink semispan
+    - Swing - Wing surface
+    - wAR - Wing aspect ratio
+    - wTR - Wing taper ratio
+    - wSweep14 - Wing sweep c/4
+    - wTwist - Wing twist 
+    - PWing - Wing position 
+    - fus_w - Fuselage width
+    - fus_h - Fuselage altitude
+    - ediam - Engine diameter
+    - PEng - Engine position
+    - T0 - Static thrust
+    - VTarea - Vertical tail area
+    - VTAR - Vertical tail aspect ratio
+    - VTTR - Vertical tail taper ratio
+    - VTSweep - Vertical tail sweep angle
+    - HTarea - Horizontal tail area
+    - HTAR - Horizontal tail aspect ratio
+    - HTTR - Horizontal tail taper ratio
+    - PHT  - Horizontal tail position
+    - htac_rel - Horizontal tail aerodynamic center rel ???
+    - wlet_present  - Winglet exist?
+    - wlet_AR - Winglet aspect ratio
+    - wlet_TR - Winglet taper ratio
+    - PROOT - Root airfoil
+    - PKINK - Kink airfoil
+    - PTIP - Tip airfoil
 Outputs:
-Cap_Sal
-FO_Sal
+    - Swet - Wetted area
+    - wingSwet - Wing wetted area
+    - FusSwet_m2 - Fuselage wetted area
+    - ESwet - Engine wetted area
+    - lf - Fuselage length
+    - lco - Length front nose fuselage ???
+    - ltail - Tail cone length 
+    - EnginLength_m - Engine length
+    - wYMAC - Winhg MAC Y position 
+    - wMAC - Wing MAC
+    - wSweepLE - Wing sweep angle leading edge
+    - wSweepC2 - Wing sweep C/2
+    - ht - Horizontal information, including wetted area
+    - vt - Vertical information, including wetted area
+    - pylon - Pylon information, including wetted area
+    - Ccentro - Center chord
+    - Craiz - Root chord
+    - Cquebra - Kink chord
+    - Cponta - Tip chord
+    - xutip, 
+    - yutip, 
+    - xltip, 
+    - yltip,
+    - xubreak,
+    - yubreak,
+    - xlbreak,
+    - ylbreak,
+    - xuraiz,
+    - yuraiz,
+    - xlraiz,
+    - ylraiz, 
+    - PHTout
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
@@ -26,9 +96,9 @@ from wetted_area_fuselage import wetted_area_forward_fuselage,wetted_area_tailco
 from wetted_area_wing import wetted_area_wing
 from airfoil_preprocessing import airfoil_preprocessing
 from size_ht import size_ht
-####################
-
-
+########################################################################################
+"""Function definition"""
+########################################################################################
 def wetted_area(Ceiling,CruiseMach,MMO,NPax,NSeat,NCorr,
     SEATwid,AisleWidth,SeatPitch,
     Kink_semispan,Swing,wAR,wTR,wSweep14,wTwist,PWing,fus_w,fus_h,
@@ -40,38 +110,31 @@ def wetted_area(Ceiling,CruiseMach,MMO,NPax,NSeat,NCorr,
     rad             = np.pi/180
     FusDiam         = np.sqrt(fus_w*fus_h)
     #--------------------------------------------------------------------------
-
     fileToRead1     = PROOT
     fileToRead2     = PKINK
     fileToRead3     = PTIP
-
 
     n=max(2,PEng) # number of engines
     print('\n')
     print('\n *** Single-engine Thrust = #6.0f  lb ***\n',T0)
     print('\n')
-    #
 
     if PWing > 2:
         PWing = 2
         print('\n *** Warning: Wing location reset to #g ***\n',PWing)
-    #
     if PWing < 1:
         PWing = 1
         print('\n*** Warning: Wing location reset to #g ***\n',PWing)
-    #
     if PHT > 2:
         PHT = 2
         print('\n *** Warning: EH config reset to #g ***\n',PHT)
-    #
     if PHT < 1:
         PHT = 1
         print('\n *** Warning: EH config reset to #g ***\n',PHT)
 
-    #
+
     if PEng == 2 or PEng == 3:
         PHT= 2
-
 
     PEngm   = PEng
     # switch PEng
@@ -141,13 +204,6 @@ def wetted_area(Ceiling,CruiseMach,MMO,NPax,NSeat,NCorr,
     # Hah ainda que se descontar a area do perfil da raiz da asa
     # Sera feito mais adiante
     fuselage['Swet']=SWET_FF+SWET_PAXCAB+SWET_TC
-
-
-
-# "ATEEEEEE AQUIIIIIIIIIIII OKKKKKKKKKKKK"
-
-
-
 
     ###########################################################################
     ###########################################################################

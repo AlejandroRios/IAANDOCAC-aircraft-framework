@@ -1,19 +1,33 @@
-"""" 
-Title     : Input fpwb 
+"""
+Function  : read_fpwb_output.py
+Title     : Read fpwb output files
 Written by: Alejandro Rios
-Date      : 18/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module reads the output results from fpwb calculation
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
+    - Kink semi-span
+    - Fuselage diameter
+    - Semi wing span
+    - Airfoil info
 
 Outputs:
-Cap_Sal
-FO_Sal
+    - CD0
+    - K_IND - Induced drag K coefficient
+    - CLALFA_rad - CL alpha derivative
+    - CLMAX - CL max 
+    - Stall station
+    - error1 flag
+    - error2 flag
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
@@ -27,6 +41,8 @@ import matplotlib.pyplot as plt
 import mmap
 import sys
 from itertools import islice
+########################################################################################
+"""Function definition"""
 ########################################################################################
 
 def find(substr, infile):

@@ -1,27 +1,35 @@
-"""" 
+"""
+Function  : tailcone_sizing.py
 Title     : Tail cone sizing
 Written by: Alejandro Rios
-Date      : 08/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module performs the tailcone sizing
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
+    - Number of pax
+    - Engine position
+    - Fuselage height
+    - Fuselage width
 
 Outputs:
-Cap_Sal
-FO_Sal
+    - tailcone length
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
 import os
 ########################################################################################
-
-
+"""Function definition"""
+########################################################################################
 def tailcone_sizing(NPax,PEng,fuse_height,fuse_width):
     #  Provide a sizing of the tailcone
     fusext   = 0

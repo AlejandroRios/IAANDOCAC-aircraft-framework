@@ -1,32 +1,56 @@
-"""" 
-Title     : Section Clmax
+"""
+Function  : wing_structural_layout_fuel_storage.py
+Title     : Wing structural layout fuel storage
 Written by: Alejandro Rios
-Date      : 05/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module create the layout of fuel storage in the wing
+
+Future implementations:
+    - 
 
 Inputs:
-Mach
-AirportElevation
-PROOT
-Craiz
-PKINK
-Cquebra
-PTIP
-Cponta
-
+    - planffusdf
+    - wingcrank
+    - wingsweepLE
+    - wingb
+    - longtras
+    - slat
+    - Ccentro
+    - Cquebra
+    - Cponta
+    - PEng
+    - xutip
+    - yutip,
+    - yltip,
+    - xukink,
+    - xlkink, 
+    - yukink, 
+    - ylkink, 
+    - xuroot, 
+    - lroot, 
+    - yuroot, 
+    - ylroot
 Outputs:
-clmax_airfoil
-flagsuc
+    - posxmunhao, 
+    - xcgtanques, 
+    - wingfuelcapacitykg,
+    - aflape
 """
+########################################################################################
+"""Importing Modules"""
 ########################################################################################
 import numpy as np
 import os
 from atmosphere import atmosphere
 from cf_flat_plate import cf_flat_plate
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
+########################################################################################
 class structtype():
     pass
 
@@ -35,7 +59,7 @@ wlay = structtype()
 ########################################################################################
 def winglaywei2018a(planffusdf,wingcrank,wingsweepLE, wingb,
     longtras, slat,Ccentro,Cquebra, Cponta,PEng, xutip, yutip,
-   yltip, xukink,xlkink, yukink, ylkink, xuroot, xlroot, yuroot, ylroot ):
+   yltip, xukink,xlkink, yukink, ylkink, xuroot, xlroot, yuroot, ylroot):
     # Generates wing structural layout and estimates fuel storage
     # Author: Bento Mattos
     # Version 2013R3b

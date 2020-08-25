@@ -1,45 +1,45 @@
-"""" 
-Title     : Size Horizontal Tail 
+"""
+Function  : size_ht.py
+Title     : Size horizontal tail 
 Written by: Alejandro Rios
-Date      : 30/10/19
+Date      : October/2020
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module performs the sizing of the horizontal tail
+
+Future implementations:
+    - 
 
 Inputs:
-MTOW
+    - Horizontal tail area
+    - Horizontal tail aspect ratio
+    - Horizontal tail taper ratio
+    - Horizontal tail location (=1 fuselage, 2= "T" tail)
+    - Wing area
+    - Wing sweep c/4
+    - Fuselage length
+    - Vertical tail sweep LE
+    - Vertical tail tip chord
+    - Vertical tail center chord
+    - Vertical tail span
+    - Horizontal aerodynamic center ???
+    - Mach number
+    - Ceiling altitude
 
 Outputs:
-Cap_Sal
-FO_Sal
+    - Horizontal geometrical parameters
 """
-
 ########################################################################################
 """Importing Modules"""
 ########################################################################################
 import numpy as np
 from atmosphere import atmosphere
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
-
-########################################################################################
-
-# HTarea = 21.7200
-# HTAR = 4.6400
-# HTTR = 0.3900
-# PHT = 2
-# wS = 93.5000
-# wSweep14 = 17.4500
-# lf = 33.1553
-# vtSweepLE = 46.0456
-# vtct = 3.1621
-# vtc0 = 4.2731
-# vtb = 3.3086
-# htac_rel = 0.2500
-# Mach = 0.8000
-# Ceiling = 35000
-
 def size_ht(HTarea,HTAR,HTTR,PHT,wS,wSweep14,lf,vtSweepLE,
     vtct,vtc0,vtb,htac_rel,Mach,Ceiling):
 

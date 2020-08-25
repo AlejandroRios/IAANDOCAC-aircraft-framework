@@ -1,25 +1,25 @@
-"""" 
-Title     : Section Clmax
+"""
+Function  : temperature.py
+Title     : Temperature related to altitude
 Written by: Alejandro Rios
-Date      : 05/11/19
+Date      : November/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculate temperature as function of altitude
+
+Future implementations:
+    - 
 
 Inputs:
-Mach
-AirportElevation
-PROOT
-Craiz
-PKINK
-Cquebra
-PTIP
-Cponta
-
+    - Altitude
 Outputs:
-clmax_airfoil
-flagsuc
+    - Temperature
 """
+########################################################################################
+"""Importing Modules"""
 ########################################################################################
 import numpy as np
 import os

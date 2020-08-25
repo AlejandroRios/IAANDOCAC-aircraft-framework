@@ -1,24 +1,23 @@
-"""" 
-Title     : WEW2Bento
+"""
+Function  : Drag_flap.py
+Title     : Drag due to flap
 Written by: Alejandro Rios
-Date      : 03/12/19
+Date      : September/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates drag due to flap deflection
+
+Future implementations:
+    - 
 
 Inputs:
-hp: pressure-altitude [ft]
-ISADEV: ISA temperature deviation
-
+    - deflec: flap deflection [degrees]
+    - flap span
 Outputs:
-atm(1)=temperatura isa [K]
-atm(2)=teta 
-atm(3)=delta
-atm(4)=sigma
-atm(5)=pressure [KPa]
-atm(6)=air density [Kg/m2]
-atm(7)=sound speed [m/s]
-atm(8)= air viscosity
+    - Drag coefficient due to flap deflection
 
 """
 ########################################################################################
@@ -28,8 +27,8 @@ import numpy as np
 from atmosphere import atmosphere
 from cd0_Torenbeek import cd0_Torenbeek
 ########################################################################################
-
-
+"""Function definition"""
+########################################################################################
 def Drag_flap(deflec,bflap):
     #
     # Ref: Drag Force and Drag Coefficient

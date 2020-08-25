@@ -1,4 +1,4 @@
-"""" 
+"""
 Function  : airfoil_preprocessing.py
 Title     : Airfoil pre-processing
 Written by: Alejandro Rios
@@ -8,7 +8,7 @@ Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
-    - This module takes as input the airfoil cordinates .dat file an redefine number of panels
+    - This module takes as input the airfoil coordinates .dat file an redefine number of panels
 
 Future implementations:
     - Redefine airfoil to create blunt trailing edge in order to prevent numerical errors
@@ -33,7 +33,7 @@ import os
 """Function definition"""
 ########################################################################################
 def airfoil_preprocessing(airfoil,panel_number):
-    delimiter = '1'
+    delimiter = ' 1'
     xfoil_run_file  = 'xfoil_preproc.txt'
     panel_number = str(panel_number)
     ########################################################################################

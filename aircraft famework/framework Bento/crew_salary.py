@@ -1,17 +1,24 @@
 """" 
+Function  : crew_salary.py
 Title     : Crew Salary Function
 Written by: Alejandro Rios
-Date      : 30/10/19
+Date      : October/19
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module calculates the crew salary based in Roskam approach
+
+Future implementations:
+    - 
 
 Inputs:
 MTOW
 
 Outputs:
-Cap_Sal
-FO_Sal
+Captain Salary
+First official Salary
+Flight attendad salary
 """
 
 ########################################################################################
@@ -19,9 +26,8 @@ FO_Sal
 ########################################################################################
 import numpy as np
 ########################################################################################
-"""Constants declaration"""
+"""Function definition"""
 ########################################################################################
-
 def crew_salary(MTOW):
 
     A0_CA=-2.2342E+03
