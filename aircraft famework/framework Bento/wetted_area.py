@@ -312,7 +312,7 @@ def wetted_area(Ceiling,CruiseMach,MMO,NPax,NSeat,NCorr,
     airfoil_name = 'pvt'
     airfoil_preprocessing(airfoil_name,panel_number)
     # df_pvt = pd.read_table(""+ airfoil_name +'.dat' ,header=None,skiprows=[0],sep=',')
-    df_pvt = pd.read_csv(""+ airfoil_name+'.dat' ,sep='\s+', delimiter=None, header=None,skiprows=[0])
+    df_pvt = pd.read_csv(""+ airfoil_name+'.dat' ,sep=',', delimiter=None, header=None,skiprows=[0])
     df_pvt.columns = ['x','y']
     
     # [coordinates,~]=get_airfoil_coord('pvt.dat')

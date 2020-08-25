@@ -1,11 +1,19 @@
 """" 
+Function  : crew_salary.py
 Title     : Crew Salary Function
 Written by: Alejandro Rios
-Date      : 30/10/19
+Date      : October/2019
+Last edit : August/2020
 Language  : Python
-Aeronautical Institute of Technology
+Aeronautical Institute of Technology - Airbus Brazil
 
+Description:
+    - This module takes as input the airfoil cordinates .dat file an redefine number of panels
 
+Future implementations:
+    - Redefine airfoil to create blunt trailing edge in order to prevent numerical errors
+
+    
 Inputs:
 MTOW
 

@@ -25,7 +25,7 @@ import subprocess
 def execute_fpwb(time2check,checks2kill,arq_input):
     # 
         #This function is responsible to kill crashed Xfoil programs
-    execute  = "fpwb.exe"
+    execute  = "wine fpwb.exe"
 
     
     comando = execute + ' ' + arq_input

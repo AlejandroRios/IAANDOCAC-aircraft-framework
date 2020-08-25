@@ -94,7 +94,7 @@ def rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa):
     ########################################################################################
     """Xfoil Execution"""
     ########################################################################################
-    os.system("xfoil.exe < rxfoil_input.txt > NUL.dat")
+    os.system("xfoil < rxfoil_input.txt > NUL.dat")
 
     if os.path.exists(xfoil_run_file):
         os.remove(xfoil_run_file)

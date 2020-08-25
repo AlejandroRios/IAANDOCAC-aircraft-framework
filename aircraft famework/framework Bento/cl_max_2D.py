@@ -8,7 +8,7 @@ Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
-    - This module calculate the 2D clmax for each aifoil of the wing segments
+    - This module calculate the 2D clmax for each aifoil of the wing segments and other local properties
 
 Future implementations:
     - Redefine function to let use n-segments
@@ -50,9 +50,6 @@ def cl_max_2d(mach,airport_elevation,airfoil_names,airfoil_chords):
         airfoils[j]['chord'] = airfoil_chords[i]
         airfoils[j]['reynolds'] = str((atm.ro*mach*atm.va*airfoil_chords[i])/atm.visc)
 
-
-
-    
     #--------------------------------------------------------------------------
     # reynolds   = atm.ro*mach*atm.va/mi
 

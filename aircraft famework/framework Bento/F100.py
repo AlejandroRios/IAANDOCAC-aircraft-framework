@@ -37,12 +37,7 @@ g       = 9.8065
 ########################################################################################
 class structtype():
     pass
-
-fuselage = structtype()
-wing = structtype()
-engine = structtype()
-wlet = structtype()
-airfoils = structtype()
++
 ########################################################################################
 # ***********************  Airplane VARIABLES *****************************
 # Fuselage 
@@ -323,11 +318,6 @@ else:
 
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> develop-jose
 if PEng == 2: 
     AirplaneCLmaxClean = CLMAX # engines do not disturb wing airflow
 elif PEng == 1:

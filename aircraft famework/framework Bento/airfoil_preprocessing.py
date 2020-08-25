@@ -33,7 +33,7 @@ import os
 """Function definition"""
 ########################################################################################
 def airfoil_preprocessing(airfoil,panel_number):
-    delimiter = '1'
+    delimiter = ' 1'
     xfoil_run_file  = 'xfoil_preproc.txt'
     panel_number = str(panel_number)
     ########################################################################################
@@ -54,7 +54,7 @@ def airfoil_preprocessing(airfoil,panel_number):
     """Xfoil Execution"""
     ########################################################################################
     # Xfoil run
-    os.system("xfoil.exe < xfoil_preproc.txt > NUL.dat")
+    os.system("xfoil < xfoil_preproc.txt > NUL.dat")
 
     # Files cleaning
     if os.path.exists(xfoil_run_file):
