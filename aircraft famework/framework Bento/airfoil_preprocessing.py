@@ -29,6 +29,7 @@ from scipy import interpolate
 from scipy.optimize import differential_evolution
 import scipy as sp
 import os
+import subprocess
 ########################################################################################
 """Function definition"""
 ########################################################################################
@@ -54,7 +55,13 @@ def airfoil_preprocessing(airfoil,panel_number):
     """Xfoil Execution"""
     ########################################################################################
     # Xfoil run
-    os.system("xfoil.exe < xfoil_preproc.txt > NUL.dat")
+    # os.system("xfoil.exe < xfoil_preproc.txt > NUL.dat")
+    # p = subprocess.Popen('xfoil.exe  < xfoil_preproc.txt > NUL.dat', stdout=subprocess.PIPE, shell=True)
+    p = subprocess.Popen('xfoil.exe  < xfoil_preproc.txt > NUL.dat',stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True)
+    (output, err) = p.communicate()  
+    #This makes the wait possible
+    p_status = p.wait() 
+
 
     # Files cleaning
     if os.path.exists(xfoil_run_file):

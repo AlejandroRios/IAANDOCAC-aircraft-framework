@@ -38,6 +38,7 @@ import sys,os
 import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.pyplot as plt
+import subprocess
 ########################################################################################
 """Function definition"""
 ########################################################################################
@@ -119,7 +120,9 @@ def rxfoil(airfoil,reynolds,mach,aoa_ini,aoa_fin,delta_aoa):
     db= np.loadtxt(polar_file, skiprows=12)
     # df = pd.read_csv(polar_file, delimiter = ' ',skiprows=13, header = None, names=list('abcdefghi'))
     df = pd.DataFrame(db)
-    df.columns = ['alpha','CL','CD','CDp','CM','Top_Xtr','Bot_Xtr','Top_Itr','Bot_Itr']
+    # df.columns = ['alpha','CL','CD','CDp','CM','Top_Xtr','Bot_Xtr','Top_Itr','Bot_Itr']
+    df.columns = ['alpha','CL','CD','CDp','CM','Top_Xtr','Bot_Xtr']
+
 
     # print(df.head())
 
