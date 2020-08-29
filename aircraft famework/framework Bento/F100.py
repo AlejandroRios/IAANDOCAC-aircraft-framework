@@ -37,7 +37,13 @@ g       = 9.8065
 ########################################################################################
 class structtype():
     pass
-+
+
+
+fuselage = structtype()
+wing = structtype()
+engine = structtype()
+wlet = structtype()
+airfoils = structtype()
 ########################################################################################
 # ***********************  Airplane VARIABLES *****************************
 # Fuselage 
