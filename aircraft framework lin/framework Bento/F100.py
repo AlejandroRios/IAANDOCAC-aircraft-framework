@@ -418,6 +418,9 @@ while deltamtow > 1:
     WS=mtow/wS
     #
     wefrac=WEW2Bento(wAR,mtow,MMO,TW,WS,lf,FusDiam)
+
+
+    mtowkg = mtowlb/kg2lb
     #
     print('\n Iteration: {:0.1f} \n'.format(ncont))
     print('\n MTOW:{:0.3f} kg \n'.format(mtowkg))
