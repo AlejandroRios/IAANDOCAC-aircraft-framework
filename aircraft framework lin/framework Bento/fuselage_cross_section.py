@@ -379,8 +379,8 @@ def fuselage_cross_section(container_type,NCorr,NSeat_i,CabHeightm,
     #FUSELAGE_t_floor = floor_thickness
     fuselage_outer_equivalent_diameter=fuselage_equivalent_diameter+2*fuselage_thickness
 
-    print(' \n Fuselage equivalent inner diameter: #5.2f \n',fuselage_equivalent_diameter)
-    print(' \n Fuselage equivalent outer diameter: #5.2f \n',fuselage_outer_equivalent_diameter)
+    print(' \n Fuselage equivalent inner diameter: {:0.3f} \n'.format(fuselage_equivalent_diameter))
+    print(' \n Fuselage equivalent outer diameter: {:0.3f}  \n'.format(fuselage_outer_equivalent_diameter))
     # seating rails
     # FUSELAGE_nrails_right = 2
     # FUSELAGE_nrails_left  = 2

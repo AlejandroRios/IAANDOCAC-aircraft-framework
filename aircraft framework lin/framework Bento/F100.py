@@ -419,7 +419,8 @@ while deltamtow > 1:
     #
     wefrac=WEW2Bento(wAR,mtow,MMO,TW,WS,lf,FusDiam)
     #
-    print('\n Iteration: #g  ==> MTOW: #4.3f kg \n',ncont, mtowlb/kg2lb)
+    print('\n Iteration: {:0.1f} \n'.format(ncont))
+    print('\n MTOW:{:0.3f} kg \n'.format(mtowkg))
     #
     masscruzi = mtow*ftakeoff*fclimb
     mcombIniCruz=mtow-masscruzi
