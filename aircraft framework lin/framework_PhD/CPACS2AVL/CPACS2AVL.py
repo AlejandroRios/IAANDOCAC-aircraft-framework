@@ -34,6 +34,7 @@ print('Tigl version :',tigl_version)
 
 model_xpath = '/cpacs/vehicles/aircraft/model/'
 profiles_xpath = '/cpacs/vehicles/profiles/'
+vehicles_xpath = '/cpacs/vehicles/'
 toolspecific_xpath = '/cpacs/toolspecific/AVL/'
 
 
@@ -66,8 +67,12 @@ for i in range(1,n_wings+1):
 
     n_segments = tigl.wingGetSectionCount(i)
     wing_name = tigl.wingGetUID(i)
-    component_segment_UID = tigl.wingGetComponentSegmentUID(i,1)
 
+
+    component_segment_UID = tigl.wingGetComponentSegmentUID(i,1)
+    n_component_segment = tigl.getControlSurfaceCount(component_segment_UID)
+    n_control_surfaces = tigl.getControlSurfaceCount(component_segment_UID)
+ 
     file.write('SURFACE\n')
     file.write(wing_name+'\n')
     file.write('{:.1f} {:.1f} {:.1f} {:.1f}\n'.format(Nchord,Cspace,Nspan,Sspace))
@@ -95,21 +100,38 @@ for i in range(1,n_wings+1):
     file.write('TRANSLATE \n')
     file.write('{:.5f} {:.5f} {:.5f} \n'.format(translate_x,translate_y,translate_z))
 
-    # Control surface information
+    print('======================================================')
+    # test_xpath ='/cpacs/vehicles/aircraft/model/'
+    # print(tixi.checkElement(model_xpath+ 'wings/wing/name'))
+    # print(tixi.checkAttribute(model_xpath+ 'wings/','teste'))
+    # print(tixi.uIDCheckExists('D150_InnerFlap'))
+    # print(tixi.getTextElement(model_xpath+ 'wings/wing['+str(1)+']/name'))
+    # print(tixi.getTextElement(model_xpath+ 'wings/wing['+str(1)+']/componentSegments/componentSegment[1]/name'))
+    # print(tixi.getNamedChildrenCount(model_xpath+ 'wings','wing'))
+    # print(tixi.getChildNodeName(model_xpath+ 'wings/wing[1]/',2))
 
-    n_control_surfaces = tigl.getControlSurfaceCount(component_segment_UID)
-    control_surface_uID = tigl.getControlSurfaceUID(component_segment_UID,n_control_surfaces)
-    control_surface_type = tigl.getControlSurfaceType(control_surface_uID)
+    try:
+        print('control surfaces TE:',tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/trailingEdgeDevices/'))
+    except:
+        print('No TE controls')
 
-    print(n_control_surfaces)
-    print(control_surface_type)
+    try:    
+        print('control surfaces LE:',tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/spoilers/'))
+    except:
+        print('No LE controls')
+
+    try:
+        print('control surfaces Type:',tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/'))
+    except:
+        print('No controls')
 
 
+    # print('number of tanks:', tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/wingFuelTanks/'))
+    print('======================================================')
 
-
-    # incidence = cpsf.get_value(tixi,model_xpath+ 
-    #                            'wings/wing['+str(i)+']/componentSegments/componentSegment')
-
+    # n_control_surface_types = tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/')
+    # n_LE_control_surfaces = tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/spoilers/')
+    # n_TE_control_surfaces = tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/trailingEdgeDevices/')
 
 
 

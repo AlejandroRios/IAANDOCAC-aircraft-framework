@@ -48,25 +48,25 @@ def wetted_area(Ceiling,CruiseMach,MMO,NPax,NSeat,NCorr,
 
     n=max(2,PEng) # number of engines
     print('\n')
-    print('\n *** Single-engine Thrust = #6.0f  lb ***\n',T0)
+    print('\n *** Single-engine Thrust =  {:0.3f}  lb ***\n'.format(T0))
     print('\n')
     #
 
     if PWing > 2:
         PWing = 2
-        print('\n *** Warning: Wing location reset to #g ***\n',PWing)
+        print('\n *** Warning: Wing location reset to {:0.1f} ***\n'.fotmat(PWing))
     #
     if PWing < 1:
         PWing = 1
-        print('\n*** Warning: Wing location reset to #g ***\n',PWing)
+        print('\n*** Warning: Wing location reset to {:0.1f} ***\n'.fotmat(PWing))
     #
     if PHT > 2:
         PHT = 2
-        print('\n *** Warning: EH config reset to #g ***\n',PHT)
+        print('\n *** Warning: EH config reset to {:0.1f} ***\n'.fotmat(PHT))
     #
     if PHT < 1:
         PHT = 1
-        print('\n *** Warning: EH config reset to #g ***\n',PHT)
+        print('\n *** Warning: EH config reset to {:0.1f} ***\n'.fotmat(PHT))
 
     #
     if PEng == 2 or PEng == 3:
