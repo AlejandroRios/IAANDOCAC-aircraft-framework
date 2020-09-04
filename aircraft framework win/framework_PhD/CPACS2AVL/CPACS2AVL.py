@@ -1,6 +1,6 @@
 """
 Function  : CPACS2AVL.py
-Title     : Wave drag 
+Title     : CPACS to AVL function
 Written by: Alejandro Rios
 Date      : September/2020
 Last edit : September/2020
