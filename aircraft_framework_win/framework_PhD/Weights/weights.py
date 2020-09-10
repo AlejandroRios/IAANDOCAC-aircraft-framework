@@ -143,7 +143,7 @@ def main_landig_gear_mass(m_MTO):
     '''
     Methodology from Torenbeek
     Inputs:
-        - m_MTO - take-off mass in [kg]
+        - m_MTO - takeoff mass in [kg]
     '''
 
     if wing_position == 'low':
@@ -162,7 +162,7 @@ def nose_landig_gear_mass(m_MTO):
     '''
     Methodology from Torenbeek
     Inputs:
-        - m_MTO - take-off mass in [kg]
+        - m_MTO - takeoff mass in [kg]
     '''
     if wing_position == 'low':
         k_LG = 1
@@ -181,11 +181,11 @@ def nacelle_mass(g,T_TO):
     Methodology from Torenbeek
     Inputs:
         - g - acceleration of gravity
-        - T_TO - take-off thrust of all engines combined
+        - T_TO - takeoff thrust of all engines combined
     '''
     return (0.065*T_TO)/g
 
-def engine_mass()
+def engine_mass():
     '''
     Methodology from Torenbeek
     Inputs:
@@ -193,7 +193,7 @@ def engine_mass()
     '''
     return
 
-def engine_mass()
+def engine_mass():
     '''
     Methodology from Torenbeek
     Inputs:
@@ -201,7 +201,7 @@ def engine_mass()
     '''
     return
 
-def installed_engines_mass()
+def installed_engines_mass():
     '''
     Methodology from Torenbeek
     Inputs:
@@ -209,7 +209,7 @@ def installed_engines_mass()
     '''
     return
 
-def systems_mass()
+def systems_mass():
     '''
     Methodology from Torenbeek
     Inputs:
@@ -217,9 +217,47 @@ def systems_mass()
     '''
     return
 
-def MTOW_mass()
+def OE_mass():
     '''
-    Methodology from Torenbeek
+    Methodology from 
+    Inputs:
+        -
+    '''
+    return
+
+def fuel_mass(R,C,V,L_D):
+    '''
+    Methodology from 
+    Inputs:
+        -
+
+    Mission segments
+    i - description
+    1 - Warmup and takeoff
+    2 - Climb
+    3 - Cruise
+    4 - Loiter
+    5 - Cruise alternative
+    6 - Loiter Alternative
+    7 - Land
+    8 - 
+    '''
+    W1_W0 = 0.97
+    W2_W1 = 0.985
+
+    # R = 
+    # C
+    # V 
+    # L_D
+    # W3_W2
+
+
+
+    return
+
+def MTOW_mass(MTOW_guess):
+    '''
+    Methodology from 
     Inputs:
         -
     '''
