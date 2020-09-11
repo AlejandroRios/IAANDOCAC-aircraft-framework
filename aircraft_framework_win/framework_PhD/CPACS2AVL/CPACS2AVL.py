@@ -210,7 +210,7 @@ file.close()
 
 
 def find(substr, infile):
-    with open(infile) as a:
+    with open(MODULE_DIR+ '\\'+ infile) as a:
         num_line = []       
         for num, line in enumerate(a, 1):
             if substr in line:               
@@ -218,7 +218,7 @@ def find(substr, infile):
     return(num_line)
     
 def read(line_num, infile):
-    with open(infile) as lines:
+    with open(MODULE_DIR+ '\\'+ infile) as lines:
         for line in islice(lines, line_num, line_num+1):
             line_saida = line.split()
             line.split(',')
@@ -227,7 +227,10 @@ def read(line_num, infile):
 
 # Execute and read avl results
 def total_forces():
-    p = subprocess.Popen('avl.exe < avl_run.run',shell = True)
+
+    wd = os.getcwd()
+    os.chdir("/")    
+    p = subprocess.Popen('avl.exe < avl_run.run',shell = True,cwd = MODULE_DIR)
     try:
         p.wait(20)
     except subprocess.TimeoutExpired:
