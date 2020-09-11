@@ -9,15 +9,14 @@ Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
     - This functions takes cpacs file and write AVL input file.
-Future implementations:
-    - 
+TODO's:
+    - Define AVL writer as a def
+    - Separate run and read functions
 Inputs:
     -
 Outputs:
     - 
 """
-
-
 ########################################################################################
 "IMPORTS"
 ########################################################################################
@@ -120,7 +119,7 @@ for i in range(1,n_wings+1):
     file.write('{:.5f} {:.5f} {:.5f} \n'.format(translate_x,translate_y,translate_z))
 
     print('======================================================')
-    'TO DO - Control surface declaration'
+    'TODO - Control surface declaration'
     try:
         print('control surfaces TE:',tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/trailingEdgeDevices/'))
     except:
@@ -135,13 +134,10 @@ for i in range(1,n_wings+1):
         print('control surfaces Type:',tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/'))
     except:
         print('No controls')
-
-
     # n_control_surface_types = tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/')
     # n_LE_control_surfaces = tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/spoilers/')
     # n_TE_control_surfaces = tixi.getNumberOfChilds(model_xpath+ 'wings/wing['+str(i)+']/componentSegments/componentSegment/controlSurfaces/trailingEdgeDevices/')
     print('======================================================')
-
     vector_section_x = []
     vector_section_y = []
     vector_section_z = []
@@ -297,4 +293,4 @@ tixi_out.updateDoubleElement(xpath_write+'CD_ind',CDind,'%g')
 # Close cpacs xml output file
 tixi_out = cpsf.close_tixi(tixi_out,cpacs_out_path)
 
-
+log.info('-------- End Run CPACS2AVL --------')
