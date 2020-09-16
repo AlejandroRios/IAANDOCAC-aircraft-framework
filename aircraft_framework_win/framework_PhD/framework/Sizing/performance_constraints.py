@@ -29,7 +29,7 @@ from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_
 ########################################################################################
 """FUNCTIONS"""
 ########################################################################################
-def takeoff_field_length_check(TOFL):
+def takeoff_field_length_check(takeoff_field_length):
     weight_takeoff = 55000
     wing_surface = 100
     CL_max_takeoff = 2.4
@@ -50,8 +50,8 @@ def takeoff_field_length_check(TOFL):
     flag = 0
     iter = 0 
     while flag == 0:
-        FL = balanced_lenght_field(weight_takeoff,wing_surface,CL_max_takeoff,T_avg,h_airfield,delta_ISA)
-        if FL > TOFL:
+        field_length_computed = balanced_lenght_field(weight_takeoff,wing_surface,CL_max_takeoff,T_avg,h_airfield,delta_ISA)
+        if field_length_computed > takeoff_field_length:
             weight_takeoff = weight_takeoff - 10
         else:
             flag = 1           
@@ -85,7 +85,7 @@ def drag_divergence_check():
 ########################################################################################
 """TEST"""
 ########################################################################################
-TOFL = 2560
-weight_takeoff_f = takeoff_constraint(TOFL)
+takeoff_field_length= 2560
+weight_takeoff_f = akeoff_field_length_check(takeoff_field_length)
 print(weight_takeoff_f)
 
