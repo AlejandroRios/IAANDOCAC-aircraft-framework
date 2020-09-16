@@ -1,6 +1,6 @@
 """
-Function  : NPV.py
-Title     : Net present valie
+Function  : net_present_value.py
+Title     : Net present value
 Written by: Alejandro Rios
 Date      : September/2020
 Last edit : September/2020
@@ -574,12 +574,14 @@ def break_even():
     '''
     Break even calculation
     Methodology from Roskam??????????????????
+
     Inputs:
         - 
     Outputs:
         - 
     TODO's:
         - Test other cases
+        - This perform a interpolation 
     '''
     _,_,present_value = cash_flow_matrix()
     break_even = np.zeros(1)
@@ -594,6 +596,13 @@ def break_even():
             break
     return break_even
 
+
+"""
+TEST
+
+TODO's:
+    - This part should be inputed in a different way when integrated 
+"""
 global MTOW, thrust_maximum, wing_surface, engine_diameter, engines_number, pax_number, KVA, p, share, IR
 
 MTOW_baseline = 22010
@@ -606,9 +615,6 @@ KVA_baseline = 75
 p = 14
 share = 0.6
 IR = 0.05
-
-
-
 
 MTOW = 22000
 thrust_maximum = (MTOW/22000)*8895
@@ -626,29 +632,18 @@ thrust_factor = thrust_maximum/thrust_maximum_baseline
 wing_surface_ft2 = wing_surface*3.28**2
 engine_diameter_in = engine_diameter*39.37
 
-
-
 total  = total_non_recurrig_year_cost()
-
-
-print(man_power())
-
-print('total non recurring year cost: ',total)
+print('Total non recurring year cost: ',total)
 
 material_costs = material()
-print('material cost: ',material_costs)
+print('Material cost: ',material_costs)
 
-
-print('man power cost:',man_power())
+print('Man power cost:',man_power())
 
 print(delivery_forecast())
+print('Matrix cost:',cost_matrix())
 
-
-print('matrix cost:',cost_matrix())
-
-
-print('total net present value: ',cash_flow_matrix())
-
+print('Total net present value: ',cash_flow_matrix())
 
 print('IRR: ',IRR())
-print('break even: ',break_even())
+print('Break even: ',break_even())
