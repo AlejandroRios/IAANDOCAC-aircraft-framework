@@ -6,6 +6,7 @@ PhD_Optimization_Framework.egg-info/dependency_links.txt
 PhD_Optimization_Framework.egg-info/top_level.txt
 framework/__init__.py
 framework/__version__.py
+framework/baseline_aircraft.py
 framework/file_template.py
 framework/main.py
 framework/test_import.py
@@ -18,8 +19,10 @@ framework/Economics/__init__.py
 framework/Economics/crew_salary.py
 framework/Economics/net_present_valeu.py
 framework/Performance/__init__.py
+framework/Performance/balanced_length_field.py
 framework/Performance/breguet.py
 framework/Performance/fuelfractionsizing.py
+framework/Performance/landing_length_field.py
 framework/Performance/missionfuelburn.py
 framework/Performance/teste_breguet_py.py
 framework/Performance/Mission/__init__.py

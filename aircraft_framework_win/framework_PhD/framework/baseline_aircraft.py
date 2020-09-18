@@ -31,7 +31,7 @@ TODO's:
 ########################################################################################
 def baseline_aircraft():
     aircraft = {}
-    aircraft['maximum_takeoff_weight'] = 55000 # Isto é N ou kg?
+    aircraft['maximum_takeoff_weight'] = 55000 # [kg]
     aircraft['maximum_landing_weight'] = 32000 
     aircraft['wing_surface'] = 100
     aircraft['wing_aspect_ratio'] = 11
@@ -61,7 +61,7 @@ def baseline_aircraft():
     aircraft['engine_diameter'] = 1.425
     aircraft['engine_bypass'] = 5.0
     aircraft['engine_number'] = 2
-    aircraft['maximum_engine_thrust'] = 0.9 * 22000 * 0.4535923 
+    aircraft['maximum_engine_thrust'] = 0.9 * 22000 * 0.4535923 # database
     aircraft['thrust_average'] = 0.75*((5 + aircraft['engine_bypass'])/(4 + aircraft['engine_bypass'])) * (2* aircraft['maximum_engine_thrust'])# [lbf]
 
 
@@ -83,3 +83,6 @@ def baseline_airport():
 ########################################################################################
 """TEST"""
 ########################################################################################
+
+Tmax=0.95*MAXRATE*(sigma^ne)*lb2kg  # datasheet
+Tavg=0.75*((5+BPR)/(4+BPR))*(2*Tmax)  # Bentos suggestion

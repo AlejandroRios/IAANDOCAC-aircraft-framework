@@ -17,7 +17,7 @@ Inputs:
 Outputs:
     - 
 TODO's:
-    - where does Tmax and Tavl equations comes from?
+    - where does Tmax and Tavg equations comes from?
     - why no gravity in eq. BLF?
 
 """

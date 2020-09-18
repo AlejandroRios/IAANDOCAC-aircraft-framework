@@ -9,9 +9,10 @@ Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
     - This functions calculates the net present value. Methodology from Fregnani 2020
+    - ROSKAM
 TODO's:
     - Exclude baseline_aircraft function, substitute by the one in main folder
-    - Reference of methodology 
+    - 
 Inputs:
     -
 Outputs:
@@ -64,7 +65,7 @@ def aircraft_price():
     Outputs:
         - price
     TODO's:
-        - ask for more especification of WTADJ_price
+        - ask for more especification of WTADJ_price - weight adjusted price
     '''
     x_ref = 0.6
     y_ref = 0.3
@@ -293,7 +294,7 @@ def support_hours():
     Outputs:
         - 
     TODO's:
-        - service_bul_baseline???
+        - service_bul_baseline - Trabalho de documentação manuais etc.
     '''
     MTOW_factor,_ = baseline_aircraft()
     service_bul_baseline = 19467
@@ -324,7 +325,7 @@ def infrastructure():
     Outputs:
         - 
     TODO's:
-        - FSW ???
+        - FSW - factory shop and warehouse 
     '''
 
     MTOW_factor,_ = baseline_aircraft()
@@ -361,9 +362,9 @@ def general():
     Outputs:
         - 
     TODO's:
-        - instrFT_baseline ???
-        - TPMP_baseline ???
-        - TPMPP_baseline ???
+        - instrFT_baseline - intrumentation and flight test
+        - TPMP_baseline - third part men-power 
+        - TPMPP_baseline - third part men-power partner
     '''
     MTOW_factor,_ = baseline_aircraft()
 
@@ -468,9 +469,9 @@ def man_power():
     Outputs:
         - 
     TODO's:
-        - LCPH ???
+        - LCPH - labour cost per hour
         - Baseline's ???
-        - why p = 14?
+        - why p = 14 - ciclo e 145
 
     '''
     _,delivers = delivery_forecast()
@@ -523,7 +524,7 @@ def cash_flow_matrix():
     Outputs:
         - 
     TODO's:
-        - This shouldnt perform a summatory?
+        - This shouldnt perform a summatory? - ans yes!
     '''
     price = aircraft_price()
     _,deliveries = delivery_forecast()
