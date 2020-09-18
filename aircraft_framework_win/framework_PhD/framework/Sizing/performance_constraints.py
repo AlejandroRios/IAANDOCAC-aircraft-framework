@@ -21,7 +21,10 @@ TODO's:
 "IMPORTS"
 ########################################################################################
 from framework.Performance.balanced_length_field import balanced_lenght_field
+from framework.Performance.landing_length_field import landing_length_field
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
+
+from framework.baseline_aircraft import *
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -29,40 +32,59 @@ from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_
 ########################################################################################
 """FUNCTIONS"""
 ########################################################################################
-def takeoff_field_length_check(takeoff_field_length):
-    weight_takeoff = 55000
-    wing_surface = 100
-    CL_max_takeoff = 2.4
-    h_airfield = 2500
-    delta_ISA = 19.9530
-
-    # This should come from another module instead of being calculated here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ##############################################################################################################
-    lb_2_kg = 0.45359237
-    bypass_ratio = 5.0
-    maximum_rate = 22000
-    thrust_altitude_factor = 0.8
-    number_engines = 2
-    _,_,sigma,_,_,_,_ = atmosphere_ISA_deviation(h_airfield,delta_ISA)
-    T_max = (0.95 * maximum_rate * (sigma**thrust_altitude_factor) * lb_2_kg)/2
-    T_avg = 0.75 *  ((5 + bypass_ratio)/(4 + bypass_ratio)) * T_max
+def takeoff_field_length_check(aircraft_data,airport_data):
+    airport_field_length = airport_data['takeoff_field_length']
+    weight_takeoff = aircraft_data['maximum_takeoff_weight']
 
     flag = 0
-    iter = 0 
     while flag == 0:
-        field_length_computed = balanced_lenght_field(weight_takeoff,wing_surface,CL_max_takeoff,T_avg,h_airfield,delta_ISA)
-        if field_length_computed > takeoff_field_length:
+
+        aircraft_data['maximum_takeoff_weight'] =  weight_takeoff
+        field_length_computed = balanced_lenght_field(aircraft_data,airport_data)
+
+        if field_length_computed > airport_field_length:
             weight_takeoff = weight_takeoff - 10
         else:
-            flag = 1           
+            flag = 1      
+
+    print(field_length_computed)     
 
     return weight_takeoff
 
-def landing_field_length_check():
-    return
+def landing_field_length_check(aircraft_data,airport_data):
+    airport_field_length = airport_data['landing_field_length']
+    weight_landing = aircraft_data['maximum_landing_weight']
 
-def second_segment_climb_check():
-    return
+    flag = 0
+    while flag == 0:
+        aircraft_data['maximum_landing_weight'] =  weight_landing
+        field_length_computed = landing_length_field(aircraft_data,airport_data)
+
+        if field_length_computed > airport_field_length:
+            weight_landing = weight_landing-10
+        else:
+            flag = 2
+    return weight_landing
+
+def second_segment_climb_check(aircraft_data,airport_data):
+
+    weight_takeoff = aircraft_data['maximum_takeoff_weight']
+    thrust_takeoff = aircraft_data['thrust_average']
+
+    thrust_to_weight_takeoff = thrust_takeoff/weight_takeoff
+
+
+    flag = 0
+    while flag == 0:
+        aircraft_data['maximum_landing_weight'] =  weight_landing
+        thrust_to_weight_takeoff_computed = second_segment_climb(aircraft_data,airport_data)
+
+        if field_length_computed > airport_field_length:
+            weight_landing = weight_landing-10
+        else:
+            flag = 2
+    return MTOW
+
 
 def landing_climb_check():
     return
@@ -85,7 +107,13 @@ def drag_divergence_check():
 ########################################################################################
 """TEST"""
 ########################################################################################
-takeoff_field_length= 2560
-weight_takeoff_f = akeoff_field_length_check(takeoff_field_length)
+
+airport_data = baseline_airport()
+aircraft_data = baseline_aircraft()
+
+weight_takeoff_f = takeoff_field_length_check(aircraft_data,airport_data)
 print(weight_takeoff_f)
 
+weight_landing_f = landing_field_length_check(aircraft_data,airport_data)
+
+print(weight_landing_f )
