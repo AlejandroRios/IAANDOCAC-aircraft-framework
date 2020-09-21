@@ -19,6 +19,7 @@ framework/Economics/__init__.py
 framework/Economics/crew_salary.py
 framework/Economics/net_present_valeu.py
 framework/Performance/__init__.py
+framework/Performance/balanced_field_length.py
 framework/Performance/balanced_length_field.py
 framework/Performance/breguet.py
 framework/Performance/fuelfractionsizing.py

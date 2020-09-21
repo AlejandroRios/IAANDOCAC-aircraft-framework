@@ -1,17 +1,22 @@
 """
-Function  : landing_lenght_field.py
-Title     :
-Written by: 
-Date      : 
-Last edit :
+Function  : second_segment_climb.py
+Title     : Second segment climb function
+Written by: Alejandro Rios
+Date      : September/2020
+Last edit : September/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
-    - 
+    - This function calculates the thrust to weight ratio following the requiremnts
+      of climb to second segment with one-engine-inoperative accoring to FAR 25.121.
+      For this case the climb gradient expressed as a percentage takes a value of 0.024.
+      The lading gear is up and takeoff flaps are deployed
+      References: FAR 25.121 and ROSKAM 1997 - Part 1, pag. 146 
+
     - 
 Inputs:
-    -
+    - aircraft_data
 Outputs:
     - 
 TODO's:
@@ -22,6 +27,7 @@ TODO's:
 "IMPORTS"
 ########################################################################################
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
+from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 import numpy as np
 ########################################################################################
 "CLASSES"
@@ -31,36 +37,20 @@ import numpy as np
 """FUNCTIONS"""
 ########################################################################################
 
-def landing_length_field(aircraft_data,airport_data):
+def second_segment_climb(aircraft_data,airport_data):
     '''
     '''
-    # Aircraft data import
-    CL_max_landing = aircraft_data['CL_maximum_landing']
-    weight_landing = aircraft_data['maximum_landing_weight']
-    wing_surface = aircraft_data['wing_surface']
+    engines_number = aircraft_data['engines_number'] 
+    CL_maximum_takeoff = aircraft_data['CL_maximum_takeoff']
+    CD_takeoff = zero_fidelity_drag_coefficient(aircraft_data)
 
-    # Airport data import
-    airfield_elevation = airport_data['elevation']
-    delta_ISA = airport_data['delta_ISA']
+    L_to_D = CL_maximum_takeoff/CD_takeoff
 
+    aux1 = (engines_number/(engines_number-1))
+    aux2 = (1/L_to_D) + 0.024
 
-    _,_,sigma,_,_,rho,_ = atmosphere_ISA_deviation(airfield_elevation,delta_ISA)
-    
-    gamma_bar = 0.1 # mean value of (D-T)/W
-    h_landing = 15.3 # screen height in landing
-    g = 9.81
-    a_bar_g = 0.4 # mean_deceleration, between 0.4 to 0.5 for jets
-    Delta_n = 0.1 # incremental_load_factor during flare
-    f_land = 5/3 # landing safe factor FAR Part 91 
-
-
-    aux1 = 1/gamma_bar
-    aux2 = 1.69*((weight_landing/wing_surface)/(h_landing*rho*g*CL_max_landing))
-    aux3 = (1/a_bar_g) * (1 - ((gamma_bar**2)/Delta_n)) + (gamma_bar/Delta_n)
-
-    S_landing_h_landing = aux1 + aux2*aux3
-
-    return S_landing_h_landing*h_landing*f_land
+    thrust_to_weight_takeoff = aux1*aux2
+    return thrust_to_weight_takeoff
 ########################################################################################
 """MAIN"""
 ########################################################################################

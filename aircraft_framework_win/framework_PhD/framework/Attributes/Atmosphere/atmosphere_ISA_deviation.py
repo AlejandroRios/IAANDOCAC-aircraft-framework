@@ -12,8 +12,8 @@ Description:
     - Reference: BOEING CO. Flight Operations Engineering - Performance Methods. 7th ed. Boeing Co.,Everett,Estados Unidos,1989
     - Chapter 4, page 4-1
 Inputs:
-    - Altitude
-    - Delta ISA
+    - Altitude [m]
+    - Delta ISA [deg C]
 Outputs:
     - T = temperature (K), 
     - p = pressure [Pascal], 

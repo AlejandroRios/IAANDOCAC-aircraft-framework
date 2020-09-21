@@ -44,7 +44,6 @@ def zero_fidelity_drag_coefficient(aircraft_data):
     CD_induced = (CL**2)/(np.pi*wing_aspect_ratio*e)
     CD_profile = CD_0 + Delta_CD_flap + Delta_CD_slat + Delta_CD_gear
     CD = CD_profile + CD_induced
-    print(CD)
     return CD
 ########################################################################################
 """MAIN"""

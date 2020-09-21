@@ -14,14 +14,15 @@ Inputs:
 Outputs:
     - 
 TODO's:
-    - 
+    - Add sigma effect of engine
 
 """
 ########################################################################################
 "IMPORTS"
 ########################################################################################
-from framework.Performance.balanced_length_field import balanced_lenght_field
-from framework.Performance.landing_length_field import landing_length_field
+from framework.Performance.balanced_field_length import balanced_field_length
+from framework.Performance.landing_field_length import landing_field_length
+from framework.Performance.second_segment_climb import second_segment_climb
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 
 from framework.baseline_aircraft import *
@@ -40,10 +41,10 @@ def takeoff_field_length_check(aircraft_data,airport_data):
     while flag == 0:
 
         aircraft_data['maximum_takeoff_weight'] =  weight_takeoff
-        field_length_computed = balanced_lenght_field(aircraft_data,airport_data)
+        field_length_computed = balanced_field_length(aircraft_data,airport_data)
 
         if field_length_computed > airport_field_length:
-            weight_takeoff = weight_takeoff - 10
+            weight_takeoff = weight_takeoff - (10*9.81)
         else:
             flag = 1      
 
@@ -58,10 +59,10 @@ def landing_field_length_check(aircraft_data,airport_data):
     flag = 0
     while flag == 0:
         aircraft_data['maximum_landing_weight'] =  weight_landing
-        field_length_computed = landing_length_field(aircraft_data,airport_data)
+        field_length_computed = landing_field_length(aircraft_data,airport_data)
 
         if field_length_computed > airport_field_length:
-            weight_landing = weight_landing-10
+            weight_landing = weight_landing-(10*9.81)
         else:
             flag = 2
     return weight_landing
@@ -69,21 +70,18 @@ def landing_field_length_check(aircraft_data,airport_data):
 def second_segment_climb_check(aircraft_data,airport_data):
 
     weight_takeoff = aircraft_data['maximum_takeoff_weight']
-    thrust_takeoff = aircraft_data['thrust_average']
-
-    thrust_to_weight_takeoff = thrust_takeoff/weight_takeoff
-
+    thrust_takeoff = aircraft_data['maximum_engine_thrust']
 
     flag = 0
     while flag == 0:
-        aircraft_data['maximum_landing_weight'] =  weight_landing
-        thrust_to_weight_takeoff_computed = second_segment_climb(aircraft_data,airport_data)
+        thrust_to_weight_takeoff_required= second_segment_climb(aircraft_data,airport_data)
+        thrust_to_weight_takeoff = thrust_takeoff/weight_takeoff
 
-        if field_length_computed > airport_field_length:
-            weight_landing = weight_landing-10
+        if thrust_to_weight_takeoff < thrust_to_weight_takeoff_required:
+            weight_takeoff = weight_takeoff-(10*9.81)
         else:
             flag = 2
-    return MTOW
+    return weight_takeoff
 
 
 def landing_climb_check():
@@ -112,8 +110,13 @@ airport_data = baseline_airport()
 aircraft_data = baseline_aircraft()
 
 weight_takeoff_f = takeoff_field_length_check(aircraft_data,airport_data)
-print(weight_takeoff_f)
+print('weight BFL requirement:',weight_takeoff_f/9.81)
 
 weight_landing_f = landing_field_length_check(aircraft_data,airport_data)
 
-print(weight_landing_f )
+print('weight landing field requirement:',weight_landing_f/9.81 )
+
+
+second_segment_clb =  second_segment_climb_check(aircraft_data,airport_data)
+
+print('second segment requirement:',second_segment_clb/9.81)
