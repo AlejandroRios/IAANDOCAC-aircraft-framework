@@ -9,16 +9,16 @@ Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
     - International Standard Atmosphere (ISA) based in:
-    - Reference: BOEING CO. Flight Operations Engineering - Performance Methods. 7th ed. Boeing Co.,Everett,Estados Unidos,1989
+    - Reference: Blake, BOEING CO. Flight Operations Engineering - Jet Transport Performance Methods. 7th ed. Boeing Co.,Everett,Estados Unidos,1989
     - Chapter 4, page 4-1
 Inputs:
     - Altitude [m]
     - Delta ISA [deg C]
 Outputs:
-    - T = temperature (K), 
-    - p = pressure [Pascal], 
-    - rho = density (kg/m3), 
-    - a = sound speed (kts)
+    - T = temperature [K]
+    - p = pressure [Pascal] 
+    - rho = density [kg/m3] 
+    - a = sound speed [kts]
 TODO's:
     - 
 

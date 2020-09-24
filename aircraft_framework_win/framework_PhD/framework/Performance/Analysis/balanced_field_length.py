@@ -42,7 +42,7 @@ def balanced_field_length(aircraft_data,airport_data):
     CL_max_takeoff = aircraft_data['CL_maximum_takeoff'] 
     weight_takeoff = aircraft_data['maximum_takeoff_weight'] # [N]
     wing_surface = aircraft_data['wing_surface'] # [m2]
-    T_avg = aircraft_data['thrust_average'] # [N]
+    T_avg = aircraft_data['average_thrust'] # [N]
     
     # Airport data import
     airfield_elevation = airport_data['elevation'] # [m]
