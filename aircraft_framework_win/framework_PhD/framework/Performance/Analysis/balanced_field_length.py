@@ -45,7 +45,7 @@ def balanced_field_length(aircraft_data,airport_data):
     T_avg = aircraft_data['average_thrust'] # [N]
     
     # Airport data import
-    airfield_elevation = airport_data['elevation'] # [m]
+    airfield_elevation = airport_data['elevation'] # [ft]
     delta_ISA = airport_data['delta_ISA'] # [deg C]
     
     h_takeoff = 10.7 # horizontal distance from airfield surface requirement according to FAR 25 - [m] 

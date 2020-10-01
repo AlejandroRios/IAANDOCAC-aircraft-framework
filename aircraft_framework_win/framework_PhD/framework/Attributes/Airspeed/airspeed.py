@@ -40,12 +40,13 @@ def mach_to_V_cas(mach,h,delta_ISA):
     Description:
         - 
     Inputs:
-        - Altitude [m]
+        - Altitude [ft]
         - Delta ISA [deg C]
         - Mach number
     Outputs:
         - Calibated airspeed [knots]
     """
+
     _,delta,_,_,_,_,_ = atmosphere_ISA_deviation(h,delta_ISA)
 
     speed_of_sound = 661.4786 # sea level [knots]
@@ -58,7 +59,7 @@ def mach_to_V_true(mach,h,delta_ISA):
     Description:
         - 
     Inputs:
-        - Altitude [m]
+        - Altitude [ft]
         - Delta ISA [deg C]
         - Mach number
     Outputs:
@@ -79,7 +80,7 @@ def V_cas_to_mach(V_cas,h,delta_ISA):
     Description:
         - 
     Inputs:
-        - Altitude [m]
+        - Altitude [ft]
         - Delta ISA [deg C]
         - Calibated airspeed [knots]
     Outputs:
@@ -93,6 +94,28 @@ def V_cas_to_mach(V_cas,h,delta_ISA):
     aux2 = ((1/delta)*aux1 + 1)**((1.4-1)/1.4)
     return np.sqrt(5 * (aux2-1))
 
+
+def crossover_altitude(mach,V_cas,delta_ISA):
+    """
+    Description:
+        - The transition or crossosver altitude is the altitude at which a specified CAS and Mach value represent the same TAS value. The curves for constant CAS and constant Mach intersect at this point. Above this altitude the Mach number is used to reference speeds.
+    Inputs:
+        -
+    Outputs:
+        - 
+    TODO's:
+        - Informar Fregnani erro no código do matlab. V_CAS to mach dando valores incosistentes
+    """
+    flag = 0
+    h = 0
+
+    while flag<=0:
+        M1 = V_cas_to_mach(V_cas,h,delta_ISA)
+        if M1 >= mach:
+            flag = 1
+            crossover_altitude = h
+        h = (h + 100)
+    return crossover_altitude
 ########################################################################################
 """MAIN"""
 ########################################################################################

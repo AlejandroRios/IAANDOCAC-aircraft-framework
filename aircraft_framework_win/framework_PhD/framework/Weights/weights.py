@@ -35,7 +35,7 @@ import numpy as np
 """FUNCTIONS"""
 ########################################################################################
 
-def wing_masst(MTOW,wing_position,landing_gear_position,spoilers,AR,S_w,wing_TR,wing_Sweep_c4,V_MO,wing_tc_m):
+def wing_mass(MTOW,wing_position,landing_gear_position,spoilers,AR,S_w,wing_TR,wing_Sweep_c4,V_MO,wing_tc_m):
     '''
     Methodology from Isikveren 2002
     Inputs:
@@ -193,13 +193,6 @@ def engine_mass():
     '''
     return
 
-def engine_mass():
-    '''
-    Methodology from Torenbeek
-    Inputs:
-        -
-    '''
-    return
 
 def installed_engines_mass():
     '''
@@ -290,7 +283,7 @@ wing_tc_m = 0.1
 MMO = 0.8
 va = 343
 V_MO = MMO*va
-print('wing weight:',wing_weight(MTOW,wing_position,landing_gear_position,spoilers,AR,S_w,wing_TR,wing_sweep_c4,V_MO,wing_tc_m))
+print('wing weight:',wing_mass(MTOW,wing_position,landing_gear_position,spoilers,AR,S_w,wing_TR,wing_sweep_c4,V_MO,wing_tc_m))
 
 
 # HT 
@@ -300,13 +293,13 @@ V_Dive = M_Dive*va
 S_H = 30
 HT_sweep_c2 = 20
 z_H = 1
-print('horizontal tail weight:',horizontal_tail_weight(V_Dive,S_H,HT_sweep_c2))
+print('horizontal tail weight:',horizontal_tail_mass(V_Dive,S_H,HT_sweep_c2))
 
 # VT
 S_V = 25
 b_V = 5
 VT_sweep_c2 = 45
-print('vertical tail weight:',vertical_tail_weight(V_Dive,S_H,z_H,S_V,b_V,VT_sweep_c2))
+print('vertical tail weight:',vertical_tail_mass(V_Dive,S_H,z_H,S_V,b_V,VT_sweep_c2))
 
 
 # Fuselage
@@ -315,7 +308,7 @@ w_F = 6
 h_F = 6
 S_F_wet = 100
 
-print('fuselage weight:',fuselage_weight(V_Dive,l_H,w_F,h_F,S_F_wet))
+print('fuselage weight:',fuselage_mass(V_Dive,l_H,w_F,h_F,S_F_wet))
 
 
 

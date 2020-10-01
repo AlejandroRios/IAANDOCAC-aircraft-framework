@@ -10,7 +10,7 @@ Aeronautical Institute of Technology - Airbus Brazil
 Description:
     - International Standard Atmosphere (ISA) in SI units
 Inputs:
-    - Altitude
+    - Altitude [ft]
 Outputs:
     - T = temperature (K), 
     - p = pressure (N/m2), 
@@ -32,6 +32,9 @@ import numpy as np
 """FUNCTIONS"""
 ########################################################################################
 def atmosphere(h):
+
+    ft_to_m = 0.3048
+    h = h*ft_to_m
 
     h = h/1000
     h1 = 11
@@ -75,9 +78,9 @@ def atmosphere(h):
         rho = rho2*(T/T2)**(-(1+g0/(R*L2)))
 
 
-    gama = 1.4
+    gamma = 1.4
 
-    a = np.sqrt(gama*R*T)
+    a = np.sqrt(gamma*R*T)
 
     return T,p,rho,a
 ########################################################################################

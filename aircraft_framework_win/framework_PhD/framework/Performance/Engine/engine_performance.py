@@ -23,6 +23,12 @@ TODO's:
 ########################################################################################
 import numpy as np
 from framework.Attributes.Atmosphere.atmosphere import atmosphere
+from framework.Attributes.Atmosphere.fair import FAIR
+from scipy import optimize
+import math    
+
+from framework.baseline_aircraft import baseline_engine
+
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -30,11 +36,21 @@ from framework.Attributes.Atmosphere.atmosphere import atmosphere
 ########################################################################################
 """FUNCTIONS"""
 ########################################################################################
-def turbofan(h,mach,fan_compressor_ratio,compressor_pressure_ratio,bypass_ratio,throttle_position,fan_diameter,turbine_inlet_temperature):
+def turbofan(h,mach,throttle_position):
+
+    engine = baseline_engine()
+
+    fan_pressure_ratio = engine['fan_pressure_ratio'] 
+    compressor_pressure_ratio = engine['compressor_pressure_ratio'] 
+    bypass_ratio = engine['bypass_ratio'] 
+    fan_diameter = engine['engine_diameter']
+    turbine_inlet_temperature = engine['turbine_inlet_temperature'] 
+
+
 
     # ----- MOTOR DATA INPUT --------------------------------------------------
     fan_disk_area = np.pi*(fan_diameter**2)/4
-    compressor_compression_rate = compressor_pressure_ratio/fan_compressor_ratio  # taxa de compressão fornecida pelo compressor
+    compressor_compression_rate = compressor_pressure_ratio/fan_pressure_ratio  # taxa de compressão fornecida pelo compressor
     combustor_compression_ratio = 0.99     # razão de pressão do combustor
     inlet_turbine_temperature = turbine_inlet_temperature     # temperatura na entrada da turbina
     inlet_turbine_temperature_takeoff = turbine_inlet_temperature # at takeoff 10# increase in turbine temperatute for 5 min
@@ -42,7 +58,7 @@ def turbofan(h,mach,fan_compressor_ratio,compressor_pressure_ratio,bypass_ratio,
 
     # ----- DESIGN POINT ------------------------------------------------------
 
-    desing_mach=0
+    design_mach=0
     design_altitude = 0      
     design_throttle_position = 1.0
 
@@ -74,9 +90,9 @@ def turbofan(h,mach,fan_compressor_ratio,compressor_pressure_ratio,bypass_ratio,
     # ------ FREE STREAM ------------------------------------------------------
     gamma = 1.4                             # gamma do programa
     R = 287.2933                           # R do programa
-    [T_0,P_0] = atmosphere(design_altitude)
-    T0_0 = (1 + (gamma-1)/2*design_mach^2)*T_0     # temperatura total
-    P0_0 = P_0*(T0_0/T_0)^(gamma/(gamma-1))  # pressão total
+    T_0,P_0,_,_ = atmosphere(design_altitude)
+    T0_0 = (1 + (gamma-1)/2*design_mach**2)*T_0     # temperatura total
+    P0_0 = P_0*(T0_0/T_0)**(gamma/(gamma-1))  # pressão total
     a0 = np.sqrt(gamma*R*T_0)                  # velocidade do som
     u0 = design_mach*a0                           # velocidade de vôo
 
@@ -88,91 +104,91 @@ def turbofan(h,mach,fan_compressor_ratio,compressor_pressure_ratio,bypass_ratio,
     # ----- INLET -------------------------------------------------------------
     T0_2 = T0_1
     P0_2 = P0_1*inlet_pressure_ratio
+    T0_2_T0_1 = T0_2/T0_1
     # ----- FAN ---------------------------------------------------------------
-    gamma2 = engine_getgamma(T0_2)
-    cp2 = engine_getcp(T0_2)
-    del_h_fan = cp2*T0_2/eta(13)*((prat(13))^((gamma2-1)/gamma2)-1)
-    del_t_fan = del_h_fan/cp2
+    _,_,_,_,Cp_2,_,gamma_2,_ = FAIR(item=1,f=0,T=T_0) 
+
+    del_h_fan = Cp_2*T0_2/fan_efficiency*((fan_pressure_ratio)**((gamma_2-1)/gamma_2)-1)
+    del_t_fan = del_h_fan/Cp_2
     T0_13 = T0_2 + del_t_fan
-    P0_13 = P0_2 * prat(13)
-    trat(13) = T0_13 / T0_2
+    P0_13 = P0_2 * fan_pressure_ratio
+    T0_13_T0_2 = T0_13 / T0_2
 
     # ----- COMPRESSOR --------------------------------------------------------
-    gamma13 = engine_getgamma(T0_13)
-    cp13 = engine_getcp(T0_13)
-    del_h_c = cp13*T0_13/eta(3)*(prat(3)^((gamma13-1)/gamma13)-1)
-    del_t_c = del_h_c/cp13
+    _,_,_,_,Cp_4,_,gamma_4,_ = FAIR(item=1,f=0,T=T0_13) 
+    del_h_c = Cp_4*T0_13/compressor_efficiency*(compressor_pressure_ratio**((gamma_4-1)/gamma_4)-1)
+    del_t_c = del_h_c/Cp_4
     T0_3 = T0_13 + del_t_c
-    P0_3 = P0_13 * prat(3)
-    trat(3) = T0_3 / T0_13
-    cp3 = engine_getcp(T0_3)
+    P0_3 = P0_13 * compressor_pressure_ratio
+    T0_3_T0_13 = T0_3 / T0_13
+
+    _,_,_,_,Cp_3,_,_,_ = FAIR(item=1,f=0,T=T0_3) 
+
 
     # ----- COMBUSTOR ---------------------------------------------------------
-    T0_4 = manete * tt4takeoff    # ponto de projeto
-    P0_4 = P0_3 * prat(4)
-    trat(4) = T0_4 / T0_3
+    T0_4 = design_throttle_position  * inlet_turbine_temperature_takeoff    # ponto de projeto
+    P0_4 = P0_3 * combustor_pressure_ratio
+    T0_4_T0_3 = T0_4 / T0_3
 
     # ----- HIGHT TURBINE -----------------------------------------------------
-    gamma4 = engine_getgamma(T0_4)
-    cp4 = engine_getcp(T0_4)
+    _,_,_,_,Cp_4,_,gamma_4,_ = FAIR(item=1,f=0,T=T0_4) 
     del_h_ht = del_h_c
-    del_t_ht = del_h_ht / cp4
+    del_t_ht = del_h_ht / Cp_4
 
     T0_5 = T0_4 - del_t_ht
-    prat(5) = (1-del_h_ht/(cp4*T0_4*eta(5)))^(gamma4/(gamma4-1))
-    P0_5 = P0_4 * prat(5)
-    trat(5) = T0_5 / T0_4
+    high_pressure_turbine_pressure_ratio = (1-del_h_ht/(Cp_4*T0_4*turbine_efficiency))**(gamma_4/(gamma_4-1))
+    P0_5 = P0_4 * high_pressure_turbine_pressure_ratio
+    T0_5_T0_4 = T0_5 / T0_4
 
     # ----- LOWER TURBINE -----------------------------------------------------
-    gamma5 = engine_getgamma(T0_5)
-    cp5 = engine_getcp(T0_5)
-    del_h_lt = (1 + bpr)*del_h_fan
-    del_t_lt = del_h_lt / cp5
+    _,_,_,_,Cp_5,_,gamma_5,_ = FAIR(item=1,f=0,T=T0_5) 
+    del_h_lt = (1 + bypass_ratio)*del_h_fan
+    del_t_lt = del_h_lt / Cp_5
 
     T0_15 = T0_5 - del_t_lt
-    prat(15) = (1-del_h_lt/(cp5*T0_5*eta(5)))^(gamma5/(gamma5-1))
-    P0_15 = P0_5 * prat(15)
-    trat(15) = T0_15 / T0_5
+    low_pressure_turbine_pressure_ratio = (1-del_h_lt/(Cp_5*T0_5*turbine_efficiency))**(gamma_5/(gamma_5-1))
+    P0_15 = P0_5 * low_pressure_turbine_pressure_ratio
+    T0_15_T0_5 = T0_15 / T0_5
 
-    epr = prat(2)*prat(3)*prat(4)*prat(5)*prat(13)*prat(15)
-    etr = trat(2)*trat(3)*trat(4)*trat(5)*trat(13)*trat(15)
+    epr = inlet_pressure_ratio*compressor_pressure_ratio*combustor_pressure_ratio*high_pressure_turbine_pressure_ratio*fan_pressure_ratio*low_pressure_turbine_pressure_ratio
+    etr = T0_2_T0_1 *T0_3_T0_13*T0_4_T0_3*T0_5_T0_4*T0_13_T0_2*T0_15_T0_5
     # #########################################################################
 
 
     # ########### G E T    G E O M E T R Y  ###################################
-    acore = afan/(bpr+1)                   # área do núcleo
+    acore = fan_disk_area/(bypass_ratio+1)                   # área do núcleo
 
     #  ---- a8rat = a8 / acore ---- 
-    a8rat = min(0.75*sqrt(etr/trat(2))/epr*prat(2),1.0)   
-    # OBS: divide por prat(2) pois ele não é considerado no cálculo do EPR e
+    a8rat = min(0.75*np.sqrt(etr/T0_2_T0_1 )/epr*inlet_pressure_ratio,1.0)   
+    # OBS: divide por inlet_pressure_ratio pois ele não é considerado no cálculo do EPR e
     # ETR acima no applet original
 
     a8 = a8rat * acore
-    a4 = a8 * prat(5)*prat(15)/sqrt(trat(5)*trat(15))
-    a4p = a8 * prat(15)/sqrt(trat(15))
+    a4 = a8 * high_pressure_turbine_pressure_ratio*low_pressure_turbine_pressure_ratio/np.sqrt(T0_5_T0_4*T0_15_T0_5)
+    a4p = a8 * low_pressure_turbine_pressure_ratio/np.sqrt(T0_15_T0_5)
     a8d = a8
 
-    if ((Mach==Machd) && (Alt==Altd) && (manete==maneted))
+    if ((design_mach==mach) and (design_altitude==h) and (design_throttle_position==throttle_position)):
         designpoint = 1
-    else
+    else:
         designpoint = 0
-    end
 
-    if ~designpoint
+
+    if not designpoint:
         # #########################################################################
         # #########  G E T  T H E R M O - WIND TUNNEL TEST ########################
         # disp('passei aqui designpoint')
-        Mach = Machd
-        manete = maneted
+        Mach = mach
+        design_throttle_position = throttle_position
 
         # ------ FREE STREAM ------------------------------------------------------
         gamma = 1.4                             # gamma do programa
         R = 287.2933                           # R do programa
-        [T_0,P_0] = atmosfera2(Altd)
+        T_0,P_0,rho_0,a_0 = atmosphere(h)
 
-        T0_0 = (1 + (gamma-1)/2*Mach^2)*T_0     # temperatura total
-        P0_0 = P_0*(T0_0/T_0)^(gamma/(gamma-1))  # pressão total
-        a0 = sqrt(gamma*R*T_0)                  # velocidade do som
+        T0_0 = (1 + (gamma-1)/2*Mach**2)*T_0     # temperatura total
+        P0_0 = P_0*(T0_0/T_0)**(gamma/(gamma-1))  # pressão total
+        a0 = np.sqrt(gamma*R*T_0)                  # velocidade do som
         u0 = Mach*a0                           # velocidade de vôo
 
         # ----- ENTRADA DE AR -----------------------------------------------------
@@ -181,130 +197,127 @@ def turbofan(h,mach,fan_compressor_ratio,compressor_pressure_ratio,bypass_ratio,
 
         # ----- INLET -------------------------------------------------------------
         T0_2 = T0_1
-        P0_2 = P0_1*prat(2)
+        P0_2 = P0_1*inlet_pressure_ratio
 
         # ----- COMBUSTOR ---------------------------------------------------------
-        T0_4 = manete*tt4
-        gamma4 = engine_getgamma(T0_4)
-        cp4 = engine_getcp(T0_4)
+        T0_4 = design_throttle_position*inlet_turbine_temperature
+        _,_,_,_,Cp_4,_,gamma_4,_ = FAIR(item=1,f=0,T=T0_4) 
 
         # ----- HIGHT TURBINE -----------------------------------------------------
-        trat(5) = fzero(@(x) engine_achatrat(x,a4p/a4,eta(5),-gamma4/(gamma4-1)),1.0)
-
-        T0_5 = T0_4*trat(5)
-        gamma5 = engine_getgamma(T0_5)
-        cp5 = engine_getcp(T0_5)
+        T0_5_T0_4 = optimize.fsolve(lambda x:find_turbine_temperature_ratio(x,a4p/a4,turbine_efficiency,-gamma_4/(gamma_4-1)),1.0)
+        T0_5 = T0_4*T0_5_T0_4
+        _,_,_,_,Cp_5,_,gamma_5,_ = FAIR(item=1,f=0,T=T0_5) 
         del_t_ht = T0_5 - T0_4
-        del_h_ht = del_t_ht*cp4
-        prat(5) = (1-(1-trat(5))/eta(5))^(gamma4/(gamma4-1))
+        del_h_ht = del_t_ht*Cp_4
+        high_pressure_turbine_pressure_ratio = (1-(1-T0_5_T0_4)/turbine_efficiency)**(gamma_4/(gamma_4-1))
 
         # ----- LOWER TURBINE -----------------------------------------------------
-        trat(15) = fzero(@(x) engine_achatrat(x,a8d/a4p,eta(5),-gamma5/(gamma5-1)),1.0)
-
-        T0_15 = T0_5 * trat(15)
-        gamma15 = engine_getgamma(T0_15)
-        cp15 = engine_getcp(T0_15)
+        T0_15_T0_5 = optimize.fsolve(lambda x:find_turbine_temperature_ratio(x,a8d/a4p,turbine_efficiency,-gamma_5/(gamma_5-1)),1.0)
+        T0_15 = T0_5 * T0_15_T0_5
+        _,_,_,_,Cp_15,_,gamma_15,_ = FAIR(item=1,f=0,T=T0_15) 
         del_t_lt = T0_15 - T0_5
-        del_h_lt = del_t_lt*cp5
-        prat(15) = (1-(1-trat(15))/eta(5))^(gamma5/(gamma5-1))
+        del_h_lt = del_t_lt*Cp_5
+        low_pressure_turbine_pressure_ratio = (1-(1-T0_15_T0_5)/turbine_efficiency)**(gamma_5/(gamma_5-1))
 
         # ----- FAN ---------------------------------------------------------------
-        del_h_fan = del_h_lt / (1+bpr)
-        del_t_fan = -del_h_fan / cp2
+        del_h_fan = del_h_lt / (1+bypass_ratio)
+        del_t_fan = -del_h_fan / Cp_2
         T0_13 = T0_2 + del_t_fan
-        gamma13 = engine_getgamma(T0_13)
-        cp13 = engine_getcp(T0_13)
-
-        trat(13) = T0_13 / T0_2
-        prat(13) = (1-(1-trat(13))*eta(13))^(gamma2/(gamma2-1))
+        _,_,_,_,Cp_13,_,gamma_13,_ = FAIR(item=1,f=0,T=T0_13) 
+        T0_13_T0_2 = T0_13 / T0_2
+        fan_pressure_ratio = (1-(1-T0_13_T0_2)*fan_efficiency)**(gamma_2/(gamma_2-1))
 
         # ----- COMPRESSOR --------------------------------------------------------
         del_h_c = del_h_ht
-        del_t_c = -del_h_c / cp13
+        del_t_c = -del_h_c / Cp_13
 
         T0_3 = T0_13 + del_t_c
-        gamma3 = engine_getgamma(T0_3)
-        cp3 = engine_getcp(T0_3)
-        trat(3) = T0_3 / T0_13
-        prat(3) = (1-(1-trat(3))*eta(3))^(gamma13/(gamma13-1))
-        trat(4) = T0_4 / T0_3
+        _,_,_,_,Cp_3,_,gamma_3,_ = FAIR(item=1,f=0,T=T0_3) 
+        T0_3_T0_13 = T0_3 / T0_13
+        compressor_pressure_ratio = (1-(1-T0_3_T0_13)*compressor_efficiency)**(gamma_13/(gamma_13-1))
+        T0_4_T0_3 = T0_4 / T0_3
 
 
         # ----- total pressures definition ----------------------------------------
-        P0_13 = P0_2 * prat(13)
-        P0_3 = P0_13 * prat(3)
-        P0_4 = P0_3 * prat(4)
-        P0_5 = P0_4 * prat(5)
-        P0_15 = P0_5 * prat(15)
+        P0_13 = P0_2 * fan_pressure_ratio
+        P0_3 = P0_13 * compressor_pressure_ratio
+        P0_4 = P0_3 * combustor_pressure_ratio
+        P0_5 = P0_4 * high_pressure_turbine_pressure_ratio
+        P0_15 = P0_5 * low_pressure_turbine_pressure_ratio
 
         # ----- overall pressure & temperature ratios -----------------------------
-        epr = prat(2)*prat(3)*prat(4)*prat(5)*prat(13)*prat(15)
-        etr = trat(2)*trat(3)*trat(4)*trat(5)*trat(13)*trat(15)
-
-    end
+        # print(compressor_pressure_ratio)
+        # print(combustor_pressure_ratio)
+        epr = inlet_pressure_ratio*compressor_pressure_ratio*combustor_pressure_ratio*high_pressure_turbine_pressure_ratio*fan_pressure_ratio*low_pressure_turbine_pressure_ratio
+        etr = T0_2_T0_1 *T0_3_T0_13*T0_4_T0_3*T0_5_T0_4*T0_13_T0_2*T0_15_T0_5
 
     # ########### G E T   P E R F O R M A N C E  ##############################
-    gammae = engine_getgamma(T0_5)                 # gamma de saída (T0_5 ???)
-    Re = (gammae-1)/gammae*engine_getcp(T0_5)       # Constante R de saída
+    _,_,_,_,Cp_exit,_,gamma_exit,_ = FAIR(item=1,f=0,T=T0_5)   # gamma de saída (T0_5 ???)
+    Re = (gamma_exit-1)/gamma_exit*Cp_exit       # Constante R de saída
     g = 32.2
 
     P0_8 = P0_0 * epr                      
     T0_8 = T0_0 * etr
 
-    fact2 = -0.5*(gammae+1)/(gammae-1)
-    fact1 = (1 + 0.5*(gammae-1))^fact2
-    mdot = a8*sqrt(gammae)*P0_8*fact1/sqrt(T0_8*Re) # fluxo mássico [kg/s]
+    fact2 = -0.5*(gamma_exit+1)/(gamma_exit-1)
+    fact1 = (1 + 0.5*(gamma_exit-1))**fact2
+    mdot = a8*np.sqrt(gamma_exit)*P0_8*fact1/np.sqrt(T0_8*Re) # fluxo mássico [kg/s]
 
-    npr = max(P0_8 / P_0,1)
+    npr = max(P0_8/P_0,1)
 
-    fact1 = (gammae-1)/gammae
-    uexit = sqrt(2*R/(gammae-1)*gammae*T0_8*eta(7)*(1-(1/npr)^fact1)) # ????
+    fact1 = (gamma_exit-1)/gamma_exit
+    uexit = np.sqrt(2*R/(gamma_exit-1)*gamma_exit*T0_8*nozzle_efficiency*(1-(1/npr)**fact1)) # ????
 
-    if (npr<=1.893)
+    if (npr<=1.893):
         pexit = P_0
-    else
+    else:
         pexit = 0.52828*P0_8
-    end
 
     fgros = uexit + (pexit-P_0)*a8/mdot/g
 
     # ------ contribuição do fan -------------------------------------------
     snpr = P0_13 / P_0
     fact1 = (gamma-1)/gamma
-    ues = sqrt(2*R/fact1*T0_13*eta(7)*(1-1/snpr^fact1))
+    ues = np.sqrt(2*R/fact1*T0_13*nozzle_efficiency*(1-1/snpr**fact1))
 
-    if (snpr<=1.893)
+    if (snpr<=1.893):
         pfexit = P_0
-    else
+    else:
         pfexit = 0.52828*P0_13
-    end
 
-    fgros = fgros + bpr*ues + (pfexit-P_0)*bpr*acore/mdot/g
+    fgros = fgros + bypass_ratio*ues + (pfexit-P_0)*bypass_ratio*acore/mdot/g
 
-    dram = u0*(1+bpr)
+    dram = u0*(1+bypass_ratio)
     fnet = fgros - dram
-    fuel_air = (trat(4)-1)/(eta(4)*PC/(cp3*T0_3)-T0_4/T0_3)
+    fuel_air = (T0_4_T0_3-1)/(combustion_chamber_efficiency*thermal_energy/(Cp_3*T0_3)-T0_4/T0_3)
 
     # ####### Estimativa de Peso ##############################################
-    ncomp = min(15,round(1+prc/1.5))
-    nturb = 2 + floor(ncomp/4)
+    ncomp = min(15,round(1+compressor_compression_rate/1.5))
+    nturb = 2 + math.floor(ncomp/4)
     dfan = 293.02          # fan density
     dcomp = 293.02         # comp density
     dburn = 515.2          # burner density
     dturb = 515.2          # turbine density
-    conv1 = 10.7639104167  # conversão de acore para ft^2
+    conv1 = 10.7639104167  # conversão de acore para ft**2
 
-    weight = 4.4552*0.0932*acore*conv1*sqrt(acore*conv1/6.965)*...
-        ((1+bpr)*dfan*4 + dcomp*(ncomp-3) + 3*dburn + dturb*nturb) #[N]
+    weight = (4.4552*0.0932*acore*conv1*np.sqrt(acore*conv1/6.965)*
+        ((1+bypass_ratio)*dfan*4 + dcomp*(ncomp-3) + 3*dburn + dturb*nturb)) #[N]
 
     # ###### SUBROUTINE OUTPUTS ###############################################
     #weightkgf = weight/9.8
     #tracaokgf = fnet*mdot/9.8  #[kgf]
-    tracaonewt = fnet*mdot #[tracao em Newtons]
-    FF = 1.15*fuel_air*mdot*3600  #[kg/h]   # correção de 15# baseado em dados de motores reais
+    force = fnet*mdot #[tracao em Newtons]
+    fuel_flow = 1.15*fuel_air*mdot*3600  #[kg/h]   # correção de 15# baseado em dados de motores reais
 
 
     return force,fuel_flow
+
+
+def find_turbine_temperature_ratio(x,a,b,c):
+    f = a - np.sqrt(x)*(1-(1-x)/b)**c
+    return f
+
+
 ########################################################################################
 """MAIN"""
 ########################################################################################
@@ -312,3 +325,10 @@ def turbofan(h,mach,fan_compressor_ratio,compressor_pressure_ratio,bypass_ratio,
 ########################################################################################
 """TEST"""
 ########################################################################################
+# h = 457.2014
+# mach = 0.388
+# throttle_position = 0.95
+# force,fuel_flow = turbofan(h,mach,throttle_position)
+
+# print(force)
+# print(fuel_flow)

@@ -37,7 +37,9 @@ from framework.baseline_aircraft import *
 ########################################################################################
 """FUNCTIONS"""
 ########################################################################################
-def rate_of_climb(h,delta_ISA,mach,weight,aircraft_data):
+global gravity
+gravity = 9.80665
+def rate_of_climb_calculation(thrust_to_weight,h,delta_ISA,mach,mass,aircraft_data):
 
     wing_surface = aircraft_data['wing_surface']
 
@@ -46,27 +48,27 @@ def rate_of_climb(h,delta_ISA,mach,weight,aircraft_data):
 
     phase = "climb"
 
-    V_true = mach_to_V_true(mach,h,delta_ISA):
+    V_true = mach_to_V_true(mach,h,delta_ISA)
 
     _,_,_,_,_,rho_ISA,_  = atmosphere_ISA_deviation(h,delta_ISA)
 
-    CL = (2*weight)/(rho_ISA*((V_true*knots_to_meters_second)**2)*wing_surface)
+    CL = (2*mass*gravity)/(rho_ISA*((V_true*knots_to_meters_second)**2)*wing_surface)
 
     CD = zero_fidelity_drag_coefficient(aircraft_data,CL,phase)
 
     L_to_D = CL/CD
     
     if mach > 0:
-        acceleration_factor,_ = acceleration_factor(h,delta_ISA,mach)
+        acceleration_factor,_ = acceleration_factor_calculation(h,delta_ISA,mach)
         climb_path_angle = np.arcsin((thrust_to_weight - 1/(L_to_D))/(1 + acceleration_factor))
     else:
-        _,acceleration_factor = acceleration_factor(h,delta_ISA,mach)
+        _,acceleration_factor = acceleration_factor_calculation(h,delta_ISA,mach)
         climb_path_angle = np.arcsin((thrust_to_weight - 1/(L_to_D))/(1 + acceleration_factor))
     rate_of_climb = knots_to_feet_minute * V_true * np.sin(climb_path_angle)
     return rate_of_climb, V_true
 
 
-def acceleration_factor(h,delta_ISA,mach):
+def acceleration_factor_calculation(h,delta_ISA,mach):
     lambda_rate = 0.0019812 
     tropopause = (71.5 + delta_ISA)/lambda_rate
 
@@ -75,16 +77,16 @@ def acceleration_factor(h,delta_ISA,mach):
 
     if h < tropopause:
         # For constant calibrated airspeed below the tropopause:
-        acceleration_factor_V_CAS =  (0.7*mach**2)*(phi_factor(mach) - 0.190263*(T_isa/T))
+        acceleration_factor_V_CAS =  (0.7*mach**2)*(phi_factor(mach) - 0.190263*(T_ISA/T))
         # For constant Mach number below the tropopause:
-        acceleration_factor_mach = (-0.13318*mach**2)*(T_isa/T)
+        acceleration_factor_mach = (-0.13318*mach**2)*(T_ISA/T)
     elif h > tropopause:
         # For constant calibrated airspeed above the tropopause:
         acceleration_factor_V_CAS = (0.7*mach**2)*phi_factor(mach)
         # For constant Mach number above the tropopause:
         acceleration_factor_mach = 0
 
-    return acceleration_factor_CAS, acceleration_factor_mach
+    return acceleration_factor_V_CAS, acceleration_factor_mach
 
 def phi_factor(mach):
     aux1 = (1 + 0.2*mach**2)**3.5 - 1
@@ -99,4 +101,4 @@ def phi_factor(mach):
 ########################################################################################
 
 
-aircraft_data = baseline_aircraft()
+# aircraft_data = baseline_aircraft()

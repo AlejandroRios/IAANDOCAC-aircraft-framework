@@ -12,7 +12,7 @@ Description:
     - Reference: Blake, BOEING CO. Flight Operations Engineering - Jet Transport Performance Methods. 7th ed. Boeing Co.,Everett,Estados Unidos,1989
     - Chapter 4, page 4-1
 Inputs:
-    - Altitude [m]
+    - Altitude [ft]
     - Delta ISA [deg C]
 Outputs:
     - T = temperature [K]
@@ -35,6 +35,8 @@ import numpy as np
 """FUNCTIONS"""
 ########################################################################################
 def atmosphere_ISA_deviation(h,delta_ISA):
+    h = h
+
     h1 = 11 # [km]
     L0 = -6.5e-3
 

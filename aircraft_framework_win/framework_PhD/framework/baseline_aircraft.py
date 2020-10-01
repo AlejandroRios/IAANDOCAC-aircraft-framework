@@ -65,18 +65,32 @@ def baseline_aircraft():
     aircraft['vertical_tail_sweep'] = 41 # [deg]
     aircraft['engine_diameter'] = 1.36 # [m]
     aircraft['engine_bypass'] = 5.0 
-    aircraft['engines_number'] = 2
+    aircraft['number_of_engines'] = 2
     # aircraft['maximum_engine_thrust'] =  0.95 * 22000 * (1**0.8) *0.453592 * 9.80665 # [N]
-    aircraft['maximum_engine_thrust'] = aircraft['engines_number'] *  0.95 * 16206 * (1**0.8) * lbf_to_N  # Rolls-Royce Tay 650 Thrust[N] 
+    aircraft['maximum_engine_thrust'] = aircraft['number_of_engines'] *  0.95 * 16206 * (1**0.8) * lbf_to_N  # Rolls-Royce Tay 650 Thrust[N] 
     aircraft['average_thrust'] = 0.75*aircraft['maximum_engine_thrust']*((5 + aircraft['engine_bypass'])/(4 + aircraft['engine_bypass'])) # [N]
 
     return aircraft
+
+def baseline_engine():
+    lbf_to_N = 4.448
+    kg_to_N = 9.80665
+    engine = {}
+    engine['number_of_engines'] = 1
+    engine['engine_diameter'] = 1.36 # [m]
+    engine['bypass_ratio'] = 5.0 
+    engine['maximum_engine_thrust'] = engine['number_of_engines'] *  0.95 * 16206 * (1**0.8) * lbf_to_N  # Rolls-Royce Tay 650 Thrust[N] 
+    engine['average_thrust'] = 0.75*engine['maximum_engine_thrust']*((5 + engine['bypass_ratio'])/(4 + engine['bypass_ratio'])) # [N]
+    engine['fan_pressure_ratio'] = 1.46
+    engine['compressor_pressure_ratio'] = 28.5
+    engine['turbine_inlet_temperature'] = 1450
+    return engine
 
 def baseline_airport():
     airport = {}
     airport['takeoff_field_length'] = 2500 # [m]
     airport['landing_field_length'] = 2000 # [m]
-    airport['elevation'] = 2500 # [m]
+    airport['elevation'] = 2500*3.28084 # [m]
     airport['delta_ISA'] = 19.95 # [deg C]
 
     return airport

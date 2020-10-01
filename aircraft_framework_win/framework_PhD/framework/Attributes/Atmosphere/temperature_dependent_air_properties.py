@@ -46,19 +46,18 @@ def FAIR(item=None,f=None,T=None,h=None,Pr=None,phi=None):
     if f>0.0676:
         print('f cannot be greater than 0.0676')
     
-    if item == 1: # T is known
+    if item == 1: #T is known
         if nargin>2:
             T = T/R2K
             h, Pr, phi, Cp, R, gamma, a = unFAIR(T, f)
         else:
             print('T must be defined for case 1')
         
-    elif item == 2: # h is known
+    elif item == 2: #h is known
         if nargin > 3:
             h = h/BTUlbm2Jkg
-            x0 = np.array([166.667,2222.222])
-            T = optimize.fminbound(lambda T: np.abs(h-find_h(f,T)),x0)
-            # T = optimize.minimize(lambda T: np.abs(h-find_h(f,T)),method='SLSQP',bounds=x0)
+
+            T = optimize.fminbound(lambda T: np.abs(h-find_h(f,T)),166.667,2222.222)
             h, Pr, phi, Cp, R, gamma, a = unFAIR(T, f)
         else:
             print('h must be defined for case 2')
@@ -66,9 +65,7 @@ def FAIR(item=None,f=None,T=None,h=None,Pr=None,phi=None):
     elif item == 3: #Pr is known
         if nargin>4:
             Pr = Pr/psia2pa
-            x0 = np.array([166.667,2222.222])
-            T = optimize.fminbound(lambda T: np.abs(Pr-find_Pr(f,T)),x0)
-            # T = optimize.minimize(lambda T: np.abs(Pr-find_Pr(f,T)),method='SLSQP',bounds=x0)
+            T = optimize.fminbound(lambda T: np.abs(Pr-find_Pr(f,T)),166.667,2222.222)
             # T = fminbnd(@(T)abs(Pr-findPr(f,T)),166,2222.222)
 #                 T = fminsearch(@(T)abs(Pr-findPr(f,T)),200)
             h, Pr, phi, Cp, R, gamma, a = unFAIR(T, f)
@@ -78,9 +75,7 @@ def FAIR(item=None,f=None,T=None,h=None,Pr=None,phi=None):
     elif item == 4: #phi is known
         if nargin>5:
             phi = phi/BTUlbR2JKgK
-            x0 = np.array([166.667,2222.222])
-            T = optimize.fminbound(lambda T: np.abs(phi-find_phi(f,T)),x0)
-            # T = optimize.minimize(lambda T: np.abs(phi-find_phi(f,T)),method='SLSQP',bounds=x0)
+            T = optimize.fminbound(lambda T: np.abs(phi-find_phi(f,T)),166.667,2222.222)
             # T = fminbnd(@(T)abs(phi-findphi(f,T)),166.667,2222.222)
 #                 T = fminsearch(@(T)abs(phi-findphi(f,T)),200)
             h, Pr, phi, Cp, R, gamma, a = unFAIR(T, f)

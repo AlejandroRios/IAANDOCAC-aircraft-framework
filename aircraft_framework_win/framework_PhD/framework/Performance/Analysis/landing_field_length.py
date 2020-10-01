@@ -40,7 +40,7 @@ def landing_field_length(aircraft_data,airport_data):
     wing_surface = aircraft_data['wing_surface'] # [m2]
 
     # Airport data import
-    airfield_elevation = airport_data['elevation'] # [m]
+    airfield_elevation = airport_data['elevation'] # [ft]
     delta_ISA = airport_data['delta_ISA']  # [deg C]
 
 

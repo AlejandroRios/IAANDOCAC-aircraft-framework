@@ -24,6 +24,7 @@ TODO's:
 ########################################################################################
 from framework.Economics.crew_salary import crew_salary
 from framework.Sizing.performance_constraints import regulated_takeoff_weight, regulated_landing_weight
+from framework.baseline_aircraft import baseline_aircraft,baseline_airport
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -64,6 +65,23 @@ captain_salary,first_officer_salary,flight_attendant_salary = crew_salary(1000)
 regulated_takeoff_weight = regulated_takeoff_weight()
 regulated_landing_weight = regulated_landing_weight()
 
+f = 0
+while f == 0:
+
+    initial_altitude = baseline_airport['elevation']
+    maximum_ceiling = 41000 # [ft]
+    step = 500
+    out = 0
+
+    while out == 0:
+
+        # Calculate max altitude
+
+        
+
+
+
+
 # print('========================================')
 # print('Regulated takeoff weight:', regulated_takeoff_weight)
 # print('========================================')
@@ -72,6 +90,8 @@ regulated_landing_weight = regulated_landing_weight()
 # print('========================================')
 # print('Regulated landing weight:', regulated_landing_weight)
 # print('========================================')
+
+
 
 
 ########################################################################################
