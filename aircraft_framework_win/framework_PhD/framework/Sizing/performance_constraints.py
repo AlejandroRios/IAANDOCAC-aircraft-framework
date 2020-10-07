@@ -138,14 +138,14 @@ def drag_divergence_check():
     return
 
 def regulated_takeoff_weight():
-    airport_data = baseline_airport()
+    airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
 
-    airport_data = baseline_airport()
+    airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
     takeoff_field_length_weight = takeoff_field_length_check(aircraft_data,airport_data)
 
-    airport_data = baseline_airport()
+    airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
     second_segment_climb_weight =  second_segment_climb_check(aircraft_data,airport_data)
 
@@ -155,15 +155,15 @@ def regulated_takeoff_weight():
 def regulated_landing_weight():
     maximum_takeoff_weight = regulated_takeoff_weight()
 
-    airport_data = baseline_airport()
+    airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
     landing_field_length_weight = landing_field_length_check(aircraft_data,airport_data,maximum_takeoff_weight)
 
-    airport_data = baseline_airport()
+    airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
     landing_climb = landing_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
 
-    airport_data = baseline_airport()
+    airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
     missed_approach = missed_approach_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
 
@@ -178,12 +178,12 @@ def regulated_landing_weight():
 ########################################################################################
 global gravity
 gravity = 9.80665 
-airport_data = baseline_airport()
+airport_data = baseline_origin_airport()
 aircraft_data = baseline_aircraft()
 takeoff_field_length_weight = takeoff_field_length_check(aircraft_data,airport_data)
 print('weight BFL requirement:',takeoff_field_length_weight/gravity)
 
-airport_data = baseline_airport()
+airport_data = baseline_origin_airport()
 aircraft_data = baseline_aircraft()
 second_segment_climb_weight =  second_segment_climb_check(aircraft_data,airport_data)
 print('weight second segment requirement:',second_segment_climb_weight/gravity)
@@ -193,17 +193,17 @@ print('========================================')
 print('MTOW:', maximum_takeoff_weight/gravity)
 print('========================================')
 
-airport_data = baseline_airport()
+airport_data = baseline_origin_airport()
 aircraft_data = baseline_aircraft()
 landing_field_length_weight = landing_field_length_check(aircraft_data,airport_data,maximum_takeoff_weight)
 print('weight landing field requirement:',landing_field_length_weight/gravity)
 
-airport_data = baseline_airport()
+airport_data = baseline_origin_airport()
 aircraft_data = baseline_aircraft()
 landing_climb = landing_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
 print('weight landing climb:',landing_climb/gravity)
 
-airport_data = baseline_airport()
+airport_data = baseline_origin_airport()
 aircraft_data = baseline_aircraft()
 missed_approach = missed_approach_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
 print('weight missed approach:',missed_approach/gravity)

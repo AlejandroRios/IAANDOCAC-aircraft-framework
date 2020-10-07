@@ -38,7 +38,7 @@ import numpy as np
 def missed_approach_climb_OEI(aircraft_data,airport_data,maximum_takeoff_weight):
     '''
     '''
-    engines_number = aircraft_data['engines_number'] 
+    engines_number = aircraft_data['number_of_engines']
     CL_maximum_landing = aircraft_data['CL_maximum_landing']
     maximum_landing_weight = aircraft_data['maximum_landing_weight'] # [N]
     phase = 'climb'

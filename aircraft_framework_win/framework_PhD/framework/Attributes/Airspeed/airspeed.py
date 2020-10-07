@@ -72,6 +72,17 @@ def mach_to_V_true(mach,h,delta_ISA):
 
     return speed_of_sound * mach * np.sqrt(theta)
 
+def V_cas_to_V_true(V_cas,h,delta_ISA):
+
+    speed_of_sound = 661.4786 # sea level [knots]
+
+    theta,delta,_,_,_,_,_ = atmosphere_ISA_deviation(h,delta_ISA)
+
+    aux1 = (1 + 0.2 * (V_cas/speed_of_sound)**2)**3.5
+    aux2 = ((1/delta)*(aux1 - 1) + 1)**(1/3.5)
+    aux3 = np.sqrt(theta*(aux2 - 1))
+    return 1479.1 * aux3
+
 
 
 
@@ -123,3 +134,5 @@ def crossover_altitude(mach,V_cas,delta_ISA):
 ########################################################################################
 """TEST"""
 ########################################################################################
+
+# print(V_cas_to_V_true(340-10,41000,0))

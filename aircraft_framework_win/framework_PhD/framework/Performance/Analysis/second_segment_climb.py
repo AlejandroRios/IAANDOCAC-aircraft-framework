@@ -40,7 +40,7 @@ import numpy as np
 def second_segment_climb(aircraft_data,airport_data):
     '''
     '''
-    engines_number = aircraft_data['engines_number'] 
+    engines_number = aircraft_data['number_of_engines']
     CL_maximum_takeoff = aircraft_data['CL_maximum_takeoff']
     phase = 'takeoff'
     CD_takeoff = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_takeoff,phase)

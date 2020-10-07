@@ -36,11 +36,11 @@ def baseline_aircraft():
 
 
     aircraft = {}
-    aircraft['maximum_takeoff_weight'] = 60000 * kg_to_N  # [N]
+    aircraft['maximum_takeoff_weight'] = 55788 * kg_to_N  # [N]
     aircraft['maximum_landing_weight'] = 60000 * kg_to_N  # [N]
-    aircraft['wing_surface'] = 96 # Fokker = 93.5  [m2] 
+    aircraft['wing_surface'] = 116 # Fokker = 93.5  [m2] 
     aircraft['wing_aspect_ratio'] = 9.6 # Fokker = 8.43 
-    aircraft['wing_span'] = 30.3579
+    aircraft['wing_span'] = 32.7570
     aircraft['wing_taper_ratio'] = 0.38
     aircraft['wing_sweep_c_4'] = 22.6 # [deg]
     aircraft['incidence_root'] = 2 # [deg]
@@ -54,7 +54,7 @@ def baseline_aircraft():
     # aircraft['theta']
     # aircraft['epsilon']
     aircraft['thickness_to_chord_average_ratio'] = 0.11
-    aircraft['mean_aerodynamic_chord'] = 3.53
+    aircraft['mean_aerodynamic_chord'] = 3.8620
     aircraft['aircraft_wet_surface'] = 589.7500 # [m2]
     aircraft['wing_wet_surface'] = 168.6500 # [m2]
     aircraft['CL_maximum_clean'] = 1.65 

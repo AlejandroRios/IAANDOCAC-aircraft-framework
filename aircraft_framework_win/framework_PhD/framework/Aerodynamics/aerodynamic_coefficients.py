@@ -34,7 +34,7 @@ def zero_fidelity_drag_coefficient(aircraft_data,CL,phase):
     wing_aspect_ratio = aircraft_data['wing_aspect_ratio']
     
     e = 0.7
-    CD_0 = 0.02
+    CD_0 = 0.0001
 
     Delta_CD_flap = 0.03 # for flap 35 degrees and CL = 1.7
     Delta_CD_slat = 0

@@ -44,11 +44,11 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
     climb_V_cas,climb_mach,delta_ISA):
 
     transition_altitude = crossover_altitude(climb_mach,climb_V_cas,delta_ISA)
-    step = 100
+    altitude_step = 100
     residual_rate_of_climb = 300
 
-    t = 0
-    d = 0
+    time = 0
+    distance = 0
     fuel = 0
     rate_of_climb = 9999
 
@@ -58,6 +58,8 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
     final_altitude = 10000
     throttle_position = 0.95
 
+    optimum_specific_rate = 0
+
     aircraft_data = baseline_aircraft()
     number_engines = aircraft_data['number_of_engines']
 
@@ -65,18 +67,23 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
     while (rate_of_climb>residual_rate_of_climb and altitude<final_altitude):
         V_cas = 250
         mach = V_cas_to_mach(V_cas,altitude,delta_ISA)
-        thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # Force [N]
+        thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
         rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
-        deltat = step/rate_of_climb
-        t = t + deltat
-        d = d + (V_tas/60)*deltat
-        delta_fuel = (fuel_flow/60)*deltat
+        delta_time = altitude_step/rate_of_climb
+        time = time + delta_time
+        distance = distance + (V_tas/60)*delta_time
+        delta_fuel = (fuel_flow/60)*delta_time
         fuel = fuel+delta_fuel
         mass = mass-delta_fuel
-        altitude = altitude + step
+        altitude = altitude + altitude_step
+
+        specific_rate = V_tas/fuel_flow
+        if specific_rate>optimum_specific_rate:
+            optimum_specific_rate = specific_rate
+            optimum_altitude = altitude
 
     # Climb to transition altitude at constat CAS
 
@@ -92,14 +99,18 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
 
         rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
-        deltat = step/rate_of_climb
-        t = t + deltat
-        d = d + (V_tas/60)*deltat
-        delta_fuel = (fuel_flow/60)*deltat
+        delta_time = altitude_step/rate_of_climb
+        time = time + delta_time
+        distance = distance + (V_tas/60)*delta_time
+        delta_fuel = (fuel_flow/60)*delta_time
         fuel = fuel+delta_fuel
         mass = mass-delta_fuel
-        altitude = altitude + step
+        altitude = altitude + altitude_step
 
+        specific_rate = V_tas/fuel_flow
+        if specific_rate>optimum_specific_rate:
+            optimum_specific_rate = specific_rate
+            optimum_altitude = altitude
 
 
     # Climb to transition altitude at constant mach
@@ -117,20 +128,27 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
 
         rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
-        deltat = step/rate_of_climb
-        t = t + deltat
-        d = d + (V_tas/60)*deltat
-        delta_fuel = (fuel_flow/60)*deltat
+        delta_time = altitude_step/rate_of_climb
+        time = time + delta_time
+        distance = distance + (V_tas/60)*delta_time
+        delta_fuel = (fuel_flow/60)*delta_time
         fuel = fuel+delta_fuel
         mass = mass-delta_fuel
-        altitude = altitude + step
+        altitude = altitude + altitude_step
     
-    final_altitude = altitude - step
-    print('buffet altitude',buffet_altitude_limit)
+        specific_rate = V_tas/fuel_flow
+        if specific_rate>optimum_specific_rate:
+            optimum_specific_rate = specific_rate
+            optimum_altitude = altitude
+
+    
+    final_altitude = altitude - altitude_step
+    
     if buffet_altitude_limit < final_altitude:
         final_altitude = buffet_altitude_limit
-        
-    return final_altitude, rate_of_climb
+    
+    optimum_altitude = final_altitude
+    return optimum_altitude,rate_of_climb,optimum_specific_rate
 
 
 ########################################################################################
@@ -147,7 +165,7 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
 # climb_mach = 0.78
 # delta_ISA = 0
 
-# altitude,roc =  maximum_altitude(initial_altitude,limit_altitude,mass,
+# optimum_altitude,rate_of_climb,optimum_specific_rate =  maximum_altitude(initial_altitude,limit_altitude,mass,
 #     climb_V_cas,climb_mach,delta_ISA)
 
-# print(altitude,roc)
+# print(optimum_altitude,rate_of_climb,optimum_specific_rate)
