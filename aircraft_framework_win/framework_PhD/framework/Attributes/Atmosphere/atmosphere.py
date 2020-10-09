@@ -80,7 +80,7 @@ def atmosphere(h):
 
     gamma = 1.4
 
-    a = np.sqrt(gamma*R*T)
+    a = np.sqrt(gamma*R*T0)
 
     return T,p,rho,a
 ########################################################################################

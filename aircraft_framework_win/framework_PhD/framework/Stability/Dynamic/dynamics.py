@@ -27,6 +27,10 @@ from framework.baseline_aircraft_GNBA import baseline_aircraft
 from framework.Stability.Dynamic.skew import skew
 from framework.Stability.Dynamic.aero_loads import aero_loads
 from framework.Stability.Dynamic.prop_loads import prop_loads 
+from framework.Attributes.Atmosphere.atmosphere import atmosphere
+
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -34,16 +38,19 @@ from framework.Stability.Dynamic.prop_loads import prop_loads
 ########################################################################################
 """FUNCTIONS"""
 ########################################################################################
-def dynamics(state,control,t):
+# def dynamics(state,t,control1,control2,control3,control4,control5,control6):
+def dynamics(t,state,control):
 
     aircraft_data = baseline_aircraft()
+
+    # control = [control1,control2,control3,control4,control5,control6]
 
     #X       = [V alpha q theta H x beta phi p r psi y].'
     V        = state[0]
     alpha_deg= state[1]
     q_deg_s  = state[2]
     theta_deg= state[3]
-    H        = state[4]
+    h        = state[4]
     x        = state[5]
     beta_deg = state[6]
     phi_deg  = state[7]
@@ -93,6 +100,7 @@ def dynamics(state,control,t):
     Fprop_b,Mprop_O_b,Yprop = prop_loads(state,control)
     
     ## -----------Termos restantes das equações do movimento------------------#
+
     eq_F     = -(m*skew(omega_b).dot(V_b) - m*skew(omega_b).dot(skew(rC_b)).dot(omega_b)) + Faero_b.T + Fprop_b + m*g_b
     eq_M     = -(skew(omega_b).dot(J_O_b).dot(omega_b) + m*skew(rC_b).dot(skew(omega_b)).dot(V_b)) + Maero_O_b.T + Mprop_O_b + m*skew(rC_b).dot(g_b)
 
@@ -108,9 +116,9 @@ def dynamics(state,control,t):
 
     edot = (np.linalg.inv(Mgen)).dot(V_FM)
 
-    u_dot    = edot[1]
-    v_dot    = edot[2]
-    w_dot    = edot[3]
+    u_dot    = edot[0]
+    v_dot    = edot[1]
+    w_dot    = edot[2]
 
     Vdot     = ((V_b.T).dot(edot[0:3]))/V
 
@@ -129,31 +137,34 @@ def dynamics(state,control,t):
     dReodt   = (C_bv.T).dot(V_b)
 
     # -----------------------------Fator de Carga----------------------------#
-    n_C_b    = -1/(m*g)*(Faero_b + Fprop_b)
-    r_pilot_b= aircraft.r_pilot_b
-    n_pilot_b= n_C_b + -1/g*(skew(edot[4:6])*(r_pilot_b-rC_b)+skew(omega_b)*skew(omega_b)*(r_pilot_b-rC_b))
+    n_C_b    = -1/(m*g)*(Faero_b.T + Fprop_b)
+    r_pilot_b= aircraft_data['r_pilot_b']
+    n_pilot_b= n_C_b + -1/g*(skew(edot[3:6]).dot(r_pilot_b-rC_b) + skew(omega_b).dot(r_pilot_b-rC_b))
 
-    # ## ---------------------------Pressão Dinâmica----------------------------#
-    # [rho,~,~,a]               = ISA(H)
-    # Mach     = V/a
-    # q_bar    = 0.5*rho*V^2
+    ## ---------------------------Pressão Dinâmica----------------------------#
+    ft_to_m = 0.3048
+    _,_,rho,a  = atmosphere(h/ft_to_m)
+    Mach     = V/a
+    q_bar    = 0.5*rho*V**2
 
-    # ## ------------------------------Saída------------------------------------#
-    # p_deg_dot= radtodeg(edot(4))
-    # q_deg_dot= radtodeg(edot(5))
-    # r_deg_dot= radtodeg(edot(6))
-    # alpha_dot= radtodeg((u*w_dot-w*u_dot)/(u^2+w^2))
-    # beta_dot = radtodeg((V*v_dot-v*Vdot)/(V*sqrt(u^2+w^2)))
-    # phi_dot  = radtodeg(Phi_dot_rad(1))
-    # theta_dot= radtodeg(Phi_dot_rad(2))
-    # psi_dot  = radtodeg(Phi_dot_rad(3))
-    # H_dot    = -dReodt(3) 
-    # V_dot    = Vdot
-    # x_dot    = dReodt(1)
-    # y_dot    = dReodt(2)
-    # Xdot     = [V_dot alpha_dot q_deg_dot theta_dot H_dot x_dot beta_dot phi_dot p_deg_dot r_deg_dot psi_dot y_dot].'
-    # Y        = [n_pilot_b n_C_b Mach q_bar Yaero Ypropbeta_deg]
-    return
+    ## ------------------------------Saída------------------------------------#
+    p_deg_dot= np.rad2deg(edot[3])
+    q_deg_dot= np.rad2deg(edot[4])
+    r_deg_dot= np.rad2deg(edot[5])
+    alpha_dot= np.rad2deg((u*w_dot-w*u_dot)/(u**2+w**2))
+
+    # print((u*w_dot-w*u_dot))
+    beta_dot = np.rad2deg((V*v_dot-v*Vdot)/(V*np.sqrt(u**2+w**2)))
+    phi_dot  = np.rad2deg(Phi_dot_rad[0])
+    theta_dot= np.rad2deg(Phi_dot_rad[1])
+    psi_dot  = np.rad2deg(Phi_dot_rad[2])
+    H_dot    = -dReodt[2] 
+    V_dot    = Vdot
+    x_dot    = dReodt[0]
+    y_dot    = dReodt[1]
+    Xdot     = [V_dot, alpha_dot, q_deg_dot, theta_dot, H_dot, x_dot, beta_dot, phi_dot, p_deg_dot, r_deg_dot, psi_dot, y_dot]
+    Y        = [n_pilot_b, n_C_b, Mach, q_bar, Yaero, Yprop, beta_deg]
+    return Xdot
 ########################################################################################
 """MAIN"""
 ########################################################################################
@@ -163,26 +174,43 @@ def dynamics(state,control,t):
 ########################################################################################
 global g
 g = 9.8067
-state = [    265.1970,
-   -0.8608,
-   -0.0556,
-   -2.6389,
-    11581.7862,
-    132.6543,
-   -2.6632,
-    29.1633,
-    3.8677,
-    0.2369,
-    1.9661,
-   -0.0143]
+# state0 = [    265.1970,
+#    -0.8608,
+#    -0.0556,
+#    -2.6389,
+#     11581.7862,
+#     132.6543,
+#    -2.6632,
+#     29.1633,
+#     3.8677,
+#     0.2369,
+#     1.9661,
+#    -0.0143]
 
 
-control = [0,
-         0,
-    0.5318,
-         0,
-   -0.0823,
-    0.1392]
+# control = (67307,
+#          67307,
+#     0.5318,
+#          0,
+#    -0.0823,
+#     0.1392)
 
-t = 0.5
-dynamics(state,control,t)
+# # t = 0.5
+# # X_dot,Y = dynamics(state,control,t)
+
+# # print(Y)
+
+
+# # state0 = [2.0, 0.0]
+# t = np.arange(0.0, 5.0, 0.001)
+
+# K = 1
+# state = odeint(dynamics, state0, t,args=(control))
+
+# plt.plot(t, state)
+# # xlabel('TIME (sec)')
+# # ylabel('STATES')
+# # title('Mass-Spring System')
+# # legend(('$x$ (m)', '$\dot{x}$ (m/sec)'))
+
+# plt.show()

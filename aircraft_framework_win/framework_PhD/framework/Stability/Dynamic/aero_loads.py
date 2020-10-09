@@ -32,6 +32,10 @@ from framework.Attributes.Atmosphere.atmosphere import atmosphere
 """FUNCTIONS"""
 ########################################################################################
 def aero_loads(state,control):
+
+    # state =state.squeeze().T
+    # control = control.squeeze().T
+
     aircraft_data = baseline_aircraft()
 
     V        = state[0]
@@ -65,7 +69,7 @@ def aero_loads(state,control):
 
     ## ----------------------Matriz de Transformação--------------------------#
     C_alpha = Cmat(2,np.deg2rad(alpha_deg))
-    C_beta = Cmat(3,np.deg2rad(beta_deg))
+    C_beta = Cmat(3,np.deg2rad(-beta_deg))
     # C_ba   = C_alpha*C_beta
     C_ba   = C_alpha.dot(C_beta)
 
@@ -143,7 +147,9 @@ def aero_loads(state,control):
 
     ## --------------------------Forças Aerodinâmicas-------------------------#
     # Faero_b = C_ba*np.array([[-D],[-Y],[-La]])
-    Faero_b = C_ba.dot(np.array([[-D],[-Y],[-La]]))
+
+    # print(C_ba)
+    Faero_b = C_ba.dot(np.array([-D,-Y,-La]))
 
     ## -------------------------Momentos Aerodinâmicos------------------------#
     Maero_O_b = np.array([[L],[M],[N]])
@@ -173,7 +179,7 @@ def aero_loads(state,control):
 #            0,
 #            0]
 
-# controls = [0.0020,    0.0020,    0.1417,         0,    0.0103,   -0.0338]
+# control = [0.0020,    0.0020,    0.1417,         0,    0.0103,   -0.0338]
 # Faero_b,Maero_O_b,Yaero = aero_loads(state,control)
 
 # print(Faero_b)

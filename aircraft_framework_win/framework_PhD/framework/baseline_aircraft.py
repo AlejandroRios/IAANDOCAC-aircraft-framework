@@ -106,7 +106,7 @@ def baseline_origin_airport():
     airport = {}
     airport['takeoff_field_length'] = 2500 # [m]
     airport['landing_field_length'] = 2000 # [m]
-    airport['elevation'] = 2500*3.28084 # [m]
+    airport['elevation'] = 0*3.28084 # [m]
     airport['delta_ISA'] = 19.95 # [deg C]
 
     return airport

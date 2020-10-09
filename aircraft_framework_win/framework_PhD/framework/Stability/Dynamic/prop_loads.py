@@ -30,6 +30,9 @@ import numpy as np
 """FUNCTIONS"""
 ########################################################################################
 def prop_loads(state,control): 
+
+    # state =state.squeeze().T
+    # control = control.squeeze().T
     Tle                     = control[0]
     Tre                     = control[1]
 
@@ -78,7 +81,7 @@ def prop_loads(state,control):
 
 
     ## ---------------------------------Saidas--------------------------------#
-    Yprop                   = np.array([F_esq, F_dir, M_esq, M_dir, Tl, Tr])
+    Yprop                   = np.array([F_esq.T, F_dir.T, M_esq.T, M_dir.T, Tl.T, Tr.T])
     return Fprop_b,Mprop_O_b,Yprop
 ########################################################################################
 """MAIN"""

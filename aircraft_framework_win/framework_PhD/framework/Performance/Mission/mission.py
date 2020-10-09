@@ -27,7 +27,8 @@ from framework.Sizing.performance_constraints import regulated_takeoff_weight, r
 from framework.baseline_aircraft import baseline_aircraft,baseline_origin_airport,baseline_destination_airport
 
 from framework.Performance.Analysis.mission_altitude import maximum_altitude, optimum_altitude
-
+from framework.Performance.Analysis.climb_integration import climb_integration
+from framework.Performance.Analysis.maximum_range_cruise import maximum_range_mach
 import math
 ########################################################################################
 "CLASSES"
@@ -37,7 +38,7 @@ import math
 """FUNCTIONS"""
 ########################################################################################
 gallon_to_liter = 3.7852
-
+tolerance = 100
 aircraft_data = baseline_aircraft()
 
 
@@ -128,13 +129,51 @@ while f == 0:
             final_altitude = flight_level*100
 
         # Initial climb fuel estimation
+        initial_altitude = initial_altitude + 1500
+        _,_,total_burned_fuel0,_ = climb_integration(maximum_takeoff_mass,climb_mach,climb_V_cas,delta_ISA,final_altitude,initial_altitude)
+
+        # Calculate best cruise mach
+        mass_at_top_of_climb = maximum_takeoff_mass - total_burned_fuel0
+        cruise_mach = maximum_range_mach(mass_at_top_of_climb,final_altitude,delta_ISA)
+        climb_mach = cruise_mach
+        descent_mach = cruise_mach
+
+        # Recalculate climb with new mach 
+        final_distance,total_climb_time,total_burned_fuel,final_altitude = climb_integration(maximum_takeoff_mass,climb_mach,climb_V_cas,delta_ISA,final_altitude,initial_altitude)
+
+        delta = total_burned_fuel0 - total_burned_fuel
+
+        if delta<tolerance:
+            out = 1
+
+    mass_at_top_of_climb = maximum_takeoff_mass - total_burned_fuel
+
+    initial_cruise_altitude = final_altitude
+
+
+
 
         
 
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+    
             
 
 
-
+        # print(total_burned_fuel)
 
 
 

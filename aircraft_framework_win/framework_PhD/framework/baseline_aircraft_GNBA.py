@@ -85,6 +85,7 @@ def baseline_aircraft():
     aircraft['yCG'] = 0
     aircraft['zCG'] = 0
     aircraft['CG_position'] = np.array([aircraft['xCG'],aircraft['yCG'],aircraft['zCG']]).transpose()
+    aircraft['r_pilot_b'] = np.array([0,0,0])
 
     return aircraft
 
