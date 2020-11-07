@@ -150,6 +150,27 @@ while f == 0:
 
     initial_cruise_altitude = final_altitude
 
+    delta_cruise = aircraft_data['range'] - final_distance
+
+    flag = 1
+
+    while flag == 1:
+
+        transition_altitude = crossover_altitude(cruise_mach,cruise_V_cas,delta_ISA)
+        _,_,_,_,_,rho_ISA,_  = atmosphere_ISA_deviation(initial_cruise_altitude,delta_ISA)
+
+        if altitude <= 10000:
+            mach = V_cas_to_mach(250,altitude,delta_ISA)
+        
+        if (altitude > 10000 and altitude <= transition_altitude):
+            mach = V_cas_to_mach(cruise_V_cas,altitude,delta_ISA)
+
+        if altitude > transition_altitude:
+            mach = cruise_mach
+        
+        
+
+
 
 
 
