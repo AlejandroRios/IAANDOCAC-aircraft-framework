@@ -28,8 +28,16 @@ from framework.baseline_aircraft import baseline_aircraft,baseline_origin_airpor
 
 from framework.Performance.Analysis.mission_altitude import maximum_altitude, optimum_altitude
 from framework.Performance.Analysis.climb_integration import climb_integration
+from framework.Performance.Analysis.descent_integration import descent_integration
 from framework.Performance.Analysis.maximum_range_cruise import maximum_range_mach
+from framework.Performance.Analysis.cruise_performance import cruise_performance
+
+from framework.Attributes.Airspeed.airspeed import V_cas_to_mach, mach_to_V_cas, crossover_altitude
+from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 import math
+
+import matplotlib.pyplot as plt
+import numpy as np
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -38,7 +46,9 @@ import math
 """FUNCTIONS"""
 ########################################################################################
 gallon_to_liter = 3.7852
+feet_to_nautical_miles = 0.000164579
 tolerance = 100
+
 aircraft_data = baseline_aircraft()
 
 
@@ -48,7 +58,7 @@ heading = 2
 buffet_margin = 1.3 # [g]
 residual_rate_of_climb = 300 # [ft/min]
 ceiling = 41000 # [ft] UPDATE INPUT!!!!!!!!!
-
+descent_altitude = 1500
 # Network and mission parameters
 holding_time = 30 # [min]
 fuel_density = 0.81 # [kg/l]
@@ -91,10 +101,10 @@ while f == 0:
     while out == 0:
 
         # Maximum altitude calculation
-        maximum_altitude, rate_of_climb = maximum_altitude(initial_altitude,ceiling,maximum_takeoff_mass,
+        max_altitude, rate_of_climb = maximum_altitude(initial_altitude,ceiling,maximum_takeoff_mass,
         climb_V_cas,climb_mach,delta_ISA)
         # Optimal altitude calculation
-        optimum_altitude,rate_of_climb,optimum_specific_rate = optimum_altitude(initial_altitude,ceiling,maximum_takeoff_mass,
+        optim_altitude,rate_of_climb,optimum_specific_rate = optimum_altitude(initial_altitude,ceiling,maximum_takeoff_mass,
         climb_V_cas,climb_mach,delta_ISA)
         # Maximum altitude with minimum cruise time check
         g_climb = 4/1000
@@ -102,16 +112,16 @@ while f == 0:
         K1 = g_climb + g_descent
         minimum_cruise_time = 10*cruise_mach*minimum_cruise_time
         K2 = aircraft_data['range'] - minimum_cruise_time + g_climb*(baseline_origin_airport['elevation'] + 1500) + g_descent*(baseline_destination_airport['elevation'] + 1500)
-        maximum_altitude_check = K2/K1
+        max_altitude_check = K2/K1
 
-        if maximum_altitude_check>ceiling:
-            maximum_altitude_check = ceiling
-        if maximum_altitude>maximum_altitude_check:
-            maximum_altitude = maximum_altitude_check
-        if optimum_altitude<maximum_altitude:
-            final_altitude = optimum_altitude
+        if max_altitude_check>ceiling:
+            max_altitude_check = ceiling
+        if max_altitude>max_altitude_check:
+            max_altitude = max_altitude_check
+        if optim_altitude<max_altitude:
+            final_altitude = optim_altitude
         else:
-            final_altitude = maximum_altitude
+            final_altitude = max_altitude
 
         'TODO: this should be replaced for information from ADS-B ' 
         # Check for next lower feasible RVSN FK check according to present heading
@@ -150,8 +160,11 @@ while f == 0:
 
     initial_cruise_altitude = final_altitude
 
-    delta_cruise = aircraft_data['range'] - final_distance
+    distance_climb = (final_distance*feet_to_nautical_miles)
 
+    distance_cruise = aircraft_data['range'] - distance_climb
+    
+    altitude = initial_cruise_altitude
     flag = 1
 
     while flag == 1:
@@ -167,6 +180,65 @@ while f == 0:
 
         if altitude > transition_altitude:
             mach = cruise_mach
+
+        # Breguet calculation type for cruise performance
+        total_cruise_time,final_cruise_mass = cruise_performance(altitude,delta_ISA,mach,mass_at_top_of_climb,distance_cruise)
+
+        final_cruise_altitude = altitude
+        
+        # Type of descent: 1 = full calculation | 2 = no descent computed
+        type_of_descent = 1
+
+        if type_of_descent == 1:
+
+             # Recalculate climb with new mach 
+            final_distance,total_descent_time,total_burned_fuel,final_altitude = descent_integration(final_cruise_mass,descent_mach,descent_V_cas,delta_ISA,descent_altitude,final_cruise_altitude)
+            distance_descent = (final_distance*feet_to_nautical_miles)
+            distance_mission = distance_climb + distance_cruise + distance_descent
+            distance_error = np.abs(aircraft_data['range']-distance_mission)
+
+            if distance_error <= 1.0:
+                flag = 0
+            else:
+                distance_cruise = distance_cruise - distance_error
+
+        if type_of_descent == 2:
+            flag = 0
+            total_burned_fuel = 0
+            final_distance = 0
+            total_decent_time = 0
+            total_burned_fuel = 0
+            final_altitude = 0
+
+    final_mission_mass = final_cruise_mass - total_burned_fuel
+    total_mission_burned_fuel = maximum_takeoff_mass - final_mission_mass
+    total_mission_flight_time = total_climb_time + total_cruise_time + total_descent_time
+
+    
+    print('========================================================================================')
+    print('Cruise distance [nautical miles]:', distance_mission)
+    print('----------------------------------------------------------------------------------------')
+    print('Initial mission mass [Kg]:', maximum_takeoff_mass)
+    print('----------------------------------------------------------------------------------------')
+    print('Final mission mass [Kg]:', final_mission_mass)
+    print('----------------------------------------------------------------------------------------')
+    print('Fuel burned during mission [Kg]:', total_mission_burned_fuel)
+    print('----------------------------------------------------------------------------------------')
+    print('Flight time [min]:', total_mission_flight_time)
+    print('========================================================================================')
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         
 

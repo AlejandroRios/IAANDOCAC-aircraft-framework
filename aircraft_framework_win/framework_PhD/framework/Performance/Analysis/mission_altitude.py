@@ -67,7 +67,7 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb,V_tas,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -89,7 +89,7 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position)
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb,V_tas,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -114,7 +114,7 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position)
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb,V_tas,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -162,7 +162,7 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb,V_tas,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -189,7 +189,7 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position)
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb,V_tas,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -218,7 +218,7 @@ def optimum_altitude(initial_altitude,limit_altitude,mass,
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position)
         thrust_to_weight = number_engines*thrust_force/(mass*gravity)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb,V_tas,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time

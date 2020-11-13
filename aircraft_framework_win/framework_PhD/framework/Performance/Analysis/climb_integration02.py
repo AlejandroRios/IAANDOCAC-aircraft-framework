@@ -29,9 +29,9 @@ from framework.baseline_aircraft import baseline_aircraft
 
 import numpy as np
 from scipy.integrate import odeint
-from scipy.integrate import ode
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
+from scipy.integrate import ode
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -49,7 +49,7 @@ def climb_integration(mass,climb_mach,climb_V_cas,delta_ISA,final_altitude,initi
 
     transition_altitude = crossover_altitude(climb_mach,climb_V_cas,delta_ISA)
 
-    time = 0
+    # time = 0
     distance = 0
     fuel1 = 0
     fuel2 = 0
@@ -80,110 +80,82 @@ def climb_integration(mass,climb_mach,climb_V_cas,delta_ISA,final_altitude,initi
     if flag1 == 1:
 
         # Climb to 10000 ft with 250 KCAS
-        if final_altitude <= 11000:
-            final_block_altitude  = final_altitude
-        else:
-            final_block_altitude  = 11000
 
-        initial_block_distance = 0
-        initial_block_altitude = 0
+        if final_altitude <= 11000:
+            block_final_altitude = final_altitude
+        else:
+            block_final_altitude = 11000
+
         initial_block_mass = mass
         initial_block_time = 0
 
-        final_block_distance,final_block_altitude,final_block_mass,final_block_time = climb_integrator(initial_block_distance,initial_block_altitude,initial_block_mass,initial_block_time,final_block_altitude,climb_V_cas,climb_mach,delta_ISA)
+        altitude = 0
+        delta_ISA = 0
 
-        burned_fuel = initial_block_mass - final_block_mass
-        climb_time = final_block_time - initial_block_time
-        total_burned_fuel.append(burned_fuel)
-        total_climb_time.append(climb_time)
+        # if climb_V_cas > 0:
+        #     mach = V_cas_to_mach(climb_V_cas,altitude,delta_ISA)
+        # else:
+        #     mach = climb_mach
+            
+        # thrust_force,_ = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
+        # thrust_to_weight = number_engines*thrust_force/(mass*gravity)
+        # rate_of_climb,_,_ = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,initial_block_mass,aircraft_data)
 
+        # time_to_altitude = block_final_altitude/rate_of_climb
+        # time_interval = np.linspace(0,time_to_altitude[0])
+        # state0 = [0.0,0.0,mass]
+        # solve ODE
+        t0 = 0.0
+        z0 = [0.0,0.0,mass]
+        solver = ode(climb)
+        solver.set_integrator('dopri5')
+        solver.set_f_params(climb_V_cas,climb_mach,delta_ISA)
+        solver.set_initial_value(z0, t0)
 
-    if flag2 == 1:
+        t0 = 0.0
+        t1 = 5
+        # N = 50
+        t = np.linspace(t0, t1)
+        N = len(t)
+        sol = np.empty((N, 3))
+        sol[0] = z0
+        times = np.empty((N, 1))
 
-        initial_block_distance = final_block_distance
-        initial_block_altitude = final_block_altitude
-        initial_block_mass = final_block_mass
-        initial_block_time = final_block_time
+        # Repeatedly call the `integrate` method to advance the
+        # solution to time t[k], and save the solution in sol[k].
+        k = 1
+        import time
+        tic = time.perf_counter()
 
-        final_block_altitude = transition_altitude
+        while solver.successful() and solver.y[1] <= 10000:
+            solver.integrate(t[k])
+            sol[k] = solver.y
+            times[k] = solver.t
+            k += 1
+        toc = time.perf_counter()
 
-        final_block_distance,final_block_altitude,final_block_mass,final_block_time = climb_integrator(initial_block_distance,initial_block_altitude,initial_block_mass,initial_block_time,final_block_altitude,climb_V_cas,climb_mach,delta_ISA)
-
-        burned_fuel = initial_block_mass - final_block_mass
-        climb_time = final_block_time - initial_block_time
-        total_burned_fuel.append(burned_fuel)
-        total_climb_time.append(climb_time)
-        # plt.plot(time_interval,state[:,1])
-
-
-    if flag3 == 1:
-        
-        initial_block_distance = final_block_distance
-        initial_block_altitude = final_block_altitude
-        initial_block_mass = final_block_mass
-        initial_block_time = final_block_time
-
-        final_block_altitude = final_altitude
-
-
-        final_block_distance,final_block_altitude,final_block_mass,final_block_time = climb_integrator(initial_block_distance,initial_block_altitude,initial_block_mass,initial_block_time,final_block_altitude,climb_V_cas,climb_mach,delta_ISA)
-
-        burned_fuel = initial_block_mass - final_block_mass
-
-        climb_time = final_block_time - initial_block_time
-        total_burned_fuel.append(burned_fuel)
-        total_climb_time.append(climb_time)
-        
-        # plt.plot(time_interval,state[:,1])
-        
-    final_altitude = final_block_altitude
-
-    final_distance = final_block_distance
-    total_burned_fuel = sum(total_burned_fuel)
-    total_climb_time = sum(total_climb_time)
-
-    return final_distance,total_climb_time,total_burned_fuel,final_altitude
+        print('exec time:', (toc - tic))
 
 
-def climb_integrator(initial_block_distance,initial_block_altitude,initial_block_mass,initial_block_time,final_block_altitude,climb_V_cas,climb_mach,delta_ISA):
-    t0 = initial_block_time
-    z0 = [initial_block_distance,initial_block_altitude,initial_block_mass]
-    solver = ode(climb)
-    solver.set_integrator('dopri5')
-    solver.set_f_params(climb_V_cas,climb_mach,delta_ISA)
-    solver.set_initial_value(z0, t0)
+        # time = times[0:k]
+        # distance = sol[0:k,0]
+        # altitude = sol[0:k,1]
+        # weight = sol[0:k,2]
+        # # print(time)
+        # # print(altitude[0:k])
+        # # print(weight)
+        # # print(k)
 
-    t0 = initial_block_time
-    t1 = 50
-    # N = 50
-    t = np.linspace(t0, t1)
-    N = len(t)
-    sol = np.empty((N, 3))
-    sol[0] = z0
-    times = np.empty((N, 1))
-
-    # Repeatedly call the `integrate` method to advance the
-    # solution to time t[k], and save the solution in sol[k].
-    k = 1
+        # # plt.plot(time, distance, label='x')
+        # plt.plot(time,altitude, label='y')
+        # # plt.plot(time,weight, label='y')
+        # plt.xlabel('t')
+        # plt.grid(True)
+        # plt.legend()
+        # plt.show()
 
 
-    while solver.successful() and solver.y[1] <= final_block_altitude:
-        solver.integrate(t[k])
-        sol[k] = solver.y
-        times[k] = solver.t
-        k += 1
 
-    
-    distance = sol[0:k,0]
-    altitude = sol[0:k,1]
-    mass = sol[0:k,2]
-    time = times[0:k]
-
-    final_block_distance = distance[-1]
-    final_block_altitude = altitude[-1]
-    final_block_mass = mass[-1]
-    final_block_time = time[-1]
-    return final_block_distance,final_block_altitude,final_block_mass,final_block_time
 
 def climb(time,state,climb_V_cas,climb_mach,delta_ISA):
     distance = state[0]
@@ -212,7 +184,6 @@ def climb(time,state,climb_V_cas,climb_mach,delta_ISA):
     dout=np.array([x_dot, h_dot, W_dot])
 
     dout = dout.reshape(3,)
-
 
     return dout
 ########################################################################################

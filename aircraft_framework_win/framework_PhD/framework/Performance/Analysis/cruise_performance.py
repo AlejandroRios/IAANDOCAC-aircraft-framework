@@ -1,9 +1,9 @@
 """
-Function  : 
-Title     :
-Written by: 
-Date      : 
-Last edit :
+Function  : cruise_performance.py
+Title     : Cruise performance function
+Written by: Alejandro Rios
+Date      : November/2020
+Last edit : November/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
@@ -23,6 +23,12 @@ TODO's:
 from inspect import isfunction
 import numpy as np 
 from scipy.optimize import fsolve
+
+from framework.Performance.Engine.engine_performance import turbofan
+from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
+from framework.Attributes.Airspeed.airspeed import V_cas_to_mach, mach_to_V_cas,mach_to_V_tas, crossover_altitude
+from framework.baseline_aircraft import baseline_aircraft
+from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 ########################################################################################
 "CLASSES"
 ########################################################################################
@@ -30,28 +36,88 @@ from scipy.optimize import fsolve
 ########################################################################################
 """FUNCTIONS"""
 ########################################################################################
-def cruise_performance(R,mass_0,TSFC,V):
+def cruise_performance(altitude,delta_ISA,mach,mass,distance_cruise):
+    aircraft_data = baseline_aircraft()
+    n = 10
+    step_cruise = distance_cruise/n
+    distance = 0
+    time_cruise = 0
+    mass_fuel_cruise = 0
 
-    knot_to_ms = 0.514444
+    V_tas = mach_to_V_tas(mach,altitude,delta_ISA)
+
+    for i in range(n):
+
+        TSFC,L_over_D,fuel_flow,throttle_position = specific_fuel_consumption(aircraft_data,mach,altitude,delta_ISA,mass)
+
+        mass_fuel,time= mission_segment(mass,step_cruise,L_over_D,TSFC,V_tas)
+        
+        time_cruise = time_cruise + time
+
+        mass_fuel_cruise = mass_fuel_cruise + mass_fuel
+
+    
+    final_mass = mass - mass_fuel_cruise
+    # print(final_mass)
+
+    return time_cruise,final_mass
+
+def specific_fuel_consumption(aircraft_data,mach,altitude,delta_ISA,mass):
+    knots_to_meters_second = 0.514444
+    wing_surface = aircraft_data['wing_surface']
+    number_engines = aircraft_data['number_of_engines']
+
+    V_tas = mach_to_V_tas(mach,altitude,delta_ISA)
+    _,_,_,_,_,rho_ISA,_ = atmosphere_ISA_deviation(altitude,delta_ISA)
+   
+    CL_required = (2*mass*gravity)/(rho_ISA*((knots_to_meters_second*V_tas)**2)*wing_surface)
+    phase = 'cruise'
+    CD = zero_fidelity_drag_coefficient(aircraft_data,CL_required,phase)
+    L_over_D = CL_required/CD
+    throttle_position = 0.6
+
+    thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
+
+    FnR = mass*gravity/L_over_D
+
+    step_throttle = 0.01
+    throttle_position = 0.6
+    total_thrust_force = 0
+
+    while (total_thrust_force<FnR and throttle_position<=1):
+        thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
+        TSFC = (fuel_flow*gravity)/thrust_force
+        total_thrust_force = number_engines*thrust_force
+        throttle_position = throttle_position+step_throttle
+    
+    L_over_D = CL_required/CD
+
+    return TSFC,L_over_D,fuel_flow,throttle_position
+
+def mission_segment(mass_0,step_cruise,L_over_D,TSFC,V_tas):
+    knots_to_meters_second = 0.514444
+    second_to_miniute = 0.01667
     fixedW = mass_0#  [kg]
-    R = R*1852 # convert 600 nmi to m [m]
-    L_over_D = 13.9
+    R = step_cruise*1852 # convert 600 nmi to m [m]
+
+
     # TSFC = TSFC*gravity*(1/3600) # 1/s
     TSFC = TSFC*(1/3600) # 1/s
-    eta_prop = 0.8 
-    V = V*knot_to_ms # [kt]
+    # eta_prop = 0.8 
+
+    
+    V = V_tas*knots_to_meters_second # [kt]
     segments = [breguet('jet','cruise', R, L_over_D, TSFC,V,'false')]
     fuel_safety_margin = 0.06
     FF = (1+fuel_safety_margin)*missionfuelburn(segments)
 
     EWfunc = lambda w0: 3.03*w0**-0.235
-    W0 = fuelfractionsizing(EWfunc,fixedW,FF,'false','false')
-    Wf = FF*W0
-    t = 1/TSFC * L_over_D * np.log(1/segments[0])
+    mass_0 = fuelfractionsizing(EWfunc,fixedW,FF,'false','false')
+    mass_fuel = FF*mass_0
+    time = 1/TSFC * L_over_D * np.log(1/segments[0])
+    return mass_fuel,time*second_to_miniute
 
 
-
-    return FF,W0,t*0.01667,Wf,segments
 def breguet(type, task, E_R_or_frac, LD, SFC, V, eta_p):
 
     if V == "False":
@@ -135,11 +201,11 @@ def missionfuelburn(varargin):
 global gravity
 gravity = 9.80665 
 
-R = 400 # [nmi]
-mass_0 = 50000 # [kg]
-TSFC = 0.51 # [1/hr]
-V = 353.65 # [kts]
-result = cruise_performance(R,mass_0,TSFC,V)
 
-
-print(result)
+# altitude = 39000
+# delta_ISA = 0
+# mach = 0.97
+# mass = 46120
+# distance_cruise = 1476
+# results = cruise_performance(altitude,delta_ISA,mach,mass,distance_cruise)
+# print(results)

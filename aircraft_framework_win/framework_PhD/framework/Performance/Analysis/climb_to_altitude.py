@@ -24,7 +24,7 @@ TODO's:
 ########################################################################################
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Attributes.Atmosphere.atmosphere import atmosphere
-from framework.Attributes.Airspeed.airspeed import mach_to_V_true
+from framework.Attributes.Airspeed.airspeed import mach_to_V_tas
 from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 import numpy as np
 
@@ -48,11 +48,11 @@ def rate_of_climb_calculation(thrust_to_weight,h,delta_ISA,mach,mass,aircraft_da
 
     phase = "climb"
 
-    V_true = mach_to_V_true(mach,h,delta_ISA)
+    V_tas = mach_to_V_tas(mach,h,delta_ISA)
 
     _,_,_,_,_,rho_ISA,_  = atmosphere_ISA_deviation(h,delta_ISA)
 
-    CL = (2*mass*gravity)/(rho_ISA*((V_true*knots_to_meters_second)**2)*wing_surface)
+    CL = (2*mass*gravity)/(rho_ISA*((V_tas*knots_to_meters_second)**2)*wing_surface)
 
     CD = zero_fidelity_drag_coefficient(aircraft_data,CL,phase)
 
@@ -64,8 +64,8 @@ def rate_of_climb_calculation(thrust_to_weight,h,delta_ISA,mach,mass,aircraft_da
     else:
         _,acceleration_factor = acceleration_factor_calculation(h,delta_ISA,mach)
         climb_path_angle = np.arcsin((thrust_to_weight - 1/(L_to_D))/(1 + acceleration_factor))
-    rate_of_climb = knots_to_feet_minute * V_true * np.sin(climb_path_angle)
-    return rate_of_climb, V_true
+    rate_of_climb = knots_to_feet_minute * V_tas * np.sin(climb_path_angle)
+    return rate_of_climb, V_tas, climb_path_angle
 
 
 def acceleration_factor_calculation(h,delta_ISA,mach):

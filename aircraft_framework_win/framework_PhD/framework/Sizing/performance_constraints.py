@@ -25,7 +25,7 @@ from framework.Performance.Analysis.landing_field_length import landing_field_le
 from framework.Performance.Analysis.second_segment_climb import second_segment_climb
 from framework.Performance.Analysis.missed_approach_climb import missed_approach_climb_AEO, missed_approach_climb_OEI
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
-
+from framework.Performance.Analysis.cruise_performance import cruise_performance
 from framework.baseline_aircraft import *
 ########################################################################################
 "CLASSES"
@@ -189,9 +189,9 @@ second_segment_climb_weight =  second_segment_climb_check(aircraft_data,airport_
 print('weight second segment requirement:',second_segment_climb_weight/gravity)
 
 maximum_takeoff_weight = min(takeoff_field_length_weight,second_segment_climb_weight)
-print('========================================')
-print('MTOW:', maximum_takeoff_weight/gravity)
-print('========================================')
+print('========================================================================================')
+print('MTOW [kg]:', maximum_takeoff_weight/gravity)
+print('========================================================================================')
 
 airport_data = baseline_origin_airport()
 aircraft_data = baseline_aircraft()
@@ -209,6 +209,6 @@ missed_approach = missed_approach_climb_check(aircraft_data,airport_data,maximum
 print('weight missed approach:',missed_approach/gravity)
 
 maximum_landing_weight = min(landing_field_length_weight,landing_climb,missed_approach)
-print('========================================')
-print('MLW:', maximum_landing_weight/gravity)
-print('========================================')
+print('========================================================================================')
+print('MLW [kg]:', maximum_landing_weight/gravity)
+print('========================================================================================')

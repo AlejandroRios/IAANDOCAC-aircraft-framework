@@ -21,7 +21,7 @@ TODO's:
 "IMPORTS"
 ########################################################################################
 from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
-from framework.Attributes.Airspeed.airspeed import V_cas_to_V_true, mach_to_V_true
+from framework.Attributes.Airspeed.airspeed import V_cas_to_V_tas, mach_to_V_tas
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 
@@ -41,6 +41,7 @@ global gravity
 gravity = 9.80665
 
 def maximum_range_mach(mass,cruise_altitude,delta_ISA):
+    knots_to_meters_second = 0.514444
     aircraft_data = baseline_aircraft()
     wing_surface = aircraft_data['wing_surface']
 
@@ -49,17 +50,19 @@ def maximum_range_mach(mass,cruise_altitude,delta_ISA):
     mach_maximum_operating = 0.82 
 
 
-    VMO = V_cas_to_V_true(VMO-10,altitude,delta_ISA)
+    VMO = V_cas_to_V_tas(VMO-10,altitude,delta_ISA)
 
     initial_mach = 0.2
 
-    mach = np.linspace(initial_mach,2,100)
+    mach = np.linspace(initial_mach,0.82,100)
 
-    V_tas = mach_to_V_true(mach,altitude,delta_ISA)
+
+    V_tas = mach_to_V_tas(mach,altitude,delta_ISA)
 
     _,_,_,_,_,rho_ISA,a = atmosphere_ISA_deviation(altitude,delta_ISA)
+    
 
-    CL_required = (2*mass*gravity)/(rho_ISA*V_tas*V_tas*wing_surface)
+    CL_required = (2*mass*gravity)/(rho_ISA*((knots_to_meters_second*V_tas)**2)*wing_surface)
 
     phase = 'cruise'
 
@@ -71,7 +74,7 @@ def maximum_range_mach(mass,cruise_altitude,delta_ISA):
 
     mach_maximum_cruise = mach[index]
 
-    V_maximum = mach_to_V_true(mach_maximum_cruise,altitude,delta_ISA)
+    V_maximum = mach_to_V_tas(mach_maximum_cruise,altitude,delta_ISA)
 
     if V_maximum > VMO:
         V_maximum = VMO
