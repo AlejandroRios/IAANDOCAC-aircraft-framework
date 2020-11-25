@@ -1,7 +1,7 @@
 """
-Function  : performance_constraints.py
-Title     : Performance constraints
-Written by: Alejandro Rios
+File name : Performance constraints
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python
@@ -153,7 +153,7 @@ def regulated_takeoff_weight():
     return maximum_takeoff_weight/gravity # [Kg]
 
 def regulated_landing_weight():
-    maximum_takeoff_weight = regulated_takeoff_weight()
+    maximum_takeoff_weight = regulated_takeoff_weight() * gravity
 
     airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
@@ -178,37 +178,37 @@ def regulated_landing_weight():
 ########################################################################################
 global gravity
 gravity = 9.80665 
-airport_data = baseline_origin_airport()
-aircraft_data = baseline_aircraft()
-takeoff_field_length_weight = takeoff_field_length_check(aircraft_data,airport_data)
-print('weight BFL requirement:',takeoff_field_length_weight/gravity)
+# airport_data = baseline_origin_airport()
+# aircraft_data = baseline_aircraft()
+# takeoff_field_length_weight = takeoff_field_length_check(aircraft_data,airport_data)
+# print('weight BFL requirement:',takeoff_field_length_weight/gravity)
 
-airport_data = baseline_origin_airport()
-aircraft_data = baseline_aircraft()
-second_segment_climb_weight =  second_segment_climb_check(aircraft_data,airport_data)
-print('weight second segment requirement:',second_segment_climb_weight/gravity)
+# airport_data = baseline_origin_airport()
+# aircraft_data = baseline_aircraft()
+# second_segment_climb_weight =  second_segment_climb_check(aircraft_data,airport_data)
+# print('weight second segment requirement:',second_segment_climb_weight/gravity)
 
-maximum_takeoff_weight = min(takeoff_field_length_weight,second_segment_climb_weight)
-print('========================================================================================')
-print('MTOW [kg]:', maximum_takeoff_weight/gravity)
-print('========================================================================================')
+# maximum_takeoff_weight = min(takeoff_field_length_weight,second_segment_climb_weight)
+# print('========================================================================================')
+# print('MTOW [kg]:', maximum_takeoff_weight/gravity)
+# print('========================================================================================')
 
-airport_data = baseline_origin_airport()
-aircraft_data = baseline_aircraft()
-landing_field_length_weight = landing_field_length_check(aircraft_data,airport_data,maximum_takeoff_weight)
-print('weight landing field requirement:',landing_field_length_weight/gravity)
+# airport_data = baseline_origin_airport()
+# aircraft_data = baseline_aircraft()
+# landing_field_length_weight = landing_field_length_check(aircraft_data,airport_data,maximum_takeoff_weight)
+# print('weight landing field requirement:',landing_field_length_weight/gravity)
 
-airport_data = baseline_origin_airport()
-aircraft_data = baseline_aircraft()
-landing_climb = landing_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
-print('weight landing climb:',landing_climb/gravity)
+# airport_data = baseline_origin_airport()
+# aircraft_data = baseline_aircraft()
+# landing_climb = landing_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
+# print('weight landing climb:',landing_climb/gravity)
 
-airport_data = baseline_origin_airport()
-aircraft_data = baseline_aircraft()
-missed_approach = missed_approach_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
-print('weight missed approach:',missed_approach/gravity)
+# airport_data = baseline_origin_airport()
+# aircraft_data = baseline_aircraft()
+# missed_approach = missed_approach_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
+# print('weight missed approach:',missed_approach/gravity)
 
-maximum_landing_weight = min(landing_field_length_weight,landing_climb,missed_approach)
-print('========================================================================================')
-print('MLW [kg]:', maximum_landing_weight/gravity)
-print('========================================================================================')
+# maximum_landing_weight = min(landing_field_length_weight,landing_climb,missed_approach)
+# print('========================================================================================')
+# print('MLW [kg]:', maximum_landing_weight/gravity)
+# print('========================================================================================')

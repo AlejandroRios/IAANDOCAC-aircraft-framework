@@ -1,7 +1,8 @@
 """
-Function  : airspeed.py
-Title     : Airspeed conversor function
-Written by: Alejandro Rios
+File name : Airspeed conversor function
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python
@@ -21,7 +22,6 @@ Outputs:
     - 
 TODO's:
     - 
-
 """
 ########################################################################################
 "IMPORTS"

@@ -1,7 +1,7 @@
 """
-Function  : second_segment_climb.py
-Title     : Second segment climb function
-Written by: Alejandro Rios
+File name :  Second segment climb function
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python

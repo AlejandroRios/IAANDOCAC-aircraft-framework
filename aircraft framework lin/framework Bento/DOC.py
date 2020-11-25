@@ -94,8 +94,9 @@ def DOC(TBO,Time_Block, Cons_Block, weight_empty_kg,Rangenm,
 
     #3) INSURANCE COST -> Cins (PAG 148)
     # Cins = 0.02 * (DOC) # EQ 5.32 * PAG 117
+    Cins = 0
 
-    # DOCflt    = Ccrew + Cpol + Cins
+    DOCflt    = Ccrew + Cpol + Cins
 
     #==============================#
     #            DOC MAINT         #
@@ -217,7 +218,7 @@ def DOC(TBO,Time_Block, Cons_Block, weight_empty_kg,Rangenm,
     #           TOTAL DOC          #
     #==============================#
 
-    DOCcalc = (Ccrew + Cpol + DOCmaint + DOCdepr + Clf + Cnf) / (1 - (0.02 + frt + 0.07)) # [USD/NM] PAG 155
+    DOCcalc = (DOCflt + DOCmaint + DOCdepr + Clf + Cnf) / (1 - (0.02 + frt + 0.07)) # [USD/NM] PAG 155
     print('DOC = ',DOCcalc, 'USD$/nm ')
     #==============================#
     #       DOC FINANCING          #

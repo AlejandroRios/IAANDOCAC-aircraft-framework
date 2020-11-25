@@ -1,7 +1,8 @@
 """
-Function  : atmosphere.py
-Title     : Atmosphere functions ISA deviation
-Written by: Alejandro Rios
+File name : Atmosphere functions ISA deviation
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python

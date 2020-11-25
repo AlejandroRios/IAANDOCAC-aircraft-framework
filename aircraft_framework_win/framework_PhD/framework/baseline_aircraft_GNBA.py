@@ -1,7 +1,8 @@
 """
-Function  : baseline_aircraft.py
+Function  :baseline_aircraft.py
 Title     : Baseline aircraft
-Written by: Alejandro Rios
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python

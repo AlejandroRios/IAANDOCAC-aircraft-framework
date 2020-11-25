@@ -1,7 +1,8 @@
 """
-Function  : low_pressure_turbine_parameters.py
+Function  :low_pressure_turbine_parameters.py
 Title     :
 Written by: 
+Email     : aarc.88@gmail.com
 Date      : 
 Last edit :
 Language  : Python

@@ -1,7 +1,7 @@
 """
-Function  : cruise_performance.py
-Title     : Cruise performance function
-Written by: Alejandro Rios
+File name : Cruise performance function
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : November/2020
 Last edit : November/2020
 Language  : Python

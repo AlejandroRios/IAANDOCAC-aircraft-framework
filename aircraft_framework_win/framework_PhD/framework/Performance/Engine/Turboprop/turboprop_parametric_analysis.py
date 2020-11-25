@@ -1,7 +1,8 @@
 """
-Function  : turboprop_parametric_analysis.py
+Function  :turboprop_parametric_analysis.py
 Title     :
 Written by: 
+Email     : aarc.88@gmail.com
 Date      : 
 Last edit :
 Language  : Python

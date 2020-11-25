@@ -1,7 +1,7 @@
 """
-Function  : baseline_aircraft.py
-Title     : Baseline aircraft
-Written by: Alejandro Rios
+File name : Baseline aircraft
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python
@@ -38,6 +38,9 @@ def baseline_aircraft():
     aircraft = {}
     aircraft['maximum_takeoff_weight'] = 60000 * kg_to_N  # [N]
     aircraft['maximum_landing_weight'] = 60000 * kg_to_N  # [N]
+    aircraft['maximum_zero_fuel_weight'] = 31700 * kg_to_N # [N]
+    aircraft['maximum_fuel_capacity'] = 9428 * kg_to_N # [N]
+    aircraft['operational_empty_weight'] = 21800 * kg_to_N # [N]
     aircraft['wing_surface'] = 96 # Fokker = 93.5  [m2] 
     aircraft['wing_aspect_ratio'] = 9.6 # Fokker = 8.43 
     aircraft['wing_span'] = 30.3579
@@ -72,6 +75,7 @@ def baseline_aircraft():
     aircraft['maximum_engine_thrust'] = aircraft['number_of_engines'] *  0.95 * 16206 * (1**0.8) * lbf_to_N  # Rolls-Royce Tay 650 Thrust[N] 
     aircraft['average_thrust'] = 0.75*aircraft['maximum_engine_thrust']*((5 + aircraft['engine_bypass'])/(4 + aircraft['engine_bypass'])) # [N]
     aircraft['range'] =  1600 # Aircraft range [nm]
+    # aircraft['range'] =  200 # Aircraft range [nm]
     aircraft['Ixx'] = 821466
     aircraft['Iyy'] = 3343669
     aircraft['Izz'] = 4056813
@@ -85,6 +89,7 @@ def baseline_aircraft():
     aircraft['yCG'] = 0
     aircraft['zCG'] = 0
     aircraft['CG_position'] = np.array([aircraft['xCG'],aircraft['yCG'],aircraft['zCG']]).transpose()
+    aircraft['passenger_capacity'] = 78
 
     return aircraft
 
@@ -128,3 +133,4 @@ def baseline_destination_airport():
 """TEST"""
 ########################################################################################
 
+# print(baseline_aircraft())

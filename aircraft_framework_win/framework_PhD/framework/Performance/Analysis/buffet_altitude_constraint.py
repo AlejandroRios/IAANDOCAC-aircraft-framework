@@ -1,9 +1,10 @@
 """
-Function  : buffet_altitude_constraint.py
-Title     :
-Written by: 
-Date      : 
-Last edit :
+File name : Buffet altitude constraint
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Email     : aarc.88@gmail.com
+Date      : November/2020
+Last edit : November/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 

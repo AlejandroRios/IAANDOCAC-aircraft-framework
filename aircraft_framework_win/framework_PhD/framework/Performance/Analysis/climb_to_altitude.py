@@ -1,7 +1,7 @@
 """
-Function  : climb_to_altitude.py
-Title     : Climb to altitude function
-Written by: Alejandro Rios
+File name : Climb to altitude function
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python

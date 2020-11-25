@@ -1,9 +1,10 @@
 """
-Function  : 
-Title     :
-Written by: 
-Date      : 
-Last edit :
+File name : FAIR function
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Email     : aarc.88@gmail.com
+Date      : September/2020
+Last edit : September/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 

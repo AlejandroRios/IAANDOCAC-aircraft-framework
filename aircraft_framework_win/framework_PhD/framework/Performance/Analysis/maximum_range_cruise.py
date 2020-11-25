@@ -1,9 +1,9 @@
 """
-Function  : maximum_range_cruise
-Title     : 
-Written by: 
-Date      : 
-Last edit :
+File name : Maximum range cruise
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Date      : November/2020
+Last edit : November/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 

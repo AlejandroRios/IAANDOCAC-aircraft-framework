@@ -1,7 +1,8 @@
 """
-Function  : net_present_value.py
+Function  :net_present_value.py
 Title     : Net present value
-Written by: Alejandro Rios
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
 Date      : September/2020
 Last edit : September/2020
 Language  : Python

@@ -1,9 +1,9 @@
 """
-Function  : 
-Title     :
-Written by: 
-Date      : 
-Last edit :
+File name : Descent to altitude function
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Date      : November/2020
+Last edit : November/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
@@ -113,11 +113,18 @@ def descent_integration(mass,descent_mach,descent_V_cas,delta_ISA,final_altitude
 
 
     if flag3 == 1:
-        
-        initial_block_distance = final_block_distance
-        initial_block_altitude = final_block_altitude
-        initial_block_mass = final_block_mass
-        initial_block_time = final_block_time
+        if flag1 == 0 and flag2 == 0:
+            initial_block_distance = 0
+            initial_block_altitude = initial_altitude 
+            initial_block_mass = mass
+            initial_block_time = 0
+
+
+        else:    
+            initial_block_distance = final_block_distance
+            initial_block_altitude = final_block_altitude
+            initial_block_mass = final_block_mass
+            initial_block_time = final_block_time
 
         final_block_altitude = 1500
 
@@ -211,13 +218,10 @@ def climb(time,state,climb_V_cas,climb_mach,delta_ISA):
     thrust_to_weight = number_engines*thrust_force/(mass*gravity)
     rate_of_climb,V_tas, climb_path_angle = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
 
-
-    
-
     x_dot = (V_tas*101.269)*np.cos(climb_path_angle) # ft/min
     h_dot = rate_of_climb # ft/min
     W_dot = -2*fuel_flow*0.01667  # kg/min
-    time_dot =  h_dot
+    # time_dot =  h_dot
     dout=np.array([x_dot, h_dot, W_dot])
 
     dout = dout.reshape(3,)

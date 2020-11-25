@@ -1,9 +1,9 @@
 """
-Function  : engine_performance.py
-Title     :
-Written by: 
-Date      : 
-Last edit :
+File name : Engine performance
+Author    : Alejandro Rios
+Email     : aarc.88@gmail.com
+Date      : September/2020
+Last edit : September/2020
 Language  : Python
 Aeronautical Institute of Technology - Airbus Brazil
 
