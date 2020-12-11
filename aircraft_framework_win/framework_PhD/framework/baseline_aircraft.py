@@ -50,12 +50,15 @@ def baseline_aircraft():
     aircraft['incidence_kink'] = 0 # [deg]
     aircraft['incidence_tip'] = -2.5 # [deg]
     aircraft['semi_span_kink'] = 0.34
-    # aircraft['r0'] = [0.0153, ]
-    # aircraft['thickness_to_chord_ratio'] = [0.1228,0.1055,0.0982]
-    # aircraft['phi']
+    aircraft['leading_edge_radius'] = [0.0153, 0.0150,0.0150]
+    aircraft['thickness_ratio'] = [0.1228,0.1055,0.0982]
+    aircraft['thickness_line_angle_trailing_edge'] = [-0.0799,-0.1025,-0.1553]
     aircraft['thickness_to_chord_maximum_ratio'] = [0.3738,0.3585,0.3590]
-    # aircraft['theta']
-    # aircraft['epsilon']
+    aircraft['camber_line_angle_leading_edge'] = [0.0787,-0.0295,0.1000]
+    aircraft['camber_line_angle_trailing_edge'] = [-0.0549,-0.2101,-0.0258]
+    aircraft['maximum_camber'] = [-0.0004,0.0185,0.0104]
+    aircraft['camber_at_maximum_thickness_chordwise_position'] = [-0.0006,0.0028,0.0109]
+    aircraft['maximum_camber_chordwise_position'] = [0.6188,0.7870,0.5567]
     aircraft['thickness_to_chord_average_ratio'] = 0.11
     aircraft['mean_aerodynamic_chord'] = 3.53
     aircraft['aircraft_wet_surface'] = 589.7500 # [m2]
@@ -120,7 +123,7 @@ def baseline_destination_airport():
     airport = {}
     airport['takeoff_field_length'] = 2500 # [m]
     airport['landing_field_length'] = 2000 # [m]
-    airport['elevation'] = 2500*3.28084 # [m]
+    airport['elevation'] = 0*3.28084 # [m]
     airport['delta_ISA'] = 19.95 # [deg C]
 
     return airport

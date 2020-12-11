@@ -38,15 +38,14 @@ import numpy as np
 def mach_to_V_cas(mach,h,delta_ISA):
     """
     Description:
-        - 
+        - Converts mach number to Calibrated Air Speed
     Inputs:
+        - Mach number
         - Altitude [ft]
         - Delta ISA [deg C]
-        - Mach number
     Outputs:
         - Calibated airspeed [knots]
     """
-
     _,delta,_,_,_,_,_ = atmosphere_ISA_deviation(h,delta_ISA)
 
     speed_of_sound = 661.4786 # sea level [knots]
@@ -57,50 +56,49 @@ def mach_to_V_cas(mach,h,delta_ISA):
 def mach_to_V_tas(mach,h,delta_ISA):
     """
     Description:
-        - 
+        -  Converts mach number to True Air Speed
     Inputs:
+        - Mach number
         - Altitude [ft]
         - Delta ISA [deg C]
-        - Mach number
     Outputs:
         - true airspeed [knots]
     """
     theta,_,_,_,_,_,_ = atmosphere_ISA_deviation(h,delta_ISA)
     speed_of_sound = 661.4786 # sea level [knots]
-
-
-
     return speed_of_sound * mach * np.sqrt(theta)
 
 def V_cas_to_V_tas(V_cas,h,delta_ISA):
-
+    """
+    Description:
+        -  Converts Calibrated Air Speed to True Air Speed
+    Inputs:
+        - Calibrated air speed [knots]
+        - Altitude [ft]
+        - Delta ISA [deg C]
+    Outputs:
+        - True airspeed [knots]
+    """
     speed_of_sound = 661.4786 # sea level [knots]
-
     theta,delta,_,_,_,_,_ = atmosphere_ISA_deviation(h,delta_ISA)
-
     aux1 = (1 + 0.2 * (V_cas/speed_of_sound)**2)**3.5
     aux2 = ((1/delta)*(aux1 - 1) + 1)**(1/3.5)
     aux3 = np.sqrt(theta*(aux2 - 1))
     return 1479.1 * aux3
 
-
-
-
 def V_cas_to_mach(V_cas,h,delta_ISA):
     """
-    Description:
-        - 
+    Description: 
+        - Converts calibrated air speed to mach
     Inputs:
+        - Calibrated air speed [knots]
         - Altitude [ft]
         - Delta ISA [deg C]
-        - Calibated airspeed [knots]
     Outputs:
         - Mach number
     """
-
     _,delta,_,_,_,_,_ = atmosphere_ISA_deviation(h,delta_ISA)
     speed_of_sound = 661.4786 # sea level [knots]
-
     aux1 = ((1 + 0.2*((V_cas/speed_of_sound)**2))**3.5) - 1
     aux2 = ((1/delta)*aux1 + 1)**((1.4-1)/1.4)
     return np.sqrt(5 * (aux2-1))
@@ -109,17 +107,19 @@ def V_cas_to_mach(V_cas,h,delta_ISA):
 def crossover_altitude(mach,V_cas,delta_ISA):
     """
     Description:
-        - The transition or crossosver altitude is the altitude at which a specified CAS and Mach value represent the same TAS value. The curves for constant CAS and constant Mach intersect at this point. Above this altitude the Mach number is used to reference speeds.
+        - Calculates the transition or crossosver altitude which is the altitude at which a specified CAS and Mach value represent the same TAS value. 
+        The curves for constant CAS and constant Mach intersect at this point. Above this altitude the Mach number is used to reference speeds.
     Inputs:
-        -
+        - Mach
+        - Calibrated air speed [knots]
+        - Delta ISA [deg C]
     Outputs:
         - 
     TODO's:
-        - Informar Fregnani erro no código do matlab. V_CAS to mach dando valores incosistentes
+        - 
     """
     flag = 0
     h = 0
-
     while flag<=0:
         M1 = V_cas_to_mach(V_cas,h,delta_ISA)
         if M1 >= mach:
@@ -134,5 +134,4 @@ def crossover_altitude(mach,V_cas,delta_ISA):
 ########################################################################################
 """TEST"""
 ########################################################################################
-
 # print(V_cas_to_V_tas(340-10,41000,0))

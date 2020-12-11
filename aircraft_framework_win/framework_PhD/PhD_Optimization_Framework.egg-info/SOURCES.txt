@@ -11,10 +11,9 @@ framework/baseline_aircraft_GNBA.py
 framework/file_template.py
 framework/hour_extract.py
 framework/main.py
-framework/test_import.py
-framework/test_wing_load.py
 framework/Aerodynamics/__init__.py
 framework/Aerodynamics/aerodynamic_coefficients.py
+framework/Aerodynamics/aerodynamic_coefficients_ANN.py
 framework/Attributes/__init__.py
 framework/CPACS2AVL/CPACS2AVL.py
 framework/CPACS2AVL/__init__.py
@@ -27,6 +26,7 @@ framework/Economics/direct_operational_cost.py
 framework/Economics/net_present_valeu.py
 framework/Economics/revenue.py
 framework/Network/__init__.py
+framework/Network/density_table_plot.py
 framework/Network/network_optimization.py
 framework/Network/plot_network.py
 framework/Performance/__init__.py

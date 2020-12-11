@@ -66,14 +66,12 @@ def mission(origin_destination_distance):
     passenger_mass = 110 # [Kg]
     reference_load_factor = 0.85 
 
-
-
     heading = 2
 
     # Operations and certification parameters:
     buffet_margin = 1.3 # [g]
     residual_rate_of_climb = 300 # [ft/min]
-    ceiling = 41000 # [ft] UPDATE INPUT!!!!!!!!!
+    ceiling = 40000 # [ft] UPDATE INPUT!!!!!!!!!
     descent_altitude = 1500
     # Network and mission parameters
     holding_time = 30 # [min]
@@ -115,7 +113,6 @@ def mission(origin_destination_distance):
     baseline_D_airport = baseline_destination_airport()
     initial_altitude = baseline_O_airport['elevation']
 
-
     f = 0
     while f == 0:
         maximum_ceiling = 41000 # [ft]
@@ -134,14 +131,17 @@ def mission(origin_destination_distance):
             g_climb = 4/1000
             g_descent = 3/1000
             K1 = g_climb + g_descent
-            minimum_cruise_time = 10*cruise_mach*minimum_cruise_time
-            K2 = origin_destination_distance - minimum_cruise_time + g_climb*(baseline_O_airport['elevation'] + 1500) + g_descent*(baseline_D_airport['elevation'] + 1500)
+            Dmin = 10*cruise_mach*minimum_cruise_time
+
+            K2 = origin_destination_distance - Dmin + g_climb*(baseline_O_airport['elevation'] + 1500) + g_descent*(baseline_D_airport['elevation'] + 1500)
             max_altitude_check = K2/K1
 
             if max_altitude_check>ceiling:
                 max_altitude_check = ceiling
+
             if max_altitude>max_altitude_check:
                 max_altitude = max_altitude_check
+
             if optim_altitude<max_altitude:
                 final_altitude = optim_altitude
             else:
@@ -184,7 +184,7 @@ def mission(origin_destination_distance):
 
         initial_cruise_altitude = final_altitude
 
-        distance_climb = (final_distance*feet_to_nautical_miles)
+        distance_climb = final_distance*feet_to_nautical_miles
 
         distance_cruise = origin_destination_distance - distance_climb
         
@@ -217,7 +217,7 @@ def mission(origin_destination_distance):
 
                 # Recalculate climb with new mach 
                 final_distance,total_descent_time,total_burned_fuel,final_altitude = descent_integration(final_cruise_mass,descent_mach,descent_V_cas,delta_ISA,descent_altitude,final_cruise_altitude)
-                distance_descent = (final_distance*feet_to_nautical_miles)
+                distance_descent = final_distance*feet_to_nautical_miles
                 distance_mission = distance_climb + distance_cruise + distance_descent
                 distance_error = np.abs(origin_destination_distance-distance_mission)
 
@@ -239,20 +239,6 @@ def mission(origin_destination_distance):
         total_mission_flight_time = total_climb_time + total_cruise_time + total_descent_time
         total_mission_distance = distance_mission
 
-
-        
-        # print('========================================================================================')
-        # print('Cruise distance [nautical miles]:', total_mission_distance)
-        # print('----------------------------------------------------------------------------------------')
-        # print('Initial mission mass [Kg]:', maximum_takeoff_mass)
-        # print('----------------------------------------------------------------------------------------')
-        # print('Final mission mass [Kg]:', final_mission_mass)
-        # print('----------------------------------------------------------------------------------------')
-        # print('Fuel burned during mission [Kg]:', total_mission_burned_fuel)
-        # print('----------------------------------------------------------------------------------------')
-        # print('Flight time [min]:', total_mission_flight_time)
-        # print('========================================================================================')
-
         # Rule of three to estimate fuel flow during taxi
         taxi_fuel_flow = taxi_fuel_flow_reference*maximum_takeoff_mass/22000
         taxi_in_fuel = average_taxi_in_time*taxi_fuel_flow
@@ -271,13 +257,13 @@ def mission(origin_destination_distance):
         delta_3 = maximum_takeoff_mass  - MTOW_LW
 
         extra = (maximum_takeoff_mass  - operational_empty_weight - payload) - takeoff_fuel[0]
-        delta = np.max([delta_1,delta_2,delta_3,extra])
+        delta = max([delta_1,delta_2,delta_3,extra])
 
         if delta > tolerance:
             maximum_takeoff_mass  = maximum_takeoff_mass-delta
         else:
             # Payload reduction if restricted
-            maximum_takeoff_mass = np.min([maximum_takeoff_mass, MTOW_ZFW, MTOW_LW ])
+            maximum_takeoff_mass = min([maximum_takeoff_mass, MTOW_ZFW, MTOW_LW ])
             payload_calculation = maximum_takeoff_mass - takeoff_fuel - operational_empty_weight
             if payload_calculation > payload:
                 payload = payload
@@ -289,7 +275,6 @@ def mission(origin_destination_distance):
         passenger_capacity = np.round(payload/passenger_mass)
         load_factor = passenger_capacity/passenger_capacity_initial*100
 
-
     # DOC calculation
     fuel_mass = total_mission_burned_fuel + (average_taxi_out_time + average_taxi_in_time)*taxi_fuel_flow
 
@@ -298,77 +283,12 @@ def mission(origin_destination_distance):
 
     return(DOC)
 
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-
-
-
-
-
-        
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-    
-            
-
-
-        # print(total_burned_fuel)
-
-
-
-        # Calculate max altitude
-
-        
-
-
-
-
-# print('========================================')
-# print('Regulated takeoff weight:', regulated_takeoff_weight)
-# print('========================================')
-
-
-# print('========================================')
-# print('Regulated landing weight:', regulated_landing_weight)
-# print('========================================')
-
-
-
-
 ########################################################################################
 """MAIN"""
 ########################################################################################
 
+########################################################################################
+"""TEST"""
+########################################################################################
+# DOC = mission(400)
+# print(DOC)

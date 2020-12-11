@@ -23,13 +23,13 @@ TODO's:
 ########################################################################################
 from framework.baseline_aircraft import baseline_aircraft,baseline_origin_airport,baseline_destination_airport
 from framework.Performance.Mission.mission import mission
-
+from framework.Network.network_optimization import network_optimization
 from framework.Economics.revenue import revenue
 
 import pandas as pd
 import pickle
 import numpy as np
-
+from datetime import datetime
 
 
 
@@ -44,6 +44,10 @@ import numpy as np
 ########################################################################################
 """MAIN"""
 ########################################################################################
+
+start_time = datetime.now()
+
+
 global gravity
 gravity = 9.80665 
 gallon_to_liter = 3.7852
@@ -51,28 +55,23 @@ feet_to_nautical_miles = 0.000164579
 
 aircraft_data = baseline_aircraft()
 
+market_share = 0.1 
 
-########################################################################################
-"""TEST"""
-########################################################################################
-
-
-df1 = pd.read_csv('distance.csv')
+df1 = pd.read_csv('Database/distance.csv')
 df1 = (df1.T)
 # print(df1)
 distances = df1.to_dict()
 
-df2 = pd.read_csv('demand.csv')
-df2 = (df2.T)
+df2 = pd.read_csv('Database/demand.csv')
+df2 = round(market_share*(df2.T))
 # print(df2)
 demand = df2.to_dict()
+# print(type(demand))
+# df3 = pd.read_csv('Database/doc.csv')
+# df3 = (df3.T)
+# print(df3)
+# doc = df3.to_dict()
 
-df3 = pd.read_csv('doc.csv')
-df3 = (df3.T)
-print(df3)
-doc = df3.to_dict()
-
-aircraft_data = baseline_aircraft()
 pax_capacity = aircraft_data['passenger_capacity']
 # rev_mat = revenue(aircraft_data,distances)
 
@@ -90,42 +89,32 @@ for i in departures:
         else:
             revenue_ik[(i,k)] = 0
 
-print(revenue_ik)
+# print(revenue_ik)
 
-# df = pd.DataFrame(data=distances)
-# df = (df.T)
+DOC_ik = {}
 
-# DOC_ik = {}
-
-# for i in departures:
-#     for k in arrivals:
-#         if i != k:
-#             DOC_ik[(i,k)] = mission(distances[i][k]) * distances[i][k]
-#             print(DOC_ik[(i,k)])
-#         else:
-#             DOC_ik[(i,k)] = 0
+for i in departures:
+    for k in arrivals:
+        if i != k:
+            DOC_ik[(i,k)] = float(mission(distances[i][k]) * distances[i][k])
+            print(DOC_ik[(i,k)])
+        else:
+            DOC_ik[(i,k)] = 0
 
 # df = pd.DataFrame(data=DOC_ik)
 # df = (df.T)
-
-# print (df)
-# df.to_excel('doc.xlsx')
-
-# pickle_out = open("dict.pickle","wb")
-# pickle.dump(DOC_ik, pickle_out)
-# pickle_out.close()
-
-
-# pickle_in = open("dict.pickle","rb")
-# DOC= pickle.load(pickle_in)
-
-# DOC_ik = {}
-# for i in departures:
-#     for k in arrivals:
-#         if i != k:
-#             DOC_ik[(i,k)] = DOC[i][k]*distances[i][k]
-#         else:
-#             DOC_ik[(i,k)] = 0
-
+# DOC_ik = np.load('my_file.npy',allow_pickle=True)
+# DOC_ik = DOC_ik.item()
+# np.save('my_file.npy', DOC_ik) 
+# print('==================================================================')
 # print(DOC_ik)
-# # print(revenue_ik)
+profit = network_optimization(distances,demand,DOC_ik)
+print(profit)
+
+
+end_time = datetime.now()
+print('Duration: {}'.format(end_time - start_time))
+########################################################################################
+"""TEST"""
+########################################################################################
+

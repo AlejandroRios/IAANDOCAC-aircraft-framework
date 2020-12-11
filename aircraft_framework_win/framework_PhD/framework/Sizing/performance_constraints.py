@@ -138,8 +138,6 @@ def drag_divergence_check():
     return
 
 def regulated_takeoff_weight():
-    airport_data = baseline_origin_airport()
-    aircraft_data = baseline_aircraft()
 
     airport_data = baseline_origin_airport()
     aircraft_data = baseline_aircraft()
@@ -155,15 +153,15 @@ def regulated_takeoff_weight():
 def regulated_landing_weight():
     maximum_takeoff_weight = regulated_takeoff_weight() * gravity
 
-    airport_data = baseline_origin_airport()
+    airport_data = baseline_destination_airport()
     aircraft_data = baseline_aircraft()
     landing_field_length_weight = landing_field_length_check(aircraft_data,airport_data,maximum_takeoff_weight)
 
-    airport_data = baseline_origin_airport()
+    airport_data = baseline_destination_airport()
     aircraft_data = baseline_aircraft()
     landing_climb = landing_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
 
-    airport_data = baseline_origin_airport()
+    airport_data = baseline_destination_airport()
     aircraft_data = baseline_aircraft()
     missed_approach = missed_approach_climb_check(aircraft_data,airport_data,maximum_takeoff_weight)
 

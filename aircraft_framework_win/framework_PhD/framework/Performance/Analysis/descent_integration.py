@@ -206,7 +206,7 @@ def climb(time,state,climb_V_cas,climb_mach,delta_ISA):
 
     total_thrust_force = thrust_force*number_engines
     total_fuel_flow = fuel_flow*number_engines
-    step_throttle = 0.01
+    step_throttle = 0.1
 
     while (total_fuel_flow<0 and throttle_position<=1):
         thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]

@@ -220,7 +220,7 @@ def DOC(TBO,Time_Block, Cons_Block, weight_empty_kg,Rangenm,
     #==============================#
 
     DOCcalc = (DOCflt + DOCmaint + DOCdepr + Clf + Cnf) / (1 - (0.02 + frt + 0.07)) # [USD/NM] PAG 155
-    print('DOC = ',DOCcalc, 'USD$/nm ')
+    # print('DOC = ',DOCcalc, 'USD$/nm ')
     #==============================#
     #       DOC FINANCING          #
     #==============================#

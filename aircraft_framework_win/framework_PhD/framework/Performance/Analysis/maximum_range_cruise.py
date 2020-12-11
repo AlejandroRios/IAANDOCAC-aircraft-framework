@@ -21,9 +21,10 @@ TODO's:
 "IMPORTS"
 ########################################################################################
 from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 from framework.Attributes.Airspeed.airspeed import V_cas_to_V_tas, mach_to_V_tas
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
-from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -67,6 +68,12 @@ def maximum_range_mach(mass,cruise_altitude,delta_ISA):
     phase = 'cruise'
 
     CD = zero_fidelity_drag_coefficient(aircraft_data,CL_required,phase)
+    
+    CD = []
+    for i in range(len(CL_required)):
+        CD_aux,_ = aerodynamic_coefficients_ANN(aircraft_data,altitude,mach[i],float(CL_required[i]))
+        CD.append(CD_aux)
+
 
     MLD = mach*(CL_required/CD)
 

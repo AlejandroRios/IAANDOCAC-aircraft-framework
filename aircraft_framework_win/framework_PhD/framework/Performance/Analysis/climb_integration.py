@@ -126,6 +126,8 @@ def climb_integration(mass,climb_mach,climb_V_cas,delta_ISA,final_altitude,initi
 
         final_block_altitude = final_altitude
 
+        # print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',final_block_altitude)
+
 
         final_block_distance,final_block_altitude,final_block_mass,final_block_time = climb_integrator(initial_block_distance,initial_block_altitude,initial_block_mass,initial_block_time,final_block_altitude,climb_V_cas,climb_mach,delta_ISA)
 
@@ -157,7 +159,7 @@ def climb_integrator(initial_block_distance,initial_block_altitude,initial_block
     t0 = initial_block_time
     t1 = 50
     # N = 50
-    t = np.linspace(t0, t1)
+    t = np.linspace(t0, t1,50)
     N = len(t)
     sol = np.empty((N, 3))
     sol[0] = z0
@@ -191,7 +193,7 @@ def climb(time,state,climb_V_cas,climb_mach,delta_ISA):
     altitude = state[1] 
     mass = state[2]
     _,_,_,_,_,rho_ISA,_  = atmosphere_ISA_deviation(altitude,delta_ISA)
-    throttle_position = 0.95
+    throttle_position = 1.0
     aircraft_data = baseline_aircraft()
     number_engines = aircraft_data['number_of_engines']
 
@@ -201,9 +203,15 @@ def climb(time,state,climb_V_cas,climb_mach,delta_ISA):
         mach = V_cas_to_mach(climb_V_cas,altitude,delta_ISA)
     else:
         mach = climb_mach
+
     thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
     thrust_to_weight = number_engines*thrust_force/(mass*gravity)
     rate_of_climb,V_tas, climb_path_angle = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+    if rate_of_climb < 300:
+        print('rate of climb violated!')
+
+
+    # print(altitude)
     
 
     x_dot = (V_tas*101.269)*np.cos(climb_path_angle) # ft/min

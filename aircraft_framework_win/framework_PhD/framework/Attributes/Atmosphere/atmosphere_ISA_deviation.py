@@ -36,47 +36,43 @@ import numpy as np
 """FUNCTIONS"""
 ########################################################################################
 def atmosphere_ISA_deviation(h,delta_ISA):
-    h = h
 
-    h1 = 11 # [km]
+    h1 = 11 # Troposphere max altitude[km]
     L0 = -6.5e-3
+    T0 = 288.15 # Reference altitude at sea level [K]
+    p0 = 1.01325e5 #  Reference pressure at sea level [Pa]
+    rho0 = 1.2250 # Reference density at sea level[kg/m3]
+    T1 = T0+L0*h1*1e3 # Temperature at troposphere limit
 
-    T0 = 288.15 # [K]
-    p0 = 1.01325e5 # [Pa]
-    rho0 = 1.2250 # [kg/m3]
-
-    T1 = T0+L0*h1*1e3
-
-    lambda_rate = 0.0019812 
-
+    lambda_rate = 0.0019812 # Temperature lapse rate - decrease of deg C for increasing 1 ft
     C1 = 5.25588
     C2 = 0.22336
     C3 = 36089.24
     C4 = 20805.7
 
-    tropopause = (71.5 + delta_ISA)/lambda_rate
+    tropopause = (71.5 + delta_ISA)/lambda_rate # Troposphere altitude correction considering delta ISA
 
     if h<=tropopause:
         # at or below Troposphere:
-        theta = (T0 - (lambda_rate*h) + delta_ISA)/T0
-        delta = ((T0 - lambda_rate*h)/T0)**C1
+        theta = (T0 - (lambda_rate*h) + delta_ISA)/T0 # Temperature ratio
+        delta = ((T0 - lambda_rate*h)/T0)**C1 # Pressure ratio
     elif h>tropopause:
         # above Troposphere:
-        theta = (T1 + delta_ISA)/T0
-        delta = C2*np.exp((C3 - h)/C4)
+        theta = (T1 + delta_ISA)/T0 # Temperature ratio
+        delta = C2*np.exp((C3 - h)/C4) # Pressure ratio
 
-    sigma = sigma = delta/theta
+    sigma = sigma = delta/theta # desity ratio
+
     a = 661.4786*np.sqrt(theta) # [kts]
 
-    T_ISA = theta*T0
-    P_ISA = delta*p0
-    rho_ISA = sigma*rho0
+    T_ISA = theta*T0 # Temperature ISA
+    P_ISA = delta*p0 # Pressure ISA
+    rho_ISA = sigma*rho0 # Desnsity ISA
 
     return theta,delta,sigma,T_ISA,P_ISA,rho_ISA,a
 ########################################################################################
 """MAIN"""
 ########################################################################################
-
 
 ########################################################################################
 """TEST"""

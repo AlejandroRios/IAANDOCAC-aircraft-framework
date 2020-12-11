@@ -26,6 +26,7 @@ TODO's:
 ########################################################################################
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 import numpy as np
 ########################################################################################
 "CLASSES"
@@ -41,8 +42,21 @@ def missed_approach_climb_OEI(aircraft_data,airport_data,maximum_takeoff_weight)
     engines_number = aircraft_data['number_of_engines']
     CL_maximum_landing = aircraft_data['CL_maximum_landing']
     maximum_landing_weight = aircraft_data['maximum_landing_weight'] # [N]
+    wing_surface = aircraft_data['wing_surface']
+    airfield_elevation = airport_data['elevation']
+    airfield_delta_ISA = airport_data['delta_ISA']
     phase = 'climb'
+
+    _,_,_,_,_,rho,a = atmosphere_ISA_deviation(airfield_elevation,airfield_delta_ISA) # [kg/m3]
+
+
+    
+
+    V = 1.3*np.sqrt(2*maximum_landing_weight/(CL_maximum_landing*wing_surface*rho))
+    mach = V/a
+    CD_landing,_ = aerodynamic_coefficients_ANN(aircraft_data,airfield_elevation,mach,CL_maximum_landing)
     CD_landing = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_landing,phase)
+
 
     L_to_D = CL_maximum_landing/CD_landing
     if engines_number == 2:
@@ -61,10 +75,24 @@ def missed_approach_climb_OEI(aircraft_data,airport_data,maximum_takeoff_weight)
 def missed_approach_climb_AEO(aircraft_data,airport_data,maximum_takeoff_weight):
     '''
     '''
-    phase = 'descent'
-    CL_maximum_landing = aircraft_data['CL_maximum_landing']
-    CD_landing = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_landing,phase)
     maximum_landing_weight = aircraft_data['maximum_landing_weight'] # [N]
+    CL_maximum_landing = aircraft_data['CL_maximum_landing']
+    wing_surface = aircraft_data['wing_surface']
+
+    airfield_elevation = airport_data['elevation']
+    airfield_delta_ISA = airport_data['delta_ISA']
+    phase = 'descent'
+
+
+    _,_,_,_,_,rho,a = atmosphere_ISA_deviation(airfield_elevation,airfield_delta_ISA) # [kg/m3]
+    V = 1.3*np.sqrt(2*maximum_landing_weight/(CL_maximum_landing*wing_surface*rho))
+    mach = V/a
+
+    CD_landing,_ = aerodynamic_coefficients_ANN(aircraft_data,airfield_elevation,mach,CL_maximum_landing)
+    # CD_landing = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_landing,phase)
+    maximum_landing_weight = aircraft_data['maximum_landing_weight'] # [N]
+
+
 
     L_to_D = CL_maximum_landing/CD_landing
 

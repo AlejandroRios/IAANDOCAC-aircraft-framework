@@ -28,6 +28,7 @@ TODO's:
 ########################################################################################
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 import numpy as np
 ########################################################################################
 "CLASSES"
@@ -42,8 +43,23 @@ def second_segment_climb(aircraft_data,airport_data):
     '''
     engines_number = aircraft_data['number_of_engines']
     CL_maximum_takeoff = aircraft_data['CL_maximum_takeoff']
+    wing_surface = aircraft_data['wing_surface']
+    maximum_takeoff_weight = aircraft_data['maximum_takeoff_weight'] # [N]
+
+    airfield_elevation = airport_data['elevation']
+    airfield_delta_ISA = airport_data['delta_ISA']
+
+
+    _,_,_,_,_,rho,a = atmosphere_ISA_deviation(airfield_elevation,airfield_delta_ISA) # [kg/m3]
+
+    V = 1.2*np.sqrt(2*maximum_takeoff_weight/(CL_maximum_takeoff*wing_surface*rho))
+    mach = V/a
     phase = 'takeoff'
+
+
+
     CD_takeoff = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_takeoff,phase)
+    CD_takeoff,_ = aerodynamic_coefficients_ANN(aircraft_data,airfield_elevation,mach,CL_maximum_takeoff)
 
     L_to_D = CL_maximum_takeoff/CD_takeoff
     if engines_number == 2:
