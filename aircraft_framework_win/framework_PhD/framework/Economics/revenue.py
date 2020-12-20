@@ -20,7 +20,6 @@ TODO's:
 ########################################################################################
 "IMPORTS"
 ########################################################################################
-from framework.baseline_aircraft import baseline_aircraft,baseline_origin_airport,baseline_destination_airport
 import pandas as pd
 ########################################################################################
 "CLASSES"

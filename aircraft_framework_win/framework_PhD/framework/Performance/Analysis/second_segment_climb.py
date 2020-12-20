@@ -27,7 +27,7 @@ TODO's:
 "IMPORTS"
 ########################################################################################
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
-from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+# from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 import numpy as np
 ########################################################################################
@@ -58,7 +58,7 @@ def second_segment_climb(aircraft_data,airport_data):
 
 
 
-    CD_takeoff = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_takeoff,phase)
+    # CD_takeoff = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_takeoff,phase)
     CD_takeoff,_ = aerodynamic_coefficients_ANN(aircraft_data,airfield_elevation,mach,CL_maximum_takeoff)
 
     L_to_D = CL_maximum_takeoff/CD_takeoff

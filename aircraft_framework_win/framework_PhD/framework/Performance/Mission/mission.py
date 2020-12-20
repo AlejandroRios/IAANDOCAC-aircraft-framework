@@ -37,7 +37,7 @@ from framework.Attributes.Airspeed.airspeed import V_cas_to_mach, mach_to_V_cas,
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 import math
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 ########################################################################################
 "CLASSES"
@@ -290,5 +290,5 @@ def mission(origin_destination_distance):
 ########################################################################################
 """TEST"""
 ########################################################################################
-# DOC = mission(400)
-# print(DOC)
+DOC = mission(400)
+print(DOC)

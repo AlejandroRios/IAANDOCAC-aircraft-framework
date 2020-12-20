@@ -20,7 +20,7 @@ TODO's:
 ########################################################################################
 "IMPORTS"
 ########################################################################################
-from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+# from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 from framework.Attributes.Airspeed.airspeed import V_cas_to_V_tas, mach_to_V_tas
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
@@ -67,7 +67,7 @@ def maximum_range_mach(mass,cruise_altitude,delta_ISA):
 
     phase = 'cruise'
 
-    CD = zero_fidelity_drag_coefficient(aircraft_data,CL_required,phase)
+    # CD = zero_fidelity_drag_coefficient(aircraft_data,CL_required,phase)
     
     CD = []
     for i in range(len(CL_required)):

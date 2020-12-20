@@ -126,10 +126,21 @@ def aerodynamic_coefficients_ANN(aircraft,altitude,mach,CL):
     
 
 
-    NN_induced = loadmat('Aerodynamics/NN_CDind.mat')
-    NN_wave = loadmat('Aerodynamics/NN_CDwave.mat')
-    NN_cd0 = loadmat('Aerodynamics/NN_CDfp.mat')
-    NN_CL = loadmat('Aerodynamics/NN_CL.mat')
+    # NN_induced = loadmat('Aerodynamics/NN_CDind.mat')
+    # np.save('NN_induced.npy', NN_induced) 
+    # NN_wave = loadmat('Aerodynamics/NN_CDwave.mat')
+    # np.save('NN_wave.npy', NN_wave) 
+    # NN_cd0 = loadmat('Aerodynamics/NN_CDfp.mat')
+    # np.save('NN_cd0.npy', NN_cd0) 
+    # NN_CL = loadmat('Aerodynamics/NN_CL.mat')
+    # np.save('NN_CL.npy',NN_CL) 
+
+    NN_induced = np.load('Aerodynamics/NN_induced.npy',allow_pickle=True).item()
+    NN_wave = np.load('Aerodynamics/NN_wave.npy',allow_pickle=True).item() 
+    NN_cd0 = np.load('Aerodynamics/NN_cd0.npy',allow_pickle=True).item()  
+    NN_CL = np.load('Aerodynamics/NN_CL.npy',allow_pickle=True).item()
+
+
 
     CLout, Alpha, CDfp, CDwave, CDind, grad_CL, grad_CDfp,grad_CDwave, grad_CDind = ANN_aerodynamics_main(
         CL_input,inputs_neural_network,fixed_AoA,NN_induced,NN_wave,NN_cd0,NN_CL)

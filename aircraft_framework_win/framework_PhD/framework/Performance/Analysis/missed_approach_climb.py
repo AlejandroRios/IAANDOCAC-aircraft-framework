@@ -25,7 +25,7 @@ TODO's:
 "IMPORTS"
 ########################################################################################
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
-from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+# from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 import numpy as np
 ########################################################################################
@@ -55,7 +55,7 @@ def missed_approach_climb_OEI(aircraft_data,airport_data,maximum_takeoff_weight)
     V = 1.3*np.sqrt(2*maximum_landing_weight/(CL_maximum_landing*wing_surface*rho))
     mach = V/a
     CD_landing,_ = aerodynamic_coefficients_ANN(aircraft_data,airfield_elevation,mach,CL_maximum_landing)
-    CD_landing = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_landing,phase)
+    # CD_landing = zero_fidelity_drag_coefficient(aircraft_data,CL_maximum_landing,phase)
 
 
     L_to_D = CL_maximum_landing/CD_landing

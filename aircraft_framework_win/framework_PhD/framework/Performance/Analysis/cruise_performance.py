@@ -28,7 +28,7 @@ from framework.Performance.Engine.engine_performance import turbofan
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Attributes.Airspeed.airspeed import V_cas_to_mach, mach_to_V_cas,mach_to_V_tas, crossover_altitude
 from framework.baseline_aircraft import baseline_aircraft
-from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+# from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 ########################################################################################
 "CLASSES"
@@ -73,7 +73,7 @@ def specific_fuel_consumption(aircraft_data,mach,altitude,delta_ISA,mass):
    
     CL_required = (2*mass*gravity)/(rho_ISA*((knots_to_meters_second*V_tas)**2)*wing_surface)
     phase = 'cruise'
-    CD = zero_fidelity_drag_coefficient(aircraft_data,CL_required,phase)
+    # CD = zero_fidelity_drag_coefficient(aircraft_data,CL_required,phase)
     CD,_ = aerodynamic_coefficients_ANN(aircraft_data,altitude,mach,CL_required)
     L_over_D = CL_required/CD
     throttle_position = 0.6

@@ -25,7 +25,7 @@ TODO's:
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Attributes.Atmosphere.atmosphere import atmosphere
 from framework.Attributes.Airspeed.airspeed import mach_to_V_tas
-from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
+# from framework.Aerodynamics.aerodynamic_coefficients import zero_fidelity_drag_coefficient
 from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coefficients_ANN
 import numpy as np
 
@@ -41,8 +41,6 @@ from framework.baseline_aircraft import *
 global gravity
 gravity = 9.80665
 def rate_of_climb_calculation(thrust_to_weight,h,delta_ISA,mach,mass,aircraft_data):
-
-
 
     wing_surface = aircraft_data['wing_surface']
 
@@ -60,7 +58,7 @@ def rate_of_climb_calculation(thrust_to_weight,h,delta_ISA,mach,mass,aircraft_da
 
 
 
-    CD = zero_fidelity_drag_coefficient(aircraft_data,CL,phase)
+    # CD = zero_fidelity_drag_coefficient(aircraft_data,CL,phase)
     CD,_ = aerodynamic_coefficients_ANN(aircraft_data,h,mach,CL)
 
     L_to_D = CL/CD
