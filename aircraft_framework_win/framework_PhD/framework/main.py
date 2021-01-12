@@ -5,23 +5,23 @@ Written by:
 Email     : aarc.88@gmail.com
 Date      : 
 Last edit :
-Language  : Python
+Language  : Python 3.8 or >
 Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
-    - 
+    -
 Inputs:
     -
 Outputs:
-    - 
+    -
 TODO's:
-    - 
+    -
 
 """
-########################################################################################
-"IMPORTS"
-########################################################################################
-from framework.baseline_aircraft import baseline_aircraft,baseline_origin_airport,baseline_destination_airport
+# =============================================================================
+# IMPORTS
+# =============================================================================
+from framework.baseline_aircraft import baseline_aircraft, baseline_origin_airport, baseline_destination_airport
 from framework.Performance.Mission.mission import mission
 from framework.Network.network_optimization import network_optimization
 from framework.Economics.revenue import revenue
@@ -32,30 +32,29 @@ import numpy as np
 from datetime import datetime
 
 
+# =============================================================================
+# CLASSES
+# =============================================================================
 
-########################################################################################
-"CLASSES"
-########################################################################################
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
 
-########################################################################################
-"""FUNCTIONS"""
-########################################################################################
-
-########################################################################################
-"""MAIN"""
-########################################################################################
+# =============================================================================
+# MAIN
+# =============================================================================
 
 start_time = datetime.now()
 
 
-global gravity
-gravity = 9.80665 
+global GRAVITY
+GRAVITY = 9.80665
 gallon_to_liter = 3.7852
 feet_to_nautical_miles = 0.000164579
 
 aircraft_data = baseline_aircraft()
 
-market_share = 0.1 
+market_share = 0.1
 
 df1 = pd.read_csv('Database/distance.csv')
 df1 = (df1.T)
@@ -73,10 +72,12 @@ demand = df2.to_dict()
 # doc = df3.to_dict()
 
 pax_capacity = aircraft_data['passenger_capacity']
-# rev_mat = revenue(aircraft_data,distances)
+# rev_mat = revenue(aircraft_data, distances)
 
-departures = ['CD1','CD2','CD3','CD4','CD5','CD6','CD7','CD8','CD9','CD10']
-arrivals = ['CD1','CD2','CD3','CD4','CD5','CD6','CD7','CD8','CD9','CD10']
+departures = ['CD1', 'CD2', 'CD3', 'CD4',
+              'CD5', 'CD6', 'CD7', 'CD8', 'CD9', 'CD10']
+arrivals = ['CD1', 'CD2', 'CD3', 'CD4',
+            'CD5', 'CD6', 'CD7', 'CD8', 'CD9', 'CD10']
 
 pax_number = 78
 load_factor = pax_number/pax_capacity
@@ -84,10 +85,11 @@ revenue_ik = {}
 for i in departures:
     for k in arrivals:
         if i != k:
-            # revenue_ik[(i,k)] = revenue(distances[i][k],load_factor,pax_capacity,pax_number)
-            revenue_ik[(i,k)] = revenue(demand[i][k],distances[i][k],pax_capacity,pax_number)
+            # revenue_ik[(i, k)] = revenue(distances[i][k], load_factor, pax_capacity, pax_number)
+            revenue_ik[(i, k)] = revenue(
+                demand[i][k], distances[i][k], pax_capacity, pax_number)
         else:
-            revenue_ik[(i,k)] = 0
+            revenue_ik[(i, k)] = 0
 
 # print(revenue_ik)
 
@@ -96,25 +98,24 @@ DOC_ik = {}
 for i in departures:
     for k in arrivals:
         if i != k:
-            DOC_ik[(i,k)] = float(mission(distances[i][k]) * distances[i][k])
-            print(DOC_ik[(i,k)])
+            DOC_ik[(i, k)] = float(mission(distances[i][k]) * distances[i][k])
+            print(DOC_ik[(i, k)])
         else:
-            DOC_ik[(i,k)] = 0
+            DOC_ik[(i, k)] = 0
 
 # df = pd.DataFrame(data=DOC_ik)
 # df = (df.T)
-# DOC_ik = np.load('my_file.npy',allow_pickle=True)
+# DOC_ik = np.load('my_file.npy', allow_pickle=True)
 # DOC_ik = DOC_ik.item()
-# np.save('my_file.npy', DOC_ik) 
+# np.save('my_file.npy', DOC_ik)
 # print('==================================================================')
 # print(DOC_ik)
-profit = network_optimization(distances,demand,DOC_ik)
+profit = network_optimization(distances, demand, DOC_ik)
 print(profit)
 
 
 end_time = datetime.now()
 print('Duration: {}'.format(end_time - start_time))
-########################################################################################
-"""TEST"""
-########################################################################################
-
+# =============================================================================
+# TEST
+# =============================================================================

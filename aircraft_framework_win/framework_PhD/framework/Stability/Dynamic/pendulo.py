@@ -1,33 +1,33 @@
 """
 Simulation of controlling the inverted pendulum on a cart with state controller.
 Equations:
-	th'' = (g * sin(th) - u * cos(th)) / L,
+	th'' = (g * sin(th) - u * cos(th)) / L, 
 	u = Kp_th * th + Kd_th * th' + Kp_x * (x - x0) + Kd_x * x'
 System:
-	th' = Y,
-	Y' = (g * sin(th) - u * cos(th)) / L,
-	x' = Z,
-	Z' = u = Kp_th * th + Kd_th * Y + Kp_x * (x - x0) + Kd_x * Z,
+	th' = Y, 
+	Y' = (g * sin(th) - u * cos(th)) / L, 
+	x' = Z, 
+	Z' = u = Kp_th * th + Kd_th * Y + Kp_x * (x - x0) + Kd_x * Z, 
 State: 
 	[th, Y, x, Z]
 """
 
+from numpy import sin, cos
+from math import pi, trunc
+from matplotlib.patches import Rectangle
+import matplotlib.animation as animation
+import scipy.integrate as integrate
+import matplotlib.pyplot as pp
 import numpy as np
 
 import matplotlib
 matplotlib.use('TKAgg')
 
-import matplotlib.pyplot as pp
-import scipy.integrate as integrate
-import matplotlib.animation as animation
-from matplotlib.patches import Rectangle
-
-from math import pi, trunc
-from numpy import sin, cos
 
 def trim(x, step):
     d = trunc(x / step)
     return step * d
+
 
 # physical constants
 g = 9.8
@@ -41,13 +41,13 @@ t = np.arange(0.0, Tmax, dt)
 
 # initial conditions
 Y = .0 		# pendulum angular velocity
-th = pi/10	# pendulum angle
+th = pi/10  # pendulum angle
 x = .0		# cart position
 x0 = 0		# desired cart position
 Z = .0		# cart velocity
 
 precision = 0.006
-k = 1000.0	# Kalman filter coefficient
+k = 1000.0  # Kalman filter coefficient
 
 Kp_th = 50
 Kd_th = 15
@@ -56,34 +56,37 @@ Kd_x = 4.8
 
 state = np.array([th, Y, x, Z, trim(th, precision), .0])
 
+
 def step(t):
-	if t < 5:
-		return .0
-	elif t >= 5 and t < 10:
-		return 1.
-	elif t >= 10 and t < 15:
-		return -0.5
-	else:
-		return .0
+    if t < 5:
+        return .0
+    elif t >= 5 and t < 10:
+        return 1.
+    elif t >= 10 and t < 15:
+        return -0.5
+    else:
+        return .0
+
 
 def derivatives(state, t):
-	ds = np.zeros_like(state)
+    ds = np.zeros_like(state)
 
-	_th = state[0]
-	_Y = state[1]
-	_x = state[2]
-	_Z = state[3]
+    _th = state[0]
+    _Y = state[1]
+    _x = state[2]
+    _Z = state[3]
 
-	# x0 = step(t)
+    # x0 = step(t)
 
-	u = Kp_th * _th + Kd_th * _Y + Kp_x * (_x - x0) + Kd_x * _Z
+    u = Kp_th * _th + Kd_th * _Y + Kp_x * (_x - x0) + Kd_x * _Z
 
-	ds[0] = state[1]
-	ds[1] = (g * sin(_th) - u * cos(_th)) / L
-	ds[2] = state[3]
-	ds[3] = u
+    ds[0] = state[1]
+    ds[1] = (g * sin(_th) - u * cos(_th)) / L
+    ds[2] = state[3]
+    ds[3] = u
 
-	return ds
+    return ds
+
 
 print("Integrating...")
 # integrate your ODE using scipy.integrate.
@@ -101,7 +104,8 @@ ax = fig.add_subplot(111, autoscale_on=False, xlim=(-1.5, 1.5), ylim=(-0.5, 2))
 ax.set_aspect('equal')
 ax.grid()
 
-patch = ax.add_patch(Rectangle((0, 0), 0, 0, linewidth=1, edgecolor='k', facecolor='g'))
+patch = ax.add_patch(Rectangle((0, 0), 0, 0, linewidth=1,
+                               edgecolor='k', facecolor='g'))
 
 line, = ax.plot([], [], 'o-', lw=2)
 time_template = 'time = %.1fs'
@@ -109,6 +113,7 @@ time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
 
 cart_width = 0.3
 cart_height = 0.2
+
 
 def init():
     line.set_data([], [])
@@ -127,6 +132,7 @@ def animate(i):
     time_text.set_text(time_template % (i*dt))
     patch.set_x(xs[i] - cart_width/2)
     return line, time_text, patch
+
 
 ani = animation.FuncAnimation(fig, animate, np.arange(1, len(solution)),
                               interval=25, blit=True, init_func=init)

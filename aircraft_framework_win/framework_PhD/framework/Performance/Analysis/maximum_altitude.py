@@ -4,22 +4,22 @@ Author    : Alejandro Rios
 Email     : aarc.88@gmail.com
 Date      : November/2020
 Last edit : November/2020
-Language  : Python
+Language  : Python 3.8 or >
 Aeronautical Institute of Technology - Airbus Brazil
 
 Description:
-    - 
+    -
 Inputs:
     -
 Outputs:
-    - 
+    -
 TODO's:
-    - Informar Fregnani erro no código do matlab. V_CAS to mach dando valores incosistentes
+    -Informar Fregnani erro no código do matlab. V_CAS to mach dando valores incosistentes
 
 """
-########################################################################################
-"IMPORTS"
-########################################################################################
+# =============================================================================
+# IMPORTS
+# =============================================================================
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import atmosphere_ISA_deviation
 from framework.Attributes.Airspeed.airspeed import V_cas_to_mach, mach_to_V_cas, crossover_altitude
 
@@ -29,21 +29,23 @@ from framework.Performance.Analysis.climb_to_altitude import rate_of_climb_calcu
 from framework.Performance.Analysis.buffet_altitude_constraint import buffet_altitude
 
 from framework.baseline_aircraft import baseline_aircraft
-########################################################################################
-"CLASSES"
-########################################################################################
+# =============================================================================
+# CLASSES
+# =============================================================================
 
-########################################################################################
-"""FUNCTIONS"""
-########################################################################################
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
 
-global gravity
-gravity = 9.80665
+global GRAVITY
+GRAVITY = 9.80665
 
-def maximum_altitude(initial_altitude,limit_altitude,mass,
-    climb_V_cas,climb_mach,delta_ISA):
 
-    transition_altitude = crossover_altitude(climb_mach,climb_V_cas,delta_ISA)
+def maximum_altitude(initial_altitude, limit_altitude, mass,
+                     climb_V_cas, climb_mach, delta_ISA):
+
+    transition_altitude = crossover_altitude(
+        climb_mach, climb_V_cas, delta_ISA)
     altitude_step = 100
     residual_rate_of_climb = 300
 
@@ -53,22 +55,23 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
     rate_of_climb = 9999
 
     # Climb to 10000 ft with 250KCAS
-    initial_altitude = initial_altitude + 1500 # 1500 [ft]
+    initial_altitude = initial_altitude + 1500  # 1500 [ft]
     altitude = initial_altitude
     final_altitude = 10000
     throttle_position = 0.95
 
     aircraft_data = baseline_aircraft()
-    number_engines = aircraft_data['number_of_engines']
+    engines_number = aircraft_data['number_of_engines']
 
-
-    while (rate_of_climb>residual_rate_of_climb and altitude<final_altitude):
+    while (rate_of_climb > residual_rate_of_climb and altitude < final_altitude):
         V_cas = 250
-        mach = V_cas_to_mach(V_cas,altitude,delta_ISA)
-        thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position) # force [N], fuel flow [kg/hr]
-        thrust_to_weight = number_engines*thrust_force/(mass*gravity)
+        mach = V_cas_to_mach(V_cas, altitude, delta_ISA)
+        thrust_force, fuel_flow = turbofan(
+            altitude, mach, throttle_position)  # force [N], fuel flow [kg/hr]
+        thrust_to_weight = engines_number*thrust_force/(mass*GRAVITY)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb, V_tas = rate_of_climb_calculation(
+            thrust_to_weight, altitude, delta_ISA, mach, mass, aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -85,12 +88,13 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
     altitude = initial_altitude
     final_altitude = transition_altitude
 
-    while (rate_of_climb>residual_rate_of_climb and altitude<=final_altitude):
-        mach = V_cas_to_mach(V_cas,altitude,delta_ISA)
-        thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position)
-        thrust_to_weight = number_engines*thrust_force/(mass*gravity)
+    while (rate_of_climb > residual_rate_of_climb and altitude <= final_altitude):
+        mach = V_cas_to_mach(V_cas, altitude, delta_ISA)
+        thrust_force, fuel_flow = turbofan(altitude, mach, throttle_position)
+        thrust_to_weight = engines_number*thrust_force/(mass*GRAVITY)
 
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb, V_tas = rate_of_climb_calculation(
+            thrust_to_weight, altitude, delta_ISA, mach, mass, aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -99,23 +103,22 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
         fuel = fuel+delta_fuel
         mass = mass-delta_fuel
         altitude = altitude + altitude_step
-
-
 
     # Climb to transition altitude at constant mach
     final_altitude = limit_altitude
     mach = climb_mach
 
+    buffet_altitude_limit = buffet_altitude(
+        mass, altitude, limit_altitude, climb_mach)
 
-    buffet_altitude_limit = buffet_altitude(mass,altitude,limit_altitude,climb_mach)
+    while (rate_of_climb > residual_rate_of_climb and altitude <= final_altitude):
 
-    while (rate_of_climb>residual_rate_of_climb and altitude<=final_altitude):
+        V_cas = mach_to_V_cas(mach, altitude, delta_ISA)
+        thrust_force, fuel_flow = turbofan(altitude, mach, throttle_position)
+        thrust_to_weight = engines_number*thrust_force/(mass*GRAVITY)
 
-        V_cas  = mach_to_V_cas(mach,altitude,delta_ISA)
-        thrust_force,fuel_flow = turbofan(altitude,mach,throttle_position)
-        thrust_to_weight = number_engines*thrust_force/(mass*gravity)
-
-        rate_of_climb,V_tas = rate_of_climb_calculation(thrust_to_weight,altitude,delta_ISA,mach,mass,aircraft_data)
+        rate_of_climb, V_tas = rate_of_climb_calculation(
+            thrust_to_weight, altitude, delta_ISA, mach, mass, aircraft_data)
 
         delta_time = altitude_step/rate_of_climb
         time = time + delta_time
@@ -124,22 +127,22 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
         fuel = fuel+delta_fuel
         mass = mass-delta_fuel
         altitude = altitude + altitude_step
-    
+
     final_altitude = altitude - altitude_step
 
     if buffet_altitude_limit < final_altitude:
         final_altitude = buffet_altitude_limit
-        
+
     return final_altitude, rate_of_climb
 
 
-########################################################################################
-"""MAIN"""
-########################################################################################
+# =============================================================================
+# MAIN
+# =============================================================================
 
-########################################################################################
-"""TEST"""
-########################################################################################
+# =============================================================================
+# TEST
+# =============================================================================
 # initial_altitude = 0
 # limit_altitude = 41000
 # mass = 43112 # [kg]
@@ -147,7 +150,7 @@ def maximum_altitude(initial_altitude,limit_altitude,mass,
 # climb_mach = 0.78
 # delta_ISA = 0
 
-# altitude,roc =  maximum_altitude(initial_altitude,limit_altitude,mass,
-#     climb_V_cas,climb_mach,delta_ISA)
+# altitude, roc =  maximum_altitude(initial_altitude, limit_altitude, mass,
+#     climb_V_cas, climb_mach, delta_ISA)
 
-# print(altitude,roc)
+# print(altitude, roc)

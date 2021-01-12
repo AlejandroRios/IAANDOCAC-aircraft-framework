@@ -7,9 +7,9 @@ the License. You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing,
+Unless required by applicable law or agreed to in writing, 
 software distributed under the License is distributed on
-an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
 either express or implied. See the License for the specific
 language governing permissions and limitations under the License.
 
@@ -122,7 +122,7 @@ marko.alder@dlr.de
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys1"/>
                                     </ddue:mediaLink>
-                                    <ddue:para>The body axes and the CPACS coordinate system do not align. That is, the origin of the geometry is not at CPACS (0,0,0) but at a point in positive x- and z-direction.</ddue:para>
+                                    <ddue:para>The body axes and the CPACS coordinate system do not align. That is, the origin of the geometry is not at CPACS (0, 0, 0) but at a point in positive x- and z-direction.</ddue:para>
                                     <ddue:mediaLink>
                                         <ddue:image xlink:href="cosys2"/>
                                     </ddue:mediaLink>
@@ -1007,7 +1007,7 @@ marko.alder@dlr.de
 &lt;doubleVectorTest&gt;123.456&lt;/doubleVectorTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 3: invalid double vector due to comma separation">
-&lt;doubleVectorTest&gt;123.456,+1234.456&lt;/doubleVectorTest&gt;
+&lt;doubleVectorTest&gt;123.456, +1234.456&lt;/doubleVectorTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 4: invalid double vector due to string entry">
 &lt;doubleVectorTest&gt;123.456;mainWingUID&lt;/doubleVectorTest&gt;
@@ -1047,7 +1047,7 @@ marko.alder@dlr.de
 &lt;uidVectorTest&gt;wing:1;wing:2&lt;/uidVectorTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 4: invalid uID-references vector due to comma separation">
-&lt;uidVectorTest&gt;wing1,wing2,wing3&lt;/uidVectorTest&gt;
+&lt;uidVectorTest&gt;wing1, wing2, wing3&lt;/uidVectorTest&gt;
                             </ddue:code>
                         </ddue:content>
                     </ddue:remarks>
@@ -1078,7 +1078,7 @@ marko.alder@dlr.de
 &lt;uidVectorTest&gt;1&lt;/uidVectorTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 3: invalid integer vector due comma separation">
-&lt;uidVectorTest&gt;0,1,2,3,4,5&lt;/uidVectorTest&gt;
+&lt;uidVectorTest&gt;0, 1, 2, 3, 4, 5&lt;/uidVectorTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 4: invalid integer vector due to invalid integer">
 &lt;uidVectorTest&gt;0.;1.;2.&lt;/uidVectorTest&gt;
@@ -1151,7 +1151,7 @@ marko.alder@dlr.de
 &lt;doubleArrayTest&gt;123.456&lt;/doubleArrayTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 3: invalid double array due to comma separation">
-&lt;doubleArrayTest&gt;123.456,+1234.456&lt;/doubleArrayTest&gt;
+&lt;doubleArrayTest&gt;123.456, +1234.456&lt;/doubleArrayTest&gt;
                             </ddue:code>
                             <ddue:code language="XML" title="Example 4: invalid double array due to string entry">
 &lt;doubleArrayTest&gt;123.456;mainWingUID&lt;/doubleArrayTest&gt;
@@ -1436,11 +1436,11 @@ marko.alder@dlr.de
                                 position which is described by the positioning vector PLUS the
                                 translation which is described in the section.</ddue:para>
                             <ddue:para>Please note: If the orgin of the positioning vector is
-                                defined by using another section, i.e. fromSection is defined,
+                                defined by using another section, i.e. fromSection is defined, 
                                 the orgin of this vector equals the end of the positioning
                                 vector of the previous section. This means that the section
                                 translation of the from-section has no influence on the
-                                positioning of the to-section. Therefore the total translation,
+                                positioning of the to-section. Therefore the total translation, 
                                 which is described by positionings, is the sum of the current
                                 positioning and all positionings that are defined 'before'.
                             </ddue:para>
@@ -1540,14 +1540,14 @@ marko.alder@dlr.de
                 <xsd:all>
                     <xsd:element minOccurs="0" name="scaling" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>Scaling data default: 1,1,1. Those parameters
+                            <xsd:documentation>Scaling data default: 1, 1, 1. Those parameters
                                 describe the scaling of the x-, y-, and z-axis.
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element minOccurs="0" name="rotation" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>Rotation data default: 0,0,0. The rotation
+                            <xsd:documentation>Rotation data default: 0, 0, 0. The rotation
                                 angles are the three Euler angles to describe the orientation of
                                 the coordinate system. The order is allways xyz in CPACS.
                                 Therefore the first rotation is around the x-axis, the second
@@ -1558,7 +1558,7 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element minOccurs="0" name="translation" type="pointAbsRelType">
                         <xsd:annotation>
-                            <xsd:documentation>Translation data default: 0,0,0. Translations
+                            <xsd:documentation>Translation data default: 0, 0, 0. Translations
                                 can either be made absolute in the global coordinate system
                                 (absGlobal), absolute in the local Coordinate system (absLocal)
                                 or relative (relative), normalized with the maximum dimensions
@@ -1871,7 +1871,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>PointAbsRel type, containing an xyz data triplet. Each
-                            of the components is optional. The refType attribute defines,
+                            of the components is optional. The refType attribute defines, 
                             whether coordinates are absolute in the global ccordinate system
                             [absGlobal], absolute in the parent element's local coordinate
                             system [absLocal]. If the object does not have a
@@ -2063,7 +2063,7 @@ marko.alder@dlr.de
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>List of 3D points, kept in three coordinate vecors (x,
+                        <ddue:para>List of 3D points, kept in three coordinate vecors (x, 
                             y, z)</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -2264,7 +2264,7 @@ marko.alder@dlr.de
                         <xsd:annotation>
                             <xsd:documentation>This reference uID determines the reference coordinate system.
                             If it points to a segment, then the eta-xsi values are considered to be in segment
-                            eta-xsi coordinates; if it points to a componentSegment,
+                            eta-xsi coordinates; if it points to a componentSegment, 
                             then componentSegment eta-xsi coordinates are used.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -2311,7 +2311,7 @@ marko.alder@dlr.de
                         <xsd:annotation>
                             <xsd:documentation>This reference uID determines the reference coordinate system.
                             If it points to a segment, then the eta-xsi values are considered to be in segment
-                            eta-xsi coordinates; if it points to a componentSegment,
+                            eta-xsi coordinates; if it points to a componentSegment, 
                             then componentSegment eta-xsi coordinates are used.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -2653,8 +2653,8 @@ marko.alder@dlr.de
                                 analysisLevel: 0- 9 = Statistical models, 10-19 = Analytic
                                 models, 20-29 = Lifting line method, 30-39 = Panel method, 40-49
                                 = Panel-BL-coupled method, 50-59 = Full potential method, 60-69
-                                = Full potential-BL coupled method, 70-79 = CFD euler method,
-                                80-89 = CFD euler-bl coupled method, 99-99 = CFD RANS method,
+                                = Full potential-BL coupled method, 70-79 = CFD euler method, 
+                                80-89 = CFD euler-bl coupled method, 99-99 = CFD RANS method, 
                                 &gt;=100 = Experimental data.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -4273,7 +4273,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>spaces describe areas in the cabin that need to be
-                            clear for use as emergency area. Depending on the type of area,
+                            clear for use as emergency area. Depending on the type of area, 
                             it can have a height limit. The spaces are required for
                             downstream cabin design, for example to describe an empty cabin.
                         </ddue:para>
@@ -5303,7 +5303,7 @@ marko.alder@dlr.de
                                 coordinate (eta) and a relative chordwise coordinate (xsi) is
                                 defined. Those coordinates are used for the definition of e.g.
                                 wing structures and control surfaces. there are two types of eta xsi coordinates.
-                                Segment (eta, xsi) coordinates define the relative local coordinate system for a segment ranging from (0,0) to (1,1).
+                                Segment (eta, xsi) coordinates define the relative local coordinate system for a segment ranging from (0, 0) to (1, 1).
                             </ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="componentsegments_1"/>
@@ -5323,7 +5323,7 @@ marko.alder@dlr.de
                             </ddue:mediaLink>
                             <ddue:para>
                                 In order to calculate the global coordinates of a component segment eta xsi point
-                                one first has to calculate the eta point on the xsi iso line of (xsi=0.5),
+                                one first has to calculate the eta point on the xsi iso line of (xsi=0.5), 
                                 and then walk along the iso eta lineof the segment.
                             </ddue:para>
                             <ddue:para>An example for determining the a component
@@ -6369,7 +6369,7 @@ marko.alder@dlr.de
                                 control surface can be defined closer. For the trailing edge
                                 device this is done at 'leadingEdgeShape', for the spoiler
                                 'relHeightLE' is used and for the leading edge devices 'hollow'.
-                                If an exact control surface airfoil definition should be used,
+                                If an exact control surface airfoil definition should be used, 
                                 outerShape-&gt;airfoils can be used.</ddue:para>
                             <ddue:para>Please find below an example for the definition of the
                                 planform of a trailing edge device. Other controlsurfaces are
@@ -6555,7 +6555,7 @@ marko.alder@dlr.de
                         <ddue:para>controlSurfaceHingeMomentMap type, containing a moment
                             map with aerodynamic data for a control surface. Array order is:
                             controlParameters min-&gt;max then angleOfAttack then angleOfSideslip
-                            then reynoldsNumber then machNumber. AngleOfAttack, angleOfSideslip,
+                            then reynoldsNumber then machNumber. AngleOfAttack, angleOfSideslip, 
                             reynoldsNumber and machNumber are taken from the basic
                             performance map one level above.</ddue:para>
                     </ddue:remarks>
@@ -6806,7 +6806,7 @@ marko.alder@dlr.de
                                 the z-deflection of the inner and outer border; last the
                                 y-deflection of the inner border. The y-deflection is only
                                 defined at the inner border, as it is identical to the outer
-                                border. If no values for the outer border deflection are given,
+                                border. If no values for the outer border deflection are given, 
                                 they default to the values of the inner border.</ddue:para>
                             <ddue:para>An example can be found below:</ddue:para>
                             <ddue:mediaLink>
@@ -6839,7 +6839,7 @@ marko.alder@dlr.de
                         <ddue:para>ControlSurfacePerformanceMap type, containing a delta
                             performance map with aerodynamic data for a control surface. Array
                             order is: relativeDeflection min-&gt;max then angleOfAttack then
-                            angleOfSideslip then altitude then machNumber. AngleOfAttack,
+                            angleOfSideslip then altitude then machNumber. AngleOfAttack, 
                             angleOfSideslip, altitude and machNumber are taken from the
                             basic performance map one level above.</ddue:para>
                     </ddue:remarks>
@@ -7031,7 +7031,7 @@ marko.alder@dlr.de
                                 the z-deflection of the inner and outer border; last the
                                 y-deflection of the inner border. The y-deflection is only
                                 defined at the inner border, as it is identical to the outer
-                                border. If no values for the outer border deflection are given,
+                                border. If no values for the outer border deflection are given, 
                                 they default to the values of the inner border.</ddue:para>
                             <ddue:para>An example can be found below:</ddue:para>
                             <ddue:mediaLink>
@@ -7071,7 +7071,7 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element minOccurs="0" name="hingeLineRotation" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Positve rotation around the hinge line,
+                            <xsd:documentation>Positve rotation around the hinge line, 
                                 heading from the inner to the outer border. Defaults to zero.
                             </xsd:documentation>
                         </xsd:annotation>
@@ -8078,7 +8078,7 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element minOccurs="0" name="crashInitialRotation" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Initial rotations around axes, roll, pitch,
+                            <xsd:documentation>Initial rotations around axes, roll, pitch, 
                                 yaw</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -8096,7 +8096,7 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element minOccurs="0" name="crashAccelerationField" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>AccelerationFields, usually gravity in z
+                            <xsd:documentation>AccelerationFields, usually GRAVITY in z
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -8481,7 +8481,7 @@ marko.alder@dlr.de
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Optional. Definition of additional parameters,
+                            <ddue:para>Optional. Definition of additional parameters, 
                                 describing the shape of the parents leading edge of the cut out
                                 due to leading edge devices.</ddue:para>
                             <ddue:para>The parameters are described in the picture below:
@@ -8693,7 +8693,7 @@ marko.alder@dlr.de
                                 <ddue:title>0. General overview</ddue:title>
                                 <ddue:content>
                                     <ddue:para>This type contains the damping derivatives. They are
-                                        split up into those derivatives for positive rotation rates,
+                                        split up into those derivatives for positive rotation rates, 
                                         and those for negative rotation rates.</ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -9093,7 +9093,7 @@ marko.alder@dlr.de
                     <xsd:element minOccurs="0" name="description" type="stringBaseType"/>
                     <xsd:element minOccurs="0" name="doorType">
                         <xsd:annotation>
-                            <xsd:documentation>optional definition of door type (restricted to pax,
+                            <xsd:documentation>optional definition of door type (restricted to pax, 
                                 service, emergency, cargo)</xsd:documentation>
                         </xsd:annotation>
                         <xsd:complexType>
@@ -9769,7 +9769,7 @@ marko.alder@dlr.de
                         <ddue:content>
                             <ddue:para>The engine nacelle is currently located together with
                                 the engine. It gives a simple description of the outer shell of
-                                the engine. All values are defined according to the base area,
+                                the engine. All values are defined according to the base area, 
                                 center point of the fan(i.e. negative values can occur in the
                                 definition) In most cases there will be a bypass engine. For
                                 non-bypass or mixed engines ignore the bypass nozzle. For further
@@ -10271,7 +10271,7 @@ marko.alder@dlr.de
                         <xsd:annotation>
                             <xsd:documentation>This reference uID determines the reference coordinate system.
                             If it points to a segment, then the eta value is considered to be in segment
-                            eta coordinate; if it points to a componentSegment,
+                            eta coordinate; if it points to a componentSegment, 
                             then componentSegment eta coordinate is used.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -10664,7 +10664,7 @@ marko.alder@dlr.de
                     <xsd:element name="rotationRates" type="pointXYZType" minOccurs="0" maxOccurs="1">
                         <xsd:annotation>
                             <xsd:documentation>
-                                Rotational rates around centre of gravity
+                                Rotational rates around centre of GRAVITY
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -10772,7 +10772,7 @@ marko.alder@dlr.de
                     </xsd:element>
                     <xsd:element name="rotation" type="pointXYZType">
                         <xsd:annotation>
-                            <xsd:documentation>Acting rotational accelerations around aircraft centre of gravity.</xsd:documentation>
+                            <xsd:documentation>Acting rotational accelerations around aircraft centre of GRAVITY.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:all>
@@ -13144,7 +13144,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="location" type="pointType">
                         <xsd:annotation>
-                            <xsd:documentation>mass loaction values (x,y,z)
+                            <xsd:documentation>mass loaction values (x, y, z)
                             </xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -13441,7 +13441,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 <ddue:image xlink:href="guideProfileFuselage"/>
                             </ddue:mediaLink>
                             <ddue:para>Please note, currently it is not possible to apply any
-                                means of class based transformation in the description. However,
+                                means of class based transformation in the description. However, 
                                 this may be an addition for the future. </ddue:para>
                         </ddue:content>
                     </ddue:remarks>
@@ -13758,7 +13758,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 </ddue:title>
                                 <ddue:content>
                                     <ddue:para>Polynomial coefficients for the transition
-                                        definition (1st one for 0th grade, 2nd one for 1st grade,
+                                        definition (1st one for 0th grade, 2nd one for 1st grade, 
                                         ...).</ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -14157,7 +14157,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="htpCutoutReinfUpperStructElemUID" type="stringUIDBaseType">
                         <xsd:annotation>
                             <xsd:documentation>UID of structural element for upper HTP cutout
-                                reinforcement beams, also used for lower cutout reinforcement,
+                                reinforcement beams, also used for lower cutout reinforcement, 
                                 when not explicitely defined</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -14671,7 +14671,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>Landing gears</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>LandingGear type, containing the definition of nose,
+                        <ddue:para>LandingGear type, containing the definition of nose, 
                             main and skid gears.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -14846,7 +14846,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:all>
                     <xsd:element name="relHeightLE" type="doubleBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Relative height of the leading edge of the TED,
+                            <xsd:documentation>Relative height of the leading edge of the TED, 
                                 based on the airfoil height of the parent at this position.
                                 Optional.</xsd:documentation>
                         </xsd:annotation>
@@ -15068,7 +15068,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>This reference uID determines the reference coordinate system.
                             If it points to a segment, then the eta-xsi values are considered to be in segment
-                            eta-xsi coordinates; if it points to a componentSegment,
+                            eta-xsi coordinates; if it points to a componentSegment, 
                             then componentSegment eta-xsi coordinates are used.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -18120,9 +18120,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         <ddue:legacyItalic>massBreakeDown</ddue:legacyItalic>
                                         is subdivided in
                                         <ddue:legacyItalic>designMasses</ddue:legacyItalic>
-                                        ,
+                                        , 
                                         <ddue:legacyItalic>fuel</ddue:legacyItalic>
-                                        ,
+                                        , 
                                         <ddue:legacyItalic>payload</ddue:legacyItalic>
                                         and
                                         <ddue:legacyItalic>mOME</ddue:legacyItalic>
@@ -18185,7 +18185,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         <ddue:legacyItalic>designMasses</ddue:legacyItalic>
                                         direct under each item. At the
                                         <ddue:legacyItalic>fuel</ddue:legacyItalic>
-                                        ,
+                                        , 
                                         <ddue:legacyItalic>payload</ddue:legacyItalic>
                                         and
                                         <ddue:legacyItalic>mOME</ddue:legacyItalic>
@@ -21270,7 +21270,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 typically given in y and z with x set to "0". Starting point of
                                 the profile sould be the lowest point (typically in the symmetry
                                 plane), then upwards on the positive y-side up to the highest
-                                point (again, typically in the symmetry plane). Depending on,
+                                point (again, typically in the symmetry plane). Depending on, 
                                 whether the fuselage shall be specified with symmetry condition
                                 or not, the profile either ends there, or continues on the
                                 negative y-side back down to the lowest point.</ddue:para>
@@ -21353,7 +21353,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 also given in x and z with x as the normalized fuselage height.
                                 Starting point of the profile sould be the lowest point
                                 (typically in the symmetry plane), then upwards on the positive x-side up to the highest
-                                point (again, typically in the symmetry plane). Depending on,
+                                point (again, typically in the symmetry plane). Depending on, 
                                 whether the fuselage shall be specified with symmetry condition
                                 or not, the profile either ends there, or continues on the
                                 negative x-side back down to the lowest point.</ddue:para>
@@ -21498,7 +21498,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Structural properties of the pylon box (ribs, upper,
+                        <ddue:para>Structural properties of the pylon box (ribs, upper, 
                             lower and side panels).</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
@@ -21722,7 +21722,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="numberOfRibs" type="integerBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>RibNumber defines the number of ribs in this
-                                    ribSet. First rib is at relDepthStart along the pylons x-axis,
+                                    ribSet. First rib is at relDepthStart along the pylons x-axis, 
                                     last rib is at relDepthEnd. The spacing is constant.
                                 </xsd:documentation>
                             </xsd:annotation>
@@ -22095,7 +22095,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element minOccurs="0" name="ribRotationReference" type="stringBaseType">
                         <xsd:annotation>
                             <xsd:documentation>RotationReference defines the reference for
-                                the z-rotation it is either sparUID, „LeadingEdge“,
+                                the z-rotation it is either sparUID, „LeadingEdge“, 
                                 „TrailingEdge“, "globalX", "globalY" or "globalZ".
                                 If it is not defined the rotation reference is
                                 the eta-axis (=leading edge, that is projected on the wings
@@ -22304,10 +22304,10 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         </xsd:element>
                         <xsd:element name="numberOfBlades" type="integerBaseType">
                             <xsd:annotation>
-                                <xsd:documentation>If only the number of blades is specified,
+                                <xsd:documentation>If only the number of blades is specified, 
                                     the attached blades will be distributed equiangularly and the
                                     first blade will be attached at azimuth angle 0. (Formula:
-                                    azimuthAngle[i] = i*360deg/numberOfBlades,
+                                    azimuthAngle[i] = i*360deg/numberOfBlades, 
                                     i=0..numberOfBlades-1)</xsd:documentation>
                             </xsd:annotation>
                         </xsd:element>
@@ -22366,7 +22366,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 gometry definitions of an rotorcraft model.</ddue:para>
                             <ddue:para>Rotor blade geometries are defined using the same data
                                 structure as wings (wingType). But in order to be compatible
-                                with the other rotor blade related types (e.g. rotorType,
+                                with the other rotor blade related types (e.g. rotorType, 
                                 rotorHubType, rotorHubHingeType) there are some additional
                                 conventions/requirements regarding the definition and
                                 orientation of rotorBlade geometries:</ddue:para>
@@ -22552,7 +22552,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element minOccurs="0" name="type">
                         <xsd:annotation>
-                            <xsd:documentation>Rotor head type. Possible values: "semiRigid",
+                            <xsd:documentation>Rotor head type. Possible values: "semiRigid", 
                                 "rigid", "articulated", "hingeless"</xsd:documentation>
                         </xsd:annotation>
                         <xsd:simpleType>
@@ -22582,13 +22582,13 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Rotor type, containing a rotor (main rotor, tail rotor,
-                            fenestron, propeller,...) of an rotorcraft model.</ddue:para>
+                        <ddue:para>Rotor type, containing a rotor (main rotor, tail rotor, 
+                            fenestron, propeller, ...) of an rotorcraft model.</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
                             <ddue:para>Rotor type, containing a rotor (e.g. main rotor, tail
-                                rotor, fenestron, propeller,...) definition of a rotorcraft
+                                rotor, fenestron, propeller, ...) definition of a rotorcraft
                                 model.</ddue:para>
                             <ddue:para>The position and attitude of the rotor is defined
                                 using the transformation element. The following image shows the
@@ -22679,7 +22679,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="transformation" type="transformationType">
                         <xsd:annotation>
-                            <xsd:documentation>Transformation (scaling, rotation,
+                            <xsd:documentation>Transformation (scaling, rotation, 
                                 translation). This element is used to define the position and
                                 attitude of the rotor relative to the global or the parent
                                 component's axis system. Note that an anisotropical scaling
@@ -22815,9 +22815,9 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         <ddue:legacyItalic>massBreakeDown</ddue:legacyItalic>
                                         is subdivided in
                                         <ddue:legacyItalic>designMasses</ddue:legacyItalic>
-                                        ,
+                                        , 
                                         <ddue:legacyItalic>fuel</ddue:legacyItalic>
-                                        ,
+                                        , 
                                         <ddue:legacyItalic>payload</ddue:legacyItalic>
                                         and
                                         <ddue:legacyItalic>mOME</ddue:legacyItalic>
@@ -22876,7 +22876,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         <ddue:legacyItalic>designMasses</ddue:legacyItalic>
                                         direct under each item. At the
                                         <ddue:legacyItalic>fuel</ddue:legacyItalic>
-                                        ,
+                                        , 
                                         <ddue:legacyItalic>payload</ddue:legacyItalic>
                                         and
                                         <ddue:legacyItalic>mOME</ddue:legacyItalic>
@@ -23113,7 +23113,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>rotorsType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Rotors type, containing all the rotors (mainRotors,
+                        <ddue:para>Rotors type, containing all the rotors (mainRotors, 
                             tailRotors, fenestrons, propellers, ...) of an rotorcraft model.
                         </ddue:para>
                     </ddue:remarks>
@@ -23349,7 +23349,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>shaftLinkedComponentsType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>ShaftLinkedComponents type, containing UIDs of engines,
+                        <ddue:para>ShaftLinkedComponents type, containing UIDs of engines, 
                             transmissions and rotors linked by a shaft.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -23837,7 +23837,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 defined where different cross section and material properties
                                 shall be defined.</ddue:para>
                             <ddue:para>The area of the spar is defined by using the
-                                parameters 'fromEta' and 'toEta'. The definition of the caps,
+                                parameters 'fromEta' and 'toEta'. The definition of the caps, 
                                 webs and rotation is equivalent to the cross section definition
                                 of the complete spar.</ddue:para>
                         </ddue:content>
@@ -24934,7 +24934,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </xsd:element>
                     <xsd:element name="commandCases" type="commandCasesType" maxOccurs="1" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>Different commandCases that are commanded,
+                            <xsd:documentation>Different commandCases that are commanded, 
                                 e.g. roll, accelerate</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -25134,17 +25134,17 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 <xsd:sequence>
                     <xsd:element maxOccurs="unbounded" name="structuralMember1UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Can be each structural member (skinSegment,
-                                stringer, frame, paxCrossBeam, cargoCrossBeam,
-                                paxCrossBeamStrut, cargoCrossBeamStrut, long. floor beams,
+                            <xsd:documentation>Can be each structural member (skinSegment, 
+                                stringer, frame, paxCrossBeam, cargoCrossBeam, 
+                                paxCrossBeamStrut, cargoCrossBeamStrut, long. floor beams, 
                                 floorPanel, seatModule)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element maxOccurs="unbounded" name="structuralMember2UID" type="stringUIDBaseType">
                         <xsd:annotation>
-                            <xsd:documentation>Can be each structural member (skinSegment,
-                                stringer, frame, paxCrossBeam, cargoCrossBeam,
-                                paxCrossBeamStrut, cargoCrossBeamStrut, long. floor beams,
+                            <xsd:documentation>Can be each structural member (skinSegment, 
+                                stringer, frame, paxCrossBeam, cargoCrossBeam, 
+                                paxCrossBeamStrut, cargoCrossBeamStrut, long. floor beams, 
                                 floorPanel, seatModule)</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -26844,7 +26844,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     <xsd:element name="optimalVolume" type="doubleBaseType">
                         <xsd:annotation>
                             <xsd:documentation>Theoretical volume if material thicknesses
-                                (ribs, spars, skins, stringers) and systems (fuel pumps,
+                                (ribs, spars, skins, stringers) and systems (fuel pumps, 
                                 pipes...) are neglected.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -27561,7 +27561,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 is defined in ribRotation. The number of ribs of the current rib
                                 set is either defined by ribNumber or by spacing.</ddue:para>
                             <ddue:para>Three examples how ribs can be placed on the wing are
-                                illustrated in the picture below. For more detailed information,
+                                illustrated in the picture below. For more detailed information, 
                                 please refer to the description of each parameter.</ddue:para>
                             <ddue:mediaLink>
                                 <ddue:image xlink:href="ribs"/>
@@ -27585,7 +27585,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="startCurvePoint" type="curvePointType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    Defines the start of the rib by a point on a reference curve,
+                                    Defines the start of the rib by a point on a reference curve, 
                                     such as a spar, but not an explicit sparPosition
                                 </xsd:documentation>
                             </xsd:annotation>
@@ -27642,7 +27642,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:element name="spacing" type="doubleBaseType">
                             <xsd:annotation>
                                 <xsd:documentation>
-                                    The spacing of the ribs defines the distance between two ribs,
+                                    The spacing of the ribs defines the distance between two ribs, 
                                     measured on the
                                     ribReferenceLine. First rib is placed at etaStart.
                                 </xsd:documentation>
@@ -28035,7 +28035,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 <xsd:annotation>
                                     <xsd:documentation>If the reference of the stringer angle shall
                                         be different from the default implementation then this
-                                        parameter may be set. Allowed values include: leadingEdge,
+                                        parameter may be set. Allowed values include: leadingEdge, 
                                         trailingEdge and globalY. Furthremore, it is possible to
                                         provide the UID of a spar.</xsd:documentation>
                                 </xsd:annotation>
@@ -28071,7 +28071,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 <xsd:annotation>
                                     <xsd:documentation>If the reference of the stringer angle shall
                                         be different from the default implementation then this
-                                        parameter may be set. Allowed values include: leadingEdge,
+                                        parameter may be set. Allowed values include: leadingEdge, 
                                         trailingEdge and globalY. Furthremore, it is possible to
                                         provide the UID of a spar.</xsd:documentation>
                                 </xsd:annotation>
@@ -28134,12 +28134,12 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
             <xsd:appinfo>
                 <sd:schemaDoc>
                     <ddue:summary>
-                        <ddue:para>Wing type, containing all a lifting surface (wing, HTP,
+                        <ddue:para>Wing type, containing all a lifting surface (wing, HTP, 
                             VTP, canard...) of an aircraft model.</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:content>
-                            <ddue:para>Wing type, containing all a lifting surface (wing,
+                            <ddue:para>Wing type, containing all a lifting surface (wing, 
                                 HTP, VTP, canard...) of an aircraft model.</ddue:para>
                             <ddue:para>Position of the wing: The position of the wing is
                                 defined using the transformation parameters. Using those
@@ -28148,7 +28148,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                             <ddue:para>Definition of the wings outer shape: The outer shape
                                 of the wing is defined by airfoils that are placed within the 3D
                                 space. Two airfoils are combined to one wing segment within the
-                                segments. For the definition of the positions of the airfoils,
+                                segments. For the definition of the positions of the airfoils, 
                                 differnt sections are defined. Within each section one or more
                                 elements are defined. The airfoil shape is defined within the
                                 elements. If the wings outer shape should e.g. have a step it is
@@ -28412,7 +28412,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <ddue:para>wingsType</ddue:para>
                     </ddue:summary>
                     <ddue:remarks>
-                        <ddue:para>Wings type, containing all the lifting surfaces (wings,
+                        <ddue:para>Wings type, containing all the lifting surfaces (wings, 
                             HTPs, VTPs, canards...) of an aircraft model.</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>
@@ -28453,7 +28453,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         <xsd:annotation>
                             <xsd:documentation>This reference uID determines the reference coordinate system.
                             If it points to a segment, then the eta value is considered to be in segment
-                            eta coordinate; if it points to a componentSegment,
+                            eta coordinate; if it points to a componentSegment, 
                             then componentSegment eta coordinate is used.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
@@ -28711,7 +28711,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 fuselage. It is defined by a set of border geometries.
                 This could be pressureBulkheads, walls or floors and
                 they are referenced by their uIDs. The volume is closed
-                with the fuselage skin. The geometry tool has to check,
+                with the fuselage skin. The geometry tool has to check, 
                 if the compartment definition gives a closed geometry.
             </xsd:documentation>
         </xsd:annotation>
@@ -28828,7 +28828,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                 materials in non-linear analysis, such as crash simulations. The input is defined
                 according to the needs of Material 103 (single stress strain option) in the
                 PAM-CRASH explicit Finite Element code, but can also be used for equivalent material
-                laws in alternative simulation environment (see PAM-CRASH Solver Reference Manual.,
+                laws in alternative simulation environment (see PAM-CRASH Solver Reference Manual., 
                 Material 103).</xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
@@ -29106,7 +29106,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                         List of wall position uIDs that are used for
                         this wall segment. At least two positions must
                         be defined (for start and end position of wall).
-                        If more than two positions are referenced here,
+                        If more than two positions are referenced here, 
                         the wall is constructed out of several planar
                         faces that connect two consecutive positions
                         (Note: Order of position uIDs defines
@@ -29216,7 +29216,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 Lateral caps are the reinforcements of
                                 the wall at the edges lateral to the
                                 main direction of the wall. These caps
-                                can be either defined at start, end,
+                                can be either defined at start, end, 
                                 start and end or at all wall positions
                                 according to the placement flag.
                             </xsd:documentation>
@@ -29540,7 +29540,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         with aerodynamic data of the complete aircraft in the form of
                                         nondimensional coefficients. The force coefficients in
                                         <ddue:legacyItalic>i</ddue:legacyItalic>-direction (<ddue:legacyItalic>ci</ddue:legacyItalic>)
-                                        are nondimensionalized by dynamic pressure and reference area,
+                                        are nondimensionalized by dynamic pressure and reference area, 
                                         the moment coefficients (<ddue:legacyItalic>cmi</ddue:legacyItalic>) by dynamic pressure, reference
                                         area and reference length.
                                     </ddue:para>
@@ -29549,7 +29549,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                         the transformations of angle of attack and angle of yaw. See the documentation of the
                                         CPACS element for further details.
                                     </ddue:para>
-                                    <ddue:para>The dependend parameters of the aeroPerformanceMap are <ddue:legacyItalic>altitude</ddue:legacyItalic>,
+                                    <ddue:para>The dependend parameters of the aeroPerformanceMap are <ddue:legacyItalic>altitude</ddue:legacyItalic>, 
                                         <ddue:legacyItalic>machNumber</ddue:legacyItalic>, <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and
                                         <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>. These elements are vectors of equal length, where values
                                         with identical indices belong together. The solution vectors <ddue:legacyItalic>ci</ddue:legacyItalic> and
@@ -29564,7 +29564,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
 &lt;cs mapType="vector"&gt;0.;0.;0.;0.;0.;0.01;0.015;0.02;0.025;0.03&lt;/cs&gt;
 &lt;cl mapType="vector"&gt;-0.1;0.04;0.18;0.32;0.46;-0.08;0.03;0.14;0.25;0.36&lt;/cl&gt;
                                     </ddue:code>
-                                    <ddue:para>The aerodynamic coefficients for <ddue:legacyItalic>altitude</ddue:legacyItalic>=1200m, <ddue:legacyItalic>machNumber</ddue:legacyItalic>=0.2,
+                                    <ddue:para>The aerodynamic coefficients for <ddue:legacyItalic>altitude</ddue:legacyItalic>=1200m, <ddue:legacyItalic>machNumber</ddue:legacyItalic>=0.2, 
                                         <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic>=0° and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>=6° can be found at the 5th index:
                                         <ddue:legacyItalic>cd</ddue:legacyItalic>=0.208, <ddue:legacyItalic>cs</ddue:legacyItalic>=0 and <ddue:legacyItalic>cl</ddue:legacyItalic>=0.46.
                                     </ddue:para>
@@ -29775,7 +29775,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>This map explicitly specifies limitations of a vehicle in terms of angles of attack and sideslip angles.
-                        All vectors, i.e. <ddue:legacyItalic>altitude</ddue:legacyItalic>, <ddue:legacyItalic>machNumber</ddue:legacyItalic>,
+                        All vectors, i.e. <ddue:legacyItalic>altitude</ddue:legacyItalic>, <ddue:legacyItalic>machNumber</ddue:legacyItalic>, 
                             <ddue:legacyItalic>angleOfSideslip</ddue:legacyItalic> and <ddue:legacyItalic>angleOfAttack</ddue:legacyItalic>, must have the
                         same length. To avoid redundancy with the <ddue:legacyItalic>aeroPerformanceMap</ddue:legacyItalic>, this type does not contain
                         any aerodynamic coefficients.
@@ -29892,7 +29892,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                                 <ddue:title>0. General overview</ddue:title>
                                 <ddue:content>
                                     <ddue:para>This type contains the damping derivatives. They are
-                                        split up into those derivatives for positive rotation rates,
+                                        split up into those derivatives for positive rotation rates, 
                                         and those for negative rotation rates.</ddue:para>
                                 </ddue:content>
                             </ddue:section>
@@ -32091,7 +32091,7 @@ The fuel tank volume type should also be used for the wing fuel tank</xsd:docume
                     </ddue:summary>
                     <ddue:remarks>
                         <ddue:para>Definition of the position of the landing gear
-                            (intersection point of main strut and pintle sturt) on a wing,
+                            (intersection point of main strut and pintle sturt) on a wing, 
                             using relative componentSegment coordinates</ddue:para>
                     </ddue:remarks>
                 </sd:schemaDoc>

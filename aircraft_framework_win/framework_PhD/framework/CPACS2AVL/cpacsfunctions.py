@@ -3,7 +3,7 @@ CEASIOMpy: Conceptual Aircraft Design Software
 
 Developed for CFS ENGINEERING, 1015 Lausanne, Switzerland
 
-Functions to manipulate CPACS file, it uses TIXI and TIGL ceasiompy.aries,
+Functions to manipulate CPACS file, it uses TIXI and TIGL ceasiompy.aries, 
 and add some simplified or complementary functions.
 
 Python version: >=3.6
@@ -169,7 +169,7 @@ def create_branch(tixi, xpath, add_child=False):
 
             if child == xpath_split[-1] and add_child:
                 namedchild_nb = tixi.getNamedChildrenCount(xpath_parent, child)
-                tixi.createElementAtIndex (xpath_parent,child,namedchild_nb+1)
+                tixi.createElementAtIndex (xpath_parent, child, namedchild_nb+1)
                 log.info('Named child "' + child
                          + '" has been added to branch "'
                          + xpath_parent + '"')
@@ -222,7 +222,7 @@ def copy_branch(tixi, xpath_from, xpath_to):
         else:
             # If child are named child (e.g. wings/wing)
             if all(x == child_list[0] for x in child_list):
-                namedchild_nb = tixi.getNamedChildrenCount(xpath_from,
+                namedchild_nb = tixi.getNamedChildrenCount(xpath_from, 
                                                            child_list[0])
 
                 for i in range(namedchild_nb):
@@ -364,7 +364,7 @@ def get_value(tixi, xpath):
     return value
 
 
-def get_value_or_default(tixi,xpath,default_value):
+def get_value_or_default(tixi, xpath, default_value):
     """ Function to get value from a CPACS branch if this branch exist, if not
         it returns the default value.
 
@@ -397,7 +397,7 @@ def get_value_or_default(tixi,xpath,default_value):
 
         xpath_parent = '/'.join(str(m) for m in xpath.split("/")[:-1])
         value_name = xpath.split("/")[-1]
-        create_branch(tixi,xpath_parent,False)
+        create_branch(tixi, xpath_parent, False)
 
         is_int = False
         is_float = False
@@ -409,13 +409,13 @@ def get_value_or_default(tixi,xpath,default_value):
         except:
             pass
         if is_bool:
-           tixi.addTextElement(xpath_parent,value_name,str(value))
+           tixi.addTextElement(xpath_parent, value_name, str(value))
         elif is_float or is_int:
             value = float(default_value)
-            tixi.addDoubleElement(xpath_parent,value_name,value,'%g')
+            tixi.addDoubleElement(xpath_parent, value_name, value, '%g')
         else:
             value = str(value)
-            tixi.addTextElement(xpath_parent,value_name,value)
+            tixi.addTextElement(xpath_parent, value_name, value)
         log.info('Default value has been added to the cpacs file at: ' + xpath)
     else:
         log.info('Value found at ' + xpath + ', default value will not be used')
@@ -425,7 +425,7 @@ def get_value_or_default(tixi,xpath,default_value):
             return True
         elif value == 'False':
             return False
-        elif isinstance(value,bool):
+        elif isinstance(value, bool):
             return value
 
     return value
@@ -453,7 +453,7 @@ def add_float_vector(tixi, xpath, vector):
     xpath_parent = xpath[:-(len(xpath_child_name)+1)]
 
     if not tixi.checkElement(xpath_parent):
-        create_branch(tixi,xpath_parent)
+        create_branch(tixi, xpath_parent)
 
     if tixi.checkElement(xpath):
         tixi.updateFloatVector(xpath, vector, len(vector), format='%g')
@@ -515,12 +515,12 @@ def add_string_vector(tixi, xpath, vector):
     vector_str = ";".join([str(elem) for elem in vector])
 
     if not tixi.checkElement(xpath_parent):
-        create_branch(tixi,xpath_parent)
+        create_branch(tixi, xpath_parent)
 
     if tixi.checkElement(xpath):
         tixi.updateTextElement(xpath, vector_str)
     else:
-        tixi.addTextElement(xpath_parent,xpath_child_name,vector_str)
+        tixi.addTextElement(xpath_parent, xpath_child_name, vector_str)
 
 
 def get_string_vector(tixi, xpath):
@@ -567,7 +567,7 @@ def get_path(tixi, xpath):
 
     """
 
-    path_str = get_value(tixi,xpath)
+    path_str = get_value(tixi, xpath)
 
     if ('/' in path_str and '\\' in path_str):
         raise ValueError('Request path format is unrecognized!')
@@ -578,7 +578,7 @@ def get_path(tixi, xpath):
     else:
         raise ValueError('No path has been recognized!')
 
-    correct_path = os.path.join('',*path_list)
+    correct_path = os.path.join('', *path_list)
 
     return correct_path
 
@@ -598,21 +598,21 @@ def aircraft_name(tixi_or_cpacs):
     # check xpath
     # *modify corresponding test
 
-    if isinstance(tixi_or_cpacs,str):
+    if isinstance(tixi_or_cpacs, str):
 
         tixi = open_tixi(tixi_or_cpacs)
 
         aircraft_name_xpath = '/cpacs/header/name'
-        name = get_value_or_default(tixi,aircraft_name_xpath,'Aircraft')
+        name = get_value_or_default(tixi, aircraft_name_xpath, 'Aircraft')
 
         close_tixi(tixi, tixi_or_cpacs)
 
     else:
 
         aircraft_name_xpath = '/cpacs/header/name'
-        name = get_value_or_default(tixi_or_cpacs,aircraft_name_xpath,'Aircraft')
+        name = get_value_or_default(tixi_or_cpacs, aircraft_name_xpath, 'Aircraft')
 
-    name = name.replace(' ','_')
+    name = name.replace(' ', '_')
     log.info('The name of the aircraft is : ' + name)
 
     return(name)
@@ -629,6 +629,6 @@ def aircraft_name(tixi_or_cpacs):
 # from ceasiompy.utils.cpacsfunctions import cpsf
 
 # All available function are:
-# open_tixi, close_tixi, open_tigl,create_branch, copy_branch, add_uid,
-# get_value, get_value_or_default, add_float_vector, get_float_vector,
-# add_string_vector,get_string_vector, get_path, aircraft_name
+# open_tixi, close_tixi, open_tigl, create_branch, copy_branch, add_uid, 
+# get_value, get_value_or_default, add_float_vector, get_float_vector, 
+# add_string_vector, get_string_vector, get_path, aircraft_name
