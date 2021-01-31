@@ -21,11 +21,11 @@ TODO's:
 # =============================================================================
 # IMPORTS
 # =============================================================================
-from framework.aircraft_dic import baseline_aircraft, baseline_engine, baseline_origin_airport, baseline_destination_airport
+from framework.baseline_aircraft_parameters import *
 from framework.Performance.Mission.mission import mission
 from framework.Network.network_optimization import network_optimization
 from framework.Economics.revenue import revenue
-
+from framework.Sizing.airplane_sizing_check import airplane_sizing
 import pandas as pd
 import pickle
 import numpy as np
@@ -45,8 +45,13 @@ from datetime import datetime
 
 
 def network_profit(x):
-    market_share = 0.1
 
+    # Run aircraft sizng and performance checks
+
+    status = airplane_sizing(x)
+
+
+    market_share = 0.1
 
     df1 = pd.read_csv('Database/distance.csv')
     df1 = (df1.T)

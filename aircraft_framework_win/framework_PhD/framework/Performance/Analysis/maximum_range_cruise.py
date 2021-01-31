@@ -42,14 +42,13 @@ global GRAVITY
 GRAVITY = 9.80665
 
 
-def maximum_range_mach(mass, cruise_altitude, delta_ISA):
+def maximum_range_mach(mass, cruise_altitude, delta_ISA, vehicle):
     knots_to_meters_second = 0.514444
-    aircraft_data = baseline_aircraft()
-    wing_surface = aircraft_data['wing_surface']
+    wing  = vehicle['wing']
+    wing_surface = wing['area']
 
     VMO = 340
     altitude = cruise_altitude
-    mach_maximum_operating = 0.82
 
     VMO = V_cas_to_V_tas(VMO-10, altitude, delta_ISA)
 
@@ -70,8 +69,11 @@ def maximum_range_mach(mass, cruise_altitude, delta_ISA):
 
     CD = []
     for i in range(len(CL_required)):
+        # Input for neural network: 0 for CL | 1 for alpha
+        switch_neural_network = 0
+        alpha_deg = 1
         CD_aux, _ = aerodynamic_coefficients_ANN(
-            aircraft_data, altitude, mach[i], float(CL_required[i]))
+            vehicle, altitude, mach[i], float(CL_required[i]),alpha_deg,switch_neural_network)
         CD.append(CD_aux)
 
     MLD = mach*(CL_required/CD)

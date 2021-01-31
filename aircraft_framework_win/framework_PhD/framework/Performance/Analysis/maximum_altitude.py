@@ -42,10 +42,10 @@ GRAVITY = 9.80665
 
 
 def maximum_altitude(initial_altitude, limit_altitude, mass,
-                     climb_V_cas, climb_mach, delta_ISA):
+                     climb_V_cas, mach_climb, delta_ISA):
 
     transition_altitude = crossover_altitude(
-        climb_mach, climb_V_cas, delta_ISA)
+        mach_climb, climb_V_cas, delta_ISA)
     altitude_step = 100
     residual_rate_of_climb = 300
 
@@ -60,15 +60,13 @@ def maximum_altitude(initial_altitude, limit_altitude, mass,
     final_altitude = 10000
     throttle_position = 0.95
 
-    aircraft_data = baseline_aircraft()
-    engines_number = aircraft_data['number_of_engines']
 
     while (rate_of_climb > residual_rate_of_climb and altitude < final_altitude):
         V_cas = 250
         mach = V_cas_to_mach(V_cas, altitude, delta_ISA)
         thrust_force, fuel_flow = turbofan(
             altitude, mach, throttle_position)  # force [N], fuel flow [kg/hr]
-        thrust_to_weight = engines_number*thrust_force/(mass*GRAVITY)
+        thrust_to_weight = aircraft['number_of_engines'] *thrust_force/(mass*GRAVITY)
 
         rate_of_climb, V_tas = rate_of_climb_calculation(
             thrust_to_weight, altitude, delta_ISA, mach, mass, aircraft_data)
@@ -91,7 +89,7 @@ def maximum_altitude(initial_altitude, limit_altitude, mass,
     while (rate_of_climb > residual_rate_of_climb and altitude <= final_altitude):
         mach = V_cas_to_mach(V_cas, altitude, delta_ISA)
         thrust_force, fuel_flow = turbofan(altitude, mach, throttle_position)
-        thrust_to_weight = engines_number*thrust_force/(mass*GRAVITY)
+        thrust_to_weight = aircraft['number_of_engines'] *thrust_force/(mass*GRAVITY)
 
         rate_of_climb, V_tas = rate_of_climb_calculation(
             thrust_to_weight, altitude, delta_ISA, mach, mass, aircraft_data)
@@ -106,16 +104,16 @@ def maximum_altitude(initial_altitude, limit_altitude, mass,
 
     # Climb to transition altitude at constant mach
     final_altitude = limit_altitude
-    mach = climb_mach
+    mach = mach_climb
 
     buffet_altitude_limit = buffet_altitude(
-        mass, altitude, limit_altitude, climb_mach)
+        vehicle, mass, altitude, limit_altitude, mach_climb)
 
     while (rate_of_climb > residual_rate_of_climb and altitude <= final_altitude):
 
         V_cas = mach_to_V_cas(mach, altitude, delta_ISA)
         thrust_force, fuel_flow = turbofan(altitude, mach, throttle_position)
-        thrust_to_weight = engines_number*thrust_force/(mass*GRAVITY)
+        thrust_to_weight = aircraft['number_of_engines'] *thrust_force/(mass*GRAVITY)
 
         rate_of_climb, V_tas = rate_of_climb_calculation(
             thrust_to_weight, altitude, delta_ISA, mach, mass, aircraft_data)
@@ -147,10 +145,10 @@ def maximum_altitude(initial_altitude, limit_altitude, mass,
 # limit_altitude = 41000
 # mass = 43112 # [kg]
 # climb_V_cas = 280
-# climb_mach = 0.78
+# mach_climb = 0.78
 # delta_ISA = 0
 
 # altitude, roc =  maximum_altitude(initial_altitude, limit_altitude, mass,
-#     climb_V_cas, climb_mach, delta_ISA)
+#     climb_V_cas, mach_climb, delta_ISA)
 
 # print(altitude, roc)

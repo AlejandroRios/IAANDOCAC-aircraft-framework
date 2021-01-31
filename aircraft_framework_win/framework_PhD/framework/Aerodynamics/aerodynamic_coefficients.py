@@ -33,7 +33,7 @@ from framework.baseline_aircraft import *
 
 def zero_fidelity_drag_coefficient(aircraft_data, CL, phase):
 
-    wing_aspect_ratio = aircraft_data['wing_aspect_ratio']
+    wing_aspect_ratio = wing['aspect_ratio']
     e = 0.7
     CD_0 = 0.015
 

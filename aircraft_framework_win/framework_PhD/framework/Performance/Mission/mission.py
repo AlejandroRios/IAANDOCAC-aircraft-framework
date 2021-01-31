@@ -28,9 +28,7 @@ from framework.Attributes.Airspeed.airspeed import (V_cas_to_mach,
                                                     mach_to_V_cas)
 from framework.Attributes.Atmosphere.atmosphere_ISA_deviation import \
     atmosphere_ISA_deviation
-from framework.baseline_aircraft import (baseline_aircraft,
-                                         baseline_destination_airport,
-                                         baseline_origin_airport)
+from framework.baseline_aircraft_parameters import *
 from framework.Economics.crew_salary import crew_salary
 from framework.Economics.direct_operational_cost import direct_operational_cost
 from framework.Performance.Analysis.climb_integration import climb_integration
@@ -61,18 +59,19 @@ def mission(origin_destination_distance):
     feet_to_nautical_miles = 0.000164579
     tolerance = 100
 
-    aircraft_data = baseline_aircraft()
+    airport_departure = vehicle['airport_departure']
+    airport_destination = vehicle['airport_destination']
+
 
     # [kg]
-    max_zero_fuel_weight = aircraft_data['maximum_zero_fuel_weight']/GRAVITY
+    max_zero_fuel_weight = aircraft['maximum_zero_fuel_weight']/GRAVITY
     # [kg]
-    max_fuel_capacity = aircraft_data['maximum_fuel_capacity']/GRAVITY
-    operational_empty_weight = aircraft_data['operational_empty_weight']/GRAVITY
-    passenger_capacity_initial = aircraft_data['passenger_capacity']
-
-    max_engine_thrust = aircraft_data['maximum_engine_thrust']
-    engines_number = aircraft_data['number_of_engines']
-    passenger_mass = 110  # [Kg]
+    max_fuel_capacity = aircraft['maximum_fuel_capacity']/GRAVITY
+    operational_empty_weight = aircraft['operational_empty_weight']/GRAVITY
+    passenger_capacity_initial = aircraft['passenger_capacity']
+    engines_number = aircraft['number_of_engines']
+    max_engine_thrust = engine['maximum_thrust']
+    
     reference_load_factor = 0.85
 
     heading = 2
@@ -83,7 +82,6 @@ def mission(origin_destination_distance):
     ceiling = 40000  # [ft] UPDATE INPUT!!!!!!!!!
     descent_altitude = 1500
     # Network and mission parameters
-    holding_time = 30  # [min]
     fuel_density = 0.81  # [kg/l]
     fuel_price_per_kg = 1.0  # [per kg]
     fuel_price = (fuel_price_per_kg/fuel_density)*gallon_to_liter
@@ -95,19 +93,18 @@ def mission(origin_destination_distance):
 
     # Initial flight speed schedule
     climb_V_cas = 280
-    climb_mach = 0.78
-    cruise_mach = 0.78
+    mach_climb = 0.78
     cruise_V_cas = 310
     descent_V_cas = 310
-    descent_mach = 0.78
+    mach_descent = 0.78
 
     delta_ISA = 0
 
     captain_salary, first_officer_salary, flight_attendant_salary = crew_salary(
         1000)
 
-    regulated_takeoff_mass = regulated_takeoff_weight()
-    regulated_landing_mass = regulated_landing_weight()
+    regulated_takeoff_mass = regulated_takeoff_weight(vehicle)
+    regulated_landing_mass = regulated_landing_weight(vehicle)
 
     max_takeoff_mass = regulated_takeoff_mass
     max_landing_mass = regulated_landing_mass
@@ -119,17 +116,15 @@ def mission(origin_destination_distance):
 
     payload = round(
         passenger_capacity_initial
-        * passenger_mass
+        * operations['passenger_mass']
         * reference_load_factor
     )
 
-    baseline_O_airport = baseline_origin_airport()
-    baseline_D_airport = baseline_destination_airport()
-    initial_altitude = baseline_O_airport['elevation']
+
+    initial_altitude = airport_departure['elevation']
 
     f = 0
     while f == 0:
-        max_ceiling = 41000  # [ft]
         step = 500
         out = 0
 
@@ -137,20 +132,22 @@ def mission(origin_destination_distance):
 
             # Maximum altitude calculation
             max_altitude, rate_of_climb = maximum_altitude(
+                vehicle,
                 initial_altitude,
                 ceiling,
                 max_takeoff_mass,
                 climb_V_cas,
-                climb_mach,
+                mach_climb,
                 delta_ISA
             )
             # Optimal altitude calculation
             optim_altitude, rate_of_climb, _ = optimum_altitude(
+                vehicle,
                 initial_altitude,
                 ceiling,
                 max_takeoff_mass,
                 climb_V_cas,
-                climb_mach,
+                mach_climb,
                 delta_ISA
             )
             # Maximum altitude with minimum cruise time check
@@ -158,13 +155,13 @@ def mission(origin_destination_distance):
             g_descent = 3/1000
             K1 = g_climb + g_descent
             # Minimum distance at cruise stage
-            Dmin = 10*cruise_mach*min_cruise_time
+            Dmin = 10*operations['mach_cruise']*min_cruise_time
 
             K2 = (
                 origin_destination_distance
                 - Dmin
-                + g_climb*(baseline_O_airport['elevation'] + 1500)
-                + g_descent*(baseline_D_airport['elevation'] + 1500)
+                + g_climb*(airport_departure['elevation'] + 1500)
+                + g_descent*(airport_destination['elevation'] + 1500)
             )
             max_altitude_check = K2/K1
 
@@ -210,31 +207,34 @@ def mission(origin_destination_distance):
             initial_altitude = initial_altitude + 1500
             _, _, total_burned_fuel0, _ = climb_integration(
                 max_takeoff_mass,
-                climb_mach,
+                mach_climb,
                 climb_V_cas,
                 delta_ISA,
                 final_altitude,
-                initial_altitude
+                initial_altitude,
+                vehicle
             )
 
             # Calculate best cruise mach
             mass_at_top_of_climb = max_takeoff_mass - total_burned_fuel0
-            cruise_mach = maximum_range_mach(
+            operations['mach_cruise'] = maximum_range_mach(
                 mass_at_top_of_climb,
                 final_altitude,
-                delta_ISA
+                delta_ISA,
+                vehicle
             )
-            climb_mach = cruise_mach
-            descent_mach = cruise_mach
+            mach_climb = operations['mach_cruise']
+            mach_descent = operations['mach_cruise']
 
             # Recalculate climb with new mach
             final_distance, total_climb_time, total_burned_fuel, final_altitude = climb_integration(
                 max_takeoff_mass,
-                climb_mach,
+                mach_climb,
                 climb_V_cas,
                 delta_ISA,
                 final_altitude,
-                initial_altitude
+                initial_altitude,
+                vehicle
             )
 
             delta = total_burned_fuel0 - total_burned_fuel
@@ -256,7 +256,7 @@ def mission(origin_destination_distance):
         while flag == 1:
 
             transition_altitude = crossover_altitude(
-                cruise_mach,
+                operations['mach_cruise'],
                 cruise_V_cas,
                 delta_ISA
             )
@@ -272,7 +272,7 @@ def mission(origin_destination_distance):
                 mach = V_cas_to_mach(cruise_V_cas, altitude, delta_ISA)
 
             if altitude > transition_altitude:
-                mach = cruise_mach
+                mach = operations['mach_cruise']
 
             # Breguet calculation type for cruise performance
             total_cruise_time, final_cruise_mass = cruise_performance(
@@ -280,7 +280,8 @@ def mission(origin_destination_distance):
                 delta_ISA,
                 mach,
                 mass_at_top_of_climb,
-                distance_cruise
+                distance_cruise,
+                vehicle
             )
 
             final_cruise_altitude = altitude
@@ -293,11 +294,12 @@ def mission(origin_destination_distance):
                 # Recalculate climb with new mach
                 final_distance, total_descent_time, total_burned_fuel, final_altitude = descent_integration(
                     final_cruise_mass,
-                    descent_mach,
+                    mach_descent,
                     descent_V_cas,
                     delta_ISA,
                     descent_altitude,
-                    final_cruise_altitude
+                    final_cruise_altitude,
+                    vehicle
                 )
                 distance_descent = final_distance*feet_to_nautical_miles
                 distance_mission = distance_climb + distance_cruise + distance_descent
@@ -360,7 +362,7 @@ def mission(origin_destination_distance):
 
             f = 1
 
-        passenger_capacity = np.round(payload/passenger_mass)
+        passenger_capacity = np.round(payload/operations['passenger_mass'])
         load_factor = passenger_capacity/passenger_capacity_initial*100
 
     # DOC calculation

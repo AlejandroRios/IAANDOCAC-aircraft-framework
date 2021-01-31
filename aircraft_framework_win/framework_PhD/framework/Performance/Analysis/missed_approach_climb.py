@@ -37,15 +37,18 @@ import numpy as np
 # =============================================================================
 
 
-def missed_approach_climb_OEI(aircraft_data, airport_data, maximum_takeoff_weight):
+def missed_approach_climb_OEI(vehicle, maximum_takeoff_weight, weight_landing):
     '''
     '''
-    engines_number = aircraft_data['number_of_engines']
-    CL_maximum_landing = aircraft_data['CL_maximum_landing']
-    maximum_landing_weight = aircraft_data['maximum_landing_weight']  # [N]
-    wing_surface = aircraft_data['wing_surface']
-    airfield_elevation = airport_data['elevation']
-    airfield_delta_ISA = airport_data['delta_ISA']
+    aircraft = vehicle['aircraft']
+    wing = vehicle['wing']
+    airport_destination = vehicle['airport_destination']
+
+    maximum_landing_weight = weight_landing
+    CL_maximum_landing = aircraft['CL_maximum_landing']
+    wing_surface = wing['area']
+    airfield_elevation = airport_destination['elevation']
+    airfield_delta_ISA = airport_destination['delta_ISA']
     phase = 'climb'
 
     _, _, _, _, _, rho, a = atmosphere_ISA_deviation(
@@ -54,34 +57,44 @@ def missed_approach_climb_OEI(aircraft_data, airport_data, maximum_takeoff_weigh
     V = 1.3*np.sqrt(2*maximum_landing_weight /
                     (CL_maximum_landing*wing_surface*rho))
     mach = V/a
+
+    # Input for neural network: 0 for CL | 1 for alpha
+    switch_neural_network = 0
+    alpha_deg = 1
+
     CD_landing, _ = aerodynamic_coefficients_ANN(
-        aircraft_data, airfield_elevation, mach, CL_maximum_landing)
+        vehicle, airfield_elevation, mach, CL_maximum_landing,alpha_deg,switch_neural_network)
     # CD_landing = zero_fidelity_drag_coefficient(aircraft_data, CL_maximum_landing, phase)
 
     L_to_D = CL_maximum_landing/CD_landing
-    if engines_number == 2:
+    if aircraft['number_of_engines']  == 2:
         steady_gradient_of_climb = 0.021  # 2.4% for two engines airplane
-    elif engines_number == 3:
+    elif aircraft['number_of_engines']  == 3:
         steady_gradient_of_climb = 0.024  # 2.4% for two engines airplane
-    elif engines_number == 4:
+    elif aircraft['number_of_engines']  == 4:
         steady_gradient_of_climb = 0.027  # 2.4% for two engines airplane
 
-    aux1 = (engines_number/(engines_number-1))
+    aux1 = (aircraft['number_of_engines'] /(aircraft['number_of_engines'] -1))
     aux2 = (1/L_to_D) + steady_gradient_of_climb
     aux3 = maximum_landing_weight/maximum_takeoff_weight
     thrust_to_weight_landing = aux1*aux2*aux3
     return thrust_to_weight_landing
 
 
-def missed_approach_climb_AEO(aircraft_data, airport_data, maximum_takeoff_weight):
+def missed_approach_climb_AEO(vehicle, maximum_takeoff_weight, weight_landing):
     '''
     '''
-    maximum_landing_weight = aircraft_data['maximum_landing_weight']  # [N]
-    CL_maximum_landing = aircraft_data['CL_maximum_landing']
-    wing_surface = aircraft_data['wing_surface']
+    aircraft = vehicle['aircraft']
+    wing = vehicle['wing']
+    airport_destination = vehicle['airport_destination']
 
-    airfield_elevation = airport_data['elevation']
-    airfield_delta_ISA = airport_data['delta_ISA']
+    maximum_landing_weight = weight_landing
+
+    CL_maximum_landing = aircraft['CL_maximum_landing']
+    wing_surface = wing['area']
+
+    airfield_elevation = airport_destination ['elevation']
+    airfield_delta_ISA = airport_destination ['delta_ISA']
     phase = 'descent'
 
     _, _, _, _, _, rho, a = atmosphere_ISA_deviation(
@@ -90,10 +103,12 @@ def missed_approach_climb_AEO(aircraft_data, airport_data, maximum_takeoff_weigh
                     (CL_maximum_landing*wing_surface*rho))
     mach = V/a
 
+    # Input for neural network: 0 for CL | 1 for alpha
+    switch_neural_network = 0
+    alpha_deg = 1
     CD_landing, _ = aerodynamic_coefficients_ANN(
-        aircraft_data, airfield_elevation, mach, CL_maximum_landing)
+        vehicle, airfield_elevation, mach, CL_maximum_landing,alpha_deg,switch_neural_network)
     # CD_landing = zero_fidelity_drag_coefficient(aircraft_data, CL_maximum_landing, phase)
-    maximum_landing_weight = aircraft_data['maximum_landing_weight']  # [N]
 
     L_to_D = CL_maximum_landing/CD_landing
 

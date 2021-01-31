@@ -43,9 +43,10 @@ global GRAVITY
 GRAVITY = 9.80665
 
 
-def rate_of_climb_calculation(thrust_to_weight, h, delta_ISA, mach, mass, aircraft_data):
+def rate_of_climb_calculation(thrust_to_weight, h, delta_ISA, mach, mass, vehicle):
+    wing = vehicle['wing']   
 
-    wing_surface = aircraft_data['wing_surface']
+    wing_surface = wing['area']
 
     knots_to_feet_minute = 101.268
     knots_to_meters_second = 0.514444
@@ -61,7 +62,10 @@ def rate_of_climb_calculation(thrust_to_weight, h, delta_ISA, mach, mass, aircra
     CL = float(CL)
 
     # CD = zero_fidelity_drag_coefficient(aircraft_data, CL, phase)
-    CD, _ = aerodynamic_coefficients_ANN(aircraft_data, h, mach, CL)
+    # Input for neural network: 0 for CL | 1 for alpha
+    switch_neural_network = 0
+    alpha_deg = 1
+    CD, _ = aerodynamic_coefficients_ANN(vehicle, h, mach, CL,alpha_deg,switch_neural_network)
 
     L_to_D = CL/CD
 

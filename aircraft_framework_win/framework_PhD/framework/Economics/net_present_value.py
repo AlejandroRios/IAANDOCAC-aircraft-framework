@@ -45,7 +45,6 @@ def baseline_aircraft():
     '''
     MTOW_baseline = 22010
     wing_surface_baseline = 52
-    engines_number_baseline = 2
     engine_diameter_baseline = 1.52
     pax_number_baseline = 50
     thrust_maximum_baseline = 8895
@@ -464,7 +463,7 @@ def material():
                       + materials['flight_controls'] *
                       complexity_factors['flight_controls'] * wing_surface_ft
                       + materials['engines'] * complexity_factors['engines'] *
-                      engines_number * thrust_factor
+                      aircraft['number_of_engines']  * thrust_factor
                       + materials['naceles'] *
                       complexity_factors['nacelles'] * engine_diameter_in
                       + materials['interior'] *

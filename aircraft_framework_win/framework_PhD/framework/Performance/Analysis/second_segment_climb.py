@@ -39,16 +39,20 @@ import numpy as np
 # =============================================================================
 
 
-def second_segment_climb(aircraft_data, airport_data):
+def second_segment_climb(vehicle, weight_takeoff):
     '''
     '''
-    engines_number = aircraft_data['number_of_engines']
-    CL_maximum_takeoff = aircraft_data['CL_maximum_takeoff']
-    wing_surface = aircraft_data['wing_surface']
-    maximum_takeoff_weight = aircraft_data['maximum_takeoff_weight']  # [N]
 
-    airfield_elevation = airport_data['elevation']
-    airfield_delta_ISA = airport_data['delta_ISA']
+    aircraft = vehicle['aircraft']
+    wing = vehicle['wing']
+    airport_departure = vehicle['airport_departure']
+
+    CL_maximum_takeoff = aircraft['CL_maximum_takeoff']
+    wing_surface = wing['area']
+    maximum_takeoff_weight = weight_takeoff  # [N]
+
+    airfield_elevation = airport_departure['elevation']
+    airfield_delta_ISA = airport_departure['delta_ISA']
 
     _, _, _, _, _, rho, a = atmosphere_ISA_deviation(
         airfield_elevation, airfield_delta_ISA)  # [kg/m3]
@@ -59,18 +63,21 @@ def second_segment_climb(aircraft_data, airport_data):
     phase = 'takeoff'
 
     # CD_takeoff = zero_fidelity_drag_coefficient(aircraft_data, CL_maximum_takeoff, phase)
+    # Input for neural network: 0 for CL | 1 for alpha
+    switch_neural_network = 0
+    alpha_deg = 1
     CD_takeoff, _ = aerodynamic_coefficients_ANN(
-        aircraft_data, airfield_elevation, mach, CL_maximum_takeoff)
+        vehicle, airfield_elevation, mach, CL_maximum_takeoff,alpha_deg,switch_neural_network)
 
     L_to_D = CL_maximum_takeoff/CD_takeoff
-    if engines_number == 2:
+    if aircraft['number_of_engines']  == 2:
         steady_gradient_of_climb = 0.024  # 2.4% for two engines airplane
-    elif engines_number == 3:
+    elif aircraft['number_of_engines']  == 3:
         steady_gradient_of_climb = 0.027  # 2.4% for two engines airplane
-    elif engines_number == 4:
+    elif aircraft['number_of_engines']  == 4:
         steady_gradient_of_climb = 0.03  # 2.4% for two engines airplane
 
-    aux1 = (engines_number/(engines_number-1))
+    aux1 = (aircraft['number_of_engines'] /(aircraft['number_of_engines'] -1))
     aux2 = (1/L_to_D) + steady_gradient_of_climb
 
     thrust_to_weight_takeoff = aux1*aux2

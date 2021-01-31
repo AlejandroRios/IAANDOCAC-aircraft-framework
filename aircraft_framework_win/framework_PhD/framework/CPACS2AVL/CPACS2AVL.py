@@ -24,10 +24,14 @@ import os
 import sys
 import linecache
 import subprocess
-from CPACS2AVL import cpacsfunctions as cpsf
 import numpy as np
 from itertools import islice
-from utilities.logger import get_logger
+from framework.Economics.crew_salary import crew_salary
+from framework.CPACS2AVL.cpacsfunctions import *
+import cpacsfunctions as cpsf
+
+
+from framework.utilities.logger import get_logger
 
 log = get_logger(__file__.split('.')[0])
 

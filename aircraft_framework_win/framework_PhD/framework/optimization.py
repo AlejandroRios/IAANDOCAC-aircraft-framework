@@ -29,9 +29,9 @@ from deap import base
 from deap import creator
 from deap import tools
 from deap import algorithms
-from bokeh.io import push_notebook, show, output_notebook
-from bokeh.layouts import row
-from bokeh.plotting import figure
+# from bokeh.io import push_notebook, show, output_notebook
+# from bokeh.layouts import row
+# from bokeh.plotting import figure
 from framework.Economics.network_profit import network_profit
 # =============================================================================
 # CLASSES

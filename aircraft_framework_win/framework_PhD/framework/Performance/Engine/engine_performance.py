@@ -38,7 +38,7 @@ from framework.baseline_aircraft import baseline_engine
 # =============================================================================
 
 
-def turbofan(h, mach, throttle_position):
+def turbofan(h, mach, throttle_position, engine):
 
     engine = baseline_engine()
 

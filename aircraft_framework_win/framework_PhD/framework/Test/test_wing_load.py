@@ -18,7 +18,7 @@ CL_constraint = ((2)/(gamma*P_ISA*mach_design*mach_design))*6000
 
 print(CL_constraint)
 aircraft_data = baseline_aircraft()
-wing_surface = aircraft_data['wing_surface']
+wing_surface = wing['area']
 # altitude = 20000
 # theta, delta, sigma, T_ISA, P_ISA, rho_ISA, a = atmosphere_ISA_deviation(altitude, delta_ISA)
 

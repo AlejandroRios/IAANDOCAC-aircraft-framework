@@ -78,52 +78,53 @@ def logical(varin):
     return varout
 
 
-def aerodynamic_coefficients_ANN(aircraft, altitude, mach, CL):
-    alfag = 1
-    fixed_AoA = 0
+def aerodynamic_coefficients_ANN(vehicle, altitude, mach, CL,alpha_deg,switch_neural_network):
     CL_input = CL
+
+    aircraft = vehicle['aircraft']
+    wing = vehicle['wing']
 
     inputs_neural_network = {
         'mach': mach,
         'altitude': altitude,
-        'angle_of_attack': alfag*np.pi/180,
-        'aspect_ratio': aircraft['wing_aspect_ratio'],
-        'taper_ratio': aircraft['wing_taper_ratio'],
-        'leading_edge_sweep': aircraft['wing_sweep_c_4']*np.pi/180,
+        'angle_of_attack': alpha_deg*np.pi/180,
+        'aspect_ratio': wing['aspect_ratio'],
+        'taper_ratio': wing['taper_ratio'],
+        'leading_edge_sweep': wing['sweep_c_4']*np.pi/180,
         'inboard_wing_dihedral': 3*np.pi/180,
         'outboard_wing_dihedral': 5*np.pi/180,
-        'break_position': aircraft['semi_span_kink'],
-        'wing_area': aircraft['wing_surface'],
-        'wing_root_airfoil_incidence': aircraft['root_incidence']*np.pi/180,
-        'wing_break_airfoil_incidence': aircraft['kink_incidence']*np.pi/180,
-        'wing_tip_airfoil_incidence': aircraft['tip_incidence']*np.pi/180,
-        'root_airfoil_leading_edge_radius': aircraft['leading_edge_radius'][0],
-        'root_airfoil_thickness_ratio': aircraft['thickness_ratio'][0],
-        'root_airfoil_thickness_line_angle_trailing_edge': aircraft['thickness_line_angle_trailing_edge'][0],
-        'root_airfoil_thickness_to_chord_maximum_ratio': aircraft['thickness_to_chord_maximum_ratio'][0],
-        'root_airfoil_camber_line_angle_leading_edge': aircraft['camber_line_angle_leading_edge'][0],
-        'root_airfoil_camber_line_angle_trailing_edge': aircraft['camber_line_angle_trailing_edge'][0],
-        'root_airfoil_maximum_camber': aircraft['maximum_camber'][0],
-        'root_airfoil_camber_at_maximum_thickness_chordwise_position': aircraft['camber_at_maximum_thickness_chordwise_position'][0],
-        'root_airfoil_maximum_camber_chordwise_position ': aircraft['maximum_camber_chordwise_position'][0],
-        'break_airfoil_leading_edge_radius': aircraft['leading_edge_radius'][1],
-        'break_airfoil_thickness_ratio': aircraft['thickness_ratio'][1],
-        'break_airfoil_thickness_line_angle_trailing_edge': aircraft['thickness_line_angle_trailing_edge'][1],
-        'break_airfoil_maximum_thickness_chordwise_position': aircraft['thickness_to_chord_maximum_ratio'][1],
-        'break_airfoil_camber_line_angle_leading_edge': aircraft['camber_line_angle_leading_edge'][1],
-        'break_airfoil_camber_line_angle_trailing_edge': aircraft['camber_line_angle_trailing_edge'][1],
-        'break_airfoil_maximum_camber': aircraft['maximum_camber'][1],
-        'break_airfoil_camber_at_maximum_thickness_chordwise_position': aircraft['camber_at_maximum_thickness_chordwise_position'][1],
-        'break_airfoil_maximum_camber_chordwise_position ': aircraft['maximum_camber_chordwise_position'][1],
-        'tip_airfoil_leading_edge_radius': aircraft['leading_edge_radius'][2],
-        'tip_airfoil_thickness_ratio': aircraft['thickness_ratio'][2],
-        'tip_airfoil_thickness_line_angle_trailing_edge': aircraft['thickness_line_angle_trailing_edge'][2],
-        'tip_airfoil_maximum_thickness_chordwise_position': aircraft['thickness_to_chord_maximum_ratio'][2],
-        'tip_airfoil_camber_line_angle_leading_edge': aircraft['camber_line_angle_leading_edge'][2],
-        'tip_airfoil_camber_line_angle_trailing_edge': aircraft['camber_line_angle_trailing_edge'][2],
-        'tip_airfoil_maximum_camber': aircraft['maximum_camber'][2],
-        'tip_airfoil_camber_at_maximum_thickness_chordwise_position': aircraft['camber_at_maximum_thickness_chordwise_position'][2],
-        'tip_airfoil_maximum_camber_chordwise_position ': aircraft['maximum_camber_chordwise_position'][2]
+        'break_position': wing['semi_span_kink'],
+        'wing_area': wing['area'],
+        'wing_root_airfoil_incidence': wing['root_incidence']*np.pi/180,
+        'wing_break_airfoil_incidence': wing['kink_incidence']*np.pi/180,
+        'wing_tip_airfoil_incidence': wing['tip_incidence']*np.pi/180,
+        'root_airfoil_leading_edge_radius': wing['leading_edge_radius'][0],
+        'root_airfoil_thickness_ratio': wing['thickness_ratio'][0],
+        'root_airfoil_thickness_line_angle_trailing_edge': wing['thickness_line_angle_trailing_edge'][0],
+        'root_airfoil_thickness_to_chord_maximum_ratio': wing['thickness_to_chord_maximum_ratio'][0],
+        'root_airfoil_camber_line_angle_leading_edge': wing['camber_line_angle_leading_edge'][0],
+        'root_airfoil_camber_line_angle_trailing_edge': wing['camber_line_angle_trailing_edge'][0],
+        'root_airfoil_maximum_camber': wing['maximum_camber'][0],
+        'root_airfoil_camber_at_maximum_thickness_chordwise_position': wing['camber_at_maximum_thickness_chordwise_position'][0],
+        'root_airfoil_maximum_camber_chordwise_position ': wing['maximum_camber_chordwise_position'][0],
+        'break_airfoil_leading_edge_radius': wing['leading_edge_radius'][1],
+        'break_airfoil_thickness_ratio': wing['thickness_ratio'][1],
+        'break_airfoil_thickness_line_angle_trailing_edge': wing['thickness_line_angle_trailing_edge'][1],
+        'break_airfoil_maximum_thickness_chordwise_position': wing['thickness_to_chord_maximum_ratio'][1],
+        'break_airfoil_camber_line_angle_leading_edge': wing['camber_line_angle_leading_edge'][1],
+        'break_airfoil_camber_line_angle_trailing_edge': wing['camber_line_angle_trailing_edge'][1],
+        'break_airfoil_maximum_camber': wing['maximum_camber'][1],
+        'break_airfoil_camber_at_maximum_thickness_chordwise_position': wing['camber_at_maximum_thickness_chordwise_position'][1],
+        'break_airfoil_maximum_camber_chordwise_position ': wing['maximum_camber_chordwise_position'][1],
+        'tip_airfoil_leading_edge_radius': wing['leading_edge_radius'][2],
+        'tip_airfoil_thickness_ratio': wing['thickness_ratio'][2],
+        'tip_airfoil_thickness_line_angle_trailing_edge': wing['thickness_line_angle_trailing_edge'][2],
+        'tip_airfoil_maximum_thickness_chordwise_position': wing['thickness_to_chord_maximum_ratio'][2],
+        'tip_airfoil_camber_line_angle_leading_edge': wing['camber_line_angle_leading_edge'][2],
+        'tip_airfoil_camber_line_angle_trailing_edge': wing['camber_line_angle_trailing_edge'][2],
+        'tip_airfoil_maximum_camber': wing['maximum_camber'][2],
+        'tip_airfoil_camber_at_maximum_thickness_chordwise_position': wing['camber_at_maximum_thickness_chordwise_position'][2],
+        'tip_airfoil_maximum_camber_chordwise_position ': wing['maximum_camber_chordwise_position'][2]
     }
 
     # NN_induced = loadmat('Aerodynamics/NN_CDind.mat')
@@ -144,7 +145,7 @@ def aerodynamic_coefficients_ANN(aircraft, altitude, mach, CL):
     CLout, Alpha, CDfp, CDwave, CDind, grad_CL, grad_CDfp, grad_CDwave, grad_CDind = ANN_aerodynamics_main(
         CL_input,
         inputs_neural_network,
-        fixed_AoA,
+        switch_neural_network,
         NN_induced,
         NN_wave,
         NN_cd0,
@@ -160,11 +161,11 @@ def aerodynamic_coefficients_ANN(aircraft, altitude, mach, CL):
 def ANN_aerodynamics_main(
     CL_input,
     inputs_neural_network,
-    CL_logical,
+    switch_neural_network,
     NN_ind,
     NN_wave,
     NN_cd0,
-    NN_CL
+    NN_CL,
 ):
     #  Soure: Ney Rafael Seccô and Bento Mattos
     #  Aeronautical Institute of Technology
@@ -307,9 +308,8 @@ def ANN_aerodynamics_main(
     # if input_nn[var_index] < intervals[var_index, 0] or  input_nn[var_index] > intervals[var_index, 1]:
     # print('\n ==> Warning: variable %d out of boundary limits  \n', var_index)
 
-    if CL_logical == 1:
+    if switch_neural_network == 1:
         output_nn, grad_nn = ANN_internal_use(input_nn, NN_CL)
-
         CL = output_nn[0]
         grad_CL = grad_nn[0]
         Alpha = input_nn[2]

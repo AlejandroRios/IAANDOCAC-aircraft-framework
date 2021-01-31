@@ -78,7 +78,7 @@ def network_optimization(distances, demand, DOC):
     # Decision variables definition
     # =============================================================================
     # Number of airplanes of a given type flying (i, k):
-    nika = LpVariable.dicts('nika', [(i, k) for i in departure_airport,
+    nika = LpVariable.dicts('nika', [(i, k) for i in departure_airport
                                      for k in first_stop_airport],
                             0, None, LpInteger)
 

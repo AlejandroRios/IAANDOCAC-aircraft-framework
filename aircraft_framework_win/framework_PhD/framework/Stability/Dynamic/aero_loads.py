@@ -59,9 +59,9 @@ def aero_loads(state, control):
     delta_a = control[4]
     delta_r = control[5]
 
-    b = aircraft_data['wing_span']
+    b = wing['span']
     c = aircraft_data['mean_aerodynamic_chord']
-    S = aircraft_data['wing_surface']
+    S = wing['area']
 
     ## ----------------------------Conversões---------------------------------#
     q_rad_s = np.deg2rad(q_deg_s)

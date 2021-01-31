@@ -39,7 +39,7 @@ from framework.Aerodynamics.aerodynamic_coefficients_ANN import aerodynamic_coef
 # =============================================================================
 
 
-def cruise_performance(altitude, delta_ISA, mach, mass, distance_cruise):
+def cruise_performance(altitude, delta_ISA, mach, mass, distance_cruise, vehicle):
     aircraft_data = baseline_aircraft()
     n = 10
     step_cruise = distance_cruise/n
@@ -52,7 +52,7 @@ def cruise_performance(altitude, delta_ISA, mach, mass, distance_cruise):
     for i in range(n):
 
         TSFC, L_over_D, fuel_flow, throttle_position = specific_fuel_consumption(
-            aircraft_data, mach, altitude, delta_ISA, mass)
+            vehicle, mach, altitude, delta_ISA, mass)
 
         mass_fuel, time = mission_segment(
             mass, step_cruise, L_over_D, TSFC, V_tas)
@@ -67,10 +67,11 @@ def cruise_performance(altitude, delta_ISA, mach, mass, distance_cruise):
     return time_cruise, final_mass
 
 
-def specific_fuel_consumption(aircraft_data, mach, altitude, delta_ISA, mass):
+def specific_fuel_consumption(vehicle, mach, altitude, delta_ISA, mass):
+    aircraft = vehicle['aircraft']
+    wing = vehicle['wing']
     knots_to_meters_second = 0.514444
-    wing_surface = aircraft_data['wing_surface']
-    engines_number = aircraft_data['number_of_engines']
+    wing_surface = wing['area']
 
     V_tas = mach_to_V_tas(mach, altitude, delta_ISA)
     _, _, _, _, _, rho_ISA, _ = atmosphere_ISA_deviation(altitude, delta_ISA)
@@ -79,8 +80,12 @@ def specific_fuel_consumption(aircraft_data, mach, altitude, delta_ISA, mass):
         (rho_ISA*((knots_to_meters_second*V_tas)**2)*wing_surface)
     phase = 'cruise'
     # CD = zero_fidelity_drag_coefficient(aircraft_data, CL_required, phase)
+
+    # Input for neural network: 0 for CL | 1 for alpha
+    switch_neural_network = 0
+    alpha_deg = 1
     CD, _ = aerodynamic_coefficients_ANN(
-        aircraft_data, altitude, mach, CL_required)
+        vehicle, altitude, mach, CL_required, alpha_deg, switch_neural_network)
     L_over_D = CL_required/CD
     throttle_position = 0.6
 
@@ -97,7 +102,7 @@ def specific_fuel_consumption(aircraft_data, mach, altitude, delta_ISA, mass):
         thrust_force, fuel_flow = turbofan(
             altitude, mach, throttle_position)  # force [N], fuel flow [kg/hr]
         TSFC = (fuel_flow*GRAVITY)/thrust_force
-        total_thrust_force = engines_number*thrust_force
+        total_thrust_force = aircraft['number_of_engines'] *thrust_force
         throttle_position = throttle_position+step_throttle
 
     L_over_D = CL_required/CD
